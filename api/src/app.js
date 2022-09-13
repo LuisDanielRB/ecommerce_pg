@@ -31,7 +31,7 @@ server.use((req, res, next) => {
 });
 
 // CONEXION DEL ROUTER
-server.use('/' , require('./router/test-router'))
+server.use('/' , require('./router/routers'))
 
 // Error catching endware.
 server.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
