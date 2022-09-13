@@ -33,8 +33,8 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
     },
     rol: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
+        type: DataTypes.STRING,
+        defaultValue: 'user'
     }
     },
   {
