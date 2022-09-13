@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 const authConfig = require('../config/auth')
 
 
+// Ruta Login
 const login = async (req, res) => {
     const {email, password} = req.body
 
@@ -34,8 +35,9 @@ const login = async (req, res) => {
 
 }
 
+// Ruta Register
 const register = async (req, res) => {
-    const { name , email, password , address, rol} = req.body
+    const { name , email, password , address} = req.body
     
     try {
         let newPassword = bycrypt.hashSync(password, Number.parseInt((authConfig.rounds)))
@@ -43,8 +45,7 @@ const register = async (req, res) => {
                     name,
                     address,
                     password: newPassword,
-                    email,
-                    rol
+                    email
                 })
         let token = jwt.sign( {user: newUser} , authConfig.secret , {expiresIn: authConfig.expires})
         res.json({
@@ -63,8 +64,31 @@ const getUsers = async (req, res) => {
 }
 
 
+
+//Middle Authentication
+const verifyToken = async (req, res, next) => {
+
+    if(!req.headers.authorization) {
+        return res.status(401).json({
+            message: "No token provided"
+        })
+    }
+    let token = req.headers.authorization.split(' ')[1]
+    jwt.verify(token, authConfig.secret , (err, decoded) => {
+        if(err) {
+            return res.status(401).json({
+                message: "Invalid token"
+            })
+        }
+        req.user = decoded.user;
+        next();
+    })  
+}
+
+
 module.exports = {
     register,
     login,
-    getUsers
+    getUsers,
+    verifyToken
 }
