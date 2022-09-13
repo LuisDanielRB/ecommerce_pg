@@ -8,5 +8,4 @@ router.post('/login', login )
 router.post('/register' , register)
 router.get('/users' , checkAuth, checkRoleAuth(['user']) , getUsers)
 
-
 module.exports = router;

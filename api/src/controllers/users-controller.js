@@ -9,6 +9,7 @@ const authConfig = require('../config/auth')
 // Ruta Login
 const login = async (req, res) => {
     const {email, password} = req.body
+
         try {
             const findUser = await Users.findOne({
                 where: {
@@ -87,7 +88,6 @@ const verifyToken = async (req, res, next) => {
         next();
     })  
 }
-
 
 module.exports = {
     register,
