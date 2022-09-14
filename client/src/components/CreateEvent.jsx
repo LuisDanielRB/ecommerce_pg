@@ -19,7 +19,6 @@ function CreateEvent() {
             ...input,
             [name]: value,
         });
-    };
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -34,7 +33,6 @@ function CreateEvent() {
             category: "",
         });
         navigate("/");
-    };
 
     return (
         <>
@@ -101,8 +99,8 @@ function CreateEvent() {
                                 </label>
                                 <div className="mt-1">
                                     <select
-                                        onChange={handleInputChange}
-                                        className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                    onChange={handleInputChange}
+                                    className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                     >
                                         <option value="Estados Unidos">Estados Unidos</option>
                                         <option value="Argentina">Argentina</option>
