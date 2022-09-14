@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 function CreateEvent() {
     const navigate = useNavigate();
     const [input, setInput] = useState({
@@ -11,13 +12,14 @@ function CreateEvent() {
         stock: "",
         category: "",
     });
+
     function handleInputChange(e) {
         const { name, value } = e.target;
         setInput({
             ...input,
             [name]: value,
         });
-    }
+
     async function handleSubmit(e) {
         e.preventDefault();
         await register(input);
@@ -31,7 +33,7 @@ function CreateEvent() {
             category: "",
         });
         navigate("/");
-    }
+
     return (
         <>
 
@@ -59,6 +61,7 @@ function CreateEvent() {
                                 </label>
                                 <div className="mt-1">
                                     <textarea
+                                        onChange={handleInputChange}
                                         id="description"
                                         name="description"
                                         type="description"
@@ -77,6 +80,7 @@ function CreateEvent() {
                                 </label>
                                 <div className="mt-1">
                                     <input
+                                        onChange={handleInputChange}
                                         id="Artist"
                                         name="Artist"
                                         type="Artist"
@@ -95,7 +99,8 @@ function CreateEvent() {
                                 </label>
                                 <div className="mt-1">
                                     <select
-                                        className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                    onChange={handleInputChange}
+                                    className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                     >
                                         <option value="Estados Unidos">Estados Unidos</option>
                                         <option value="Argentina">Argentina</option>
@@ -114,6 +119,7 @@ function CreateEvent() {
                                 </label>
                                 <div className="mt-1">
                                     <select
+                                        onChange={handleInputChange}
                                         className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                     >
                                         <option value="Musica">Musica</option>
@@ -132,6 +138,7 @@ function CreateEvent() {
                                 </label>
                                 <div className="mt-1">
                                     <input
+                                        onChange={handleInputChange}
                                         id="Price"
                                         name="Price"
                                         type="Price"
@@ -151,6 +158,7 @@ function CreateEvent() {
                                 </label>
                                 <div className="mt-1">
                                     <input
+                                        onChange={handleInputChange}
                                         id="Stock"
                                         name="Stock"
                                         type="Stock"
@@ -169,6 +177,7 @@ function CreateEvent() {
                                 </label>
                                 <div className="mt-1">
                                     <input
+                                        onChange={handleInputChange}
                                         id="Date"
                                         name="Date"
                                         type="Date"
@@ -178,7 +187,10 @@ function CreateEvent() {
                                     />
                                 </div>
                             </div>
-
+                            <div className="m-24 ">
+                                <button onSubmit={handleSubmit} className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm bg-indigo-400"
+                                >Create</button>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -186,3 +198,5 @@ function CreateEvent() {
         </>
     )
 }
+
+export default CreateEvent;
