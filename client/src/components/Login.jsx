@@ -1,6 +1,41 @@
-import React from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/authContext";
+
+import Alert from "./UI/Alert";
 
 function Login() {
+  const { login, user } = useAuth();
+  const navigate = useNavigate();
+
+  const [input, setInput] = useState({
+    email: "",
+    password: "",
+  });
+
+  function handleInputChange(e) {
+    const { name, value } = e.target;
+    setInput({
+      ...input,
+      [name]: value,
+    });
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    try {
+      const auth = await login(input);
+      console.log("LOGIN --> " + auth);
+      console.log(user);
+      if (auth === 200) navigate("/");
+      else {
+        alert(`Error: ${auth}`);
+      }
+    } catch (error) {
+      console.log("Error login submit:" + error.message);
+    }
+  }
+
   return (
     <>
       <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -17,7 +52,12 @@ function Login() {
 
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-            <form className="space-y-6" action="#" method="POST">
+            <form
+              className="space-y-6"
+              action="#"
+              method="POST"
+              onSubmit={handleSubmit}
+            >
               <div>
                 <label
                   htmlFor="email"
@@ -27,6 +67,7 @@ function Login() {
                 </label>
                 <div className="mt-1">
                   <input
+                    onChange={handleInputChange}
                     id="email"
                     name="email"
                     type="email"
@@ -46,6 +87,7 @@ function Login() {
                 </label>
                 <div className="mt-1">
                   <input
+                    onChange={handleInputChange}
                     id="password"
                     name="password"
                     type="password"
