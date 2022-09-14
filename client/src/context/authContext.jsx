@@ -3,6 +3,8 @@ import axios from "axios";
 
 export const authContext = createContext();
 
+
+
 export const useAuth = () => {
   const context = useContext(authContext);
   // if (!context) throw new Error("There is not auth provider");
@@ -25,6 +27,14 @@ async function loginAuth(body) {
   }
 }
 
+async function getAllEvents(body) {
+  try {
+    return await axios.get("https://dummyjson.com/products", body)
+  } catch (error) {
+    console.log("Error login: " + error.message);
+  }
+}
+
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -42,6 +52,12 @@ export function AuthProvider({ children }) {
     }
   };
 
+
+  const allEvents = (body) => getAllEvents(body) 
+
+ 
+
+
   return (
     <authContext.Provider
       value={{
@@ -49,6 +65,7 @@ export function AuthProvider({ children }) {
         login,
         user,
         loading,
+        getAllEvents,
       }}
     >
       {children}
