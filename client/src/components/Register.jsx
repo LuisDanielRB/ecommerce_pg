@@ -33,12 +33,6 @@ function Register() {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      if (
-        !input.name === "" ||
-        !input.email === "" ||
-        !input.password === "" ||
-        !input.address === ""
-      ) {
         await register(input);
         setInput({
           name: "",
@@ -47,21 +41,7 @@ function Register() {
           address: "",
         });
         navigate("/login");
-      } else {
-        setError({
-          error: true,
-          message: [
-            "Please enter a valid email",
-            "Please enter a valid password",
-          ],
-        });
-        setTimeout(() => {
-          setError({
-            error: false,
-            message: [],
-          });
-        }, 4000);
-      }
+
     } catch (error) {
       console.log(error.message);
     }
