@@ -1,6 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/authContext";
 
 function Register() {
+  const { register } = useAuth();
+  const navigate = useNavigate();
+
+  const [input, setInput] = useState({
+    name: "",
+    email: "",
+    password: "",
+    address: "",
+  });
+
+  function handleInputChange(e) {
+    const { name, value } = e.target;
+    setInput({
+      ...input,
+      [name]: value,
+    });
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    await register(input);
+    setInput({
+      name: "",
+      email: "",
+      password: "",
+      address: "",
+    });
+    navigate("/login");
+  }
+
   return (
     <>
       <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -17,7 +49,12 @@ function Register() {
 
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-            <form className="space-y-6" action="#" method="POST">
+            <form
+              className="space-y-6"
+              action="#"
+              method="POST"
+              onSubmit={handleSubmit}
+            >
               <div>
                 <label
                   htmlFor="name"
@@ -27,6 +64,7 @@ function Register() {
                 </label>
                 <div className="mt-1">
                   <input
+                    onChange={handleInputChange}
                     id="name"
                     name="name"
                     type="text"
@@ -44,6 +82,7 @@ function Register() {
                 </label>
                 <div className="mt-1">
                   <input
+                    onChange={handleInputChange}
                     id="email"
                     name="email"
                     type="email"
@@ -62,6 +101,7 @@ function Register() {
                 </label>
                 <div className="mt-1">
                   <input
+                    onChange={handleInputChange}
                     id="password"
                     name="password"
                     type="password"
@@ -81,6 +121,7 @@ function Register() {
                 </label>
                 <div className="mt-1">
                   <input
+                    onChange={handleInputChange}
                     id="address"
                     name="address"
                     type="text"
@@ -90,21 +131,13 @@ function Register() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-center">
                 <div className="text-sm">
                   <a
                     href="/login"
                     className="font-medium text-indigo-600 hover:text-indigo-500"
                   >
                     Already have an account?
-                  </a>
-                </div>
-                <div className="text-sm">
-                  <a
-                    href="#"
-                    className="font-medium text-indigo-600 hover:text-indigo-500"
-                  >
-                    Forgot your password?
                   </a>
                 </div>
               </div>
