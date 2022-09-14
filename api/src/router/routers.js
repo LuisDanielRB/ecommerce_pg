@@ -8,7 +8,6 @@ const {createEvent, getEvents} = require('../controllers/events-controller')
 
 router.post('/login', login )
 router.post('/register' , register)
-router.post('/createEvent', createEvent)
 router.get('/users' , checkAuth, checkRoleAuth(['user']) , getUsers)
 router.post('/createEvent', createEvent)
 router.get('/events' , getEvents)
