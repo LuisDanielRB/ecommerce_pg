@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/authContext";
 
 function CreateEvent() {
+    const { createEvent } = useAuth();
     const navigate = useNavigate();
     const [input, setInput] = useState({
         description: "",
@@ -11,6 +13,11 @@ function CreateEvent() {
         place: "",
         stock: "",
         category: "",
+    });
+
+    const [error, setError] = useState({
+        error: false,
+        message: [],
     });
 
     function handleInputChange(e) {
@@ -23,22 +30,42 @@ function CreateEvent() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        await register(input);
-        setInput({
-            description: "",
-            price: "",
-            date: "",
-            artist: "",
-            place: "",
-            stock: "",
-            category: "",
-        });
-        navigate("/");
+        try {
+            if (
+                !input.description === "" ||
+                !input.artist === "" ||
+                !input.place.length === 0 ||
+                !input.category.length === 0
+            ) {
+                await createEvent(input);
+                setInput({
+                    description: "",
+                    price: "",
+                    date: "",
+                    artist: "",
+                    place: "",
+                    stock: "",
+                    category: "",
+                });
+                navigate("/");
+            } else {
+                setError({
+                    error: true,
+                    message: [
+                        "Please enter a description",
+                        "Please enter a artist",
+                        "Please select one place",
+                        "Please select one category",
+                    ],
+                });
+            }
+        } catch (error) {
+            console.log(error.message);
+        }
     };
 
     return (
         <>
-
             <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-md">
                     <img

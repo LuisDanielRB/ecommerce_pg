@@ -35,6 +35,14 @@ async function getAllEvents(body) {
   }
 }
 
+async function createEvent(body){
+  try{
+    return await axios.post("http://localhost:3000/createEvent", body);
+  }catch(error){
+    console.log("Error createEvent: " + error.message);
+  }
+}
+
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -66,6 +74,7 @@ export function AuthProvider({ children }) {
         user,
         loading,
         getAllEvents,
+        createEvent,
       }}
     >
       {children}

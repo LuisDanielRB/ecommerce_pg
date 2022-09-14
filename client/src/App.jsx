@@ -16,7 +16,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/createvent" element={<CreateEvent/>} />
+          <Route path="/createEvent" element={<CreateEvent/>} />
         </Routes>
       </AuthProvider>
     </div>
