@@ -1,4 +1,5 @@
-const { EventsCreated , Event} = require('../db')
+const { EventsCreated, Event} = require('../db')
+
 
 const createEvent = async (req, res) => {
     const {description, price, date, artist, place, stock, category} = req.body
@@ -35,8 +36,8 @@ const getEvents = async (req, res) => {
 
 }
 
-
 module.exports = {
     createEvent,
     getEvents
+
 }
