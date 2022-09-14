@@ -95,7 +95,6 @@ function CreateEvent() {
                                         id="description"
                                         name="description"
                                         type="description"
-                                        required
                                         className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                     />
                                 </div>
@@ -115,7 +114,6 @@ function CreateEvent() {
                                         name="Artist"
                                         type="Artist"
                                         autoComplete="current-Artist"
-                                        required
                                         className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                     />
                                 </div>
@@ -173,8 +171,7 @@ function CreateEvent() {
                                         name="Price"
                                         type="Price"
                                         autoComplete="current-Price"
-                                        placeholder="$"
-                                        required
+                                        placeholder="$"                      
                                         className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                     />
                                 </div>
@@ -193,7 +190,6 @@ function CreateEvent() {
                                         name="Stock"
                                         type="Stock"
                                         autoComplete="current-Stock"
-                                        required
                                         className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                     />
                                 </div>
@@ -212,7 +208,6 @@ function CreateEvent() {
                                         name="Date"
                                         type="Date"
                                         autoComplete="current-Date"
-                                        required
                                         className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                     />
                                 </div>
