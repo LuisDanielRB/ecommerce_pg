@@ -14,11 +14,11 @@ module.exports = (sequelize) => {
       allowNull: false
     },
     price: {
-      type: INTEGER,
+      type: DataTypes.INTEGER,
       allowNull: false
     },
     date: {
-      type: DATE,
+      type: DataTypes.DATE,
       allowNull: false
     },
     artist: {
@@ -26,11 +26,11 @@ module.exports = (sequelize) => {
       allowNull: false
     },
     place: {
-      type: STRING,
+      type: DataTypes.STRING,
       allowNull: false
     },
     stock: {
-      type: INTEGER,
+      type: DataTypes.INTEGER,
       allowNull: false
     },
     category: {
