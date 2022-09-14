@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
+import Alert from "./UI/Alert";
 
 function CreateEvent() {
     const { createEvent } = useAuth();
@@ -77,7 +78,7 @@ function CreateEvent() {
                         Create your Event
                     </h2>
                 </div>
-
+                {error.error ? <Alert messages={error.message} /> : null}
                 <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
                     <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
                         <form className="space-y-6" action="#" method="POST">
