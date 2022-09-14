@@ -2,9 +2,18 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 
+import Alert from "./UI/Alert";
+
 function Register() {
   const { register } = useAuth();
   const navigate = useNavigate();
+  const reEmail =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+  const [error, setError] = useState({
+    error: false,
+    message: [],
+  });
 
   const [input, setInput] = useState({
     name: "",
@@ -23,14 +32,39 @@ function Register() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    await register(input);
-    setInput({
-      name: "",
-      email: "",
-      password: "",
-      address: "",
-    });
-    navigate("/login");
+    try {
+      if (
+        !input.name === "" ||
+        !input.email === "" ||
+        !input.password === "" ||
+        !input.address === ""
+      ) {
+        await register(input);
+        setInput({
+          name: "",
+          email: "",
+          password: "",
+          address: "",
+        });
+        navigate("/login");
+      } else {
+        setError({
+          error: true,
+          message: [
+            "Please enter a valid email",
+            "Please enter a valid password",
+          ],
+        });
+        setTimeout(() => {
+          setError({
+            error: false,
+            message: [],
+          });
+        }, 4000);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   }
 
   return (
@@ -49,8 +83,9 @@ function Register() {
 
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+            {error.error ? <Alert messages={error.message} /> : null}
             <form
-              className="space-y-6"
+              className="space-y-6 mt-6"
               action="#"
               method="POST"
               onSubmit={handleSubmit}

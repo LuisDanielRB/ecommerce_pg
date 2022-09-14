@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 
+import Alert from "./UI/Alert";
+
 function Login() {
   const { login, user } = useAuth();
   const navigate = useNavigate();
@@ -25,7 +27,7 @@ function Login() {
       const auth = await login(input);
       console.log("LOGIN --> " + auth);
       console.log(user);
-      if (auth === 200 && user !== null) navigate("/");
+      if (auth === 200) navigate("/");
       else {
         alert(`Error: ${auth}`);
       }
