@@ -2,8 +2,7 @@ const { verifyToken } = require('../helpers/tokenSign')
 
 const checkAuth = async (req, res, next) => {
     try {
-        //TODO: authorization: Bearer 1010101010101001010100 
-        const token = req.headers.authorization.split(' ').pop() //TODO:123123213
+        const token = req.headers.authorization.split(' ').pop() 
         const tokenData = await verifyToken(token)
         if (tokenData.id) {
             next()
