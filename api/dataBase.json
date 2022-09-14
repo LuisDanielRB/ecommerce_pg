@@ -1,5 +1,4 @@
-{
-    "events":[
+[
         {
             "id": 1,
             "description": "Concert",
@@ -41,5 +40,4 @@
             "stock": 54000,
             "category": ["Sporting Event","Social Event"]
         }
-    ]
-}
+]

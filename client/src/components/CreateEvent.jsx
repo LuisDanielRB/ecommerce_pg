@@ -5,6 +5,8 @@ import Alert from "./UI/Alert";
 
 function CreateEvent() {
     const { createEvent } = useAuth();
+
+function CreateEvent() {
     const navigate = useNavigate();
     const [input, setInput] = useState({
         description: "",
@@ -20,7 +22,7 @@ function CreateEvent() {
         error: false,
         message: [],
     });
-
+    
     function handleInputChange(e) {
         const { name, value } = e.target;
         setInput({
@@ -127,7 +129,7 @@ function CreateEvent() {
                                 </label>
                                 <div className="mt-1">
                                     <select
-                                        onChange={handleInputChange}
+                                         onChange={handleInputChange}
                                         className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                     >
                                         <option value="Estados Unidos">Estados Unidos</option>
