@@ -1,4 +1,4 @@
-import React, { useContext, createContext, useState } from "react";
+import React, { useContext, createContext, useState, useEffect } from "react";
 import axios from "axios";
 
 export const authContext = createContext();
@@ -29,16 +29,28 @@ async function loginAuth(body) {
 
 async function getAllEvents(body) {
   try {
-    return await axios.get("https://dummyjson.com/products", body)
+    const data = await axios.get("https://dummyjson.com/products", body)
+    const datos = data.data.products 
+    const datosCategories = datos.map((el) => el.category)
+    const categories = datosCategories.filter((item, index) => {
+      return datosCategories.indexOf(item) === index
+    })
+
+    const obj = {
+      categories,
+      datos
+    }
+    return obj
+
   } catch (error) {
     console.log("Error login: " + error.message);
   }
 }
-
-async function createEvent(body){
-  try{
-    return await axios.post("http://localhost:3000/createEvent", body);
-  }catch(error){
+async function createEvent(body) {
+  try {
+    const data = await axios.post("http://localhost:3000/createEvent", body);
+    return data.data
+  } catch (error) {
     console.log("Error createEvent: " + error.message);
   }
 }
@@ -60,11 +72,9 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const allEvents = (body) => getAllEvents(body)
 
-  const allEvents = (body) => getAllEvents(body) 
-
- 
-
+  const create = (body) => createEvent(body)
 
   return (
     <authContext.Provider
@@ -73,8 +83,8 @@ export function AuthProvider({ children }) {
         login,
         user,
         loading,
-        getAllEvents,
-        createEvent,
+        allEvents,
+        create,
       }}
     >
       {children}

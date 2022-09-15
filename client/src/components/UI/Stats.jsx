@@ -6,11 +6,10 @@ function Stats() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl text-center">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            Trusted by developers from over 80 planets
+            Servicio de Calidad.
           </h2>
           <p className="mt-3 text-xl text-gray-500 sm:mt-4">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-            Repellendus repellat laudantium.
+            Contamos con los mejores eventos compuesto por especialistas.
           </p>
         </div>
       </div>
@@ -22,26 +21,26 @@ function Stats() {
               <dl className="rounded-lg bg-white shadow-lg sm:grid sm:grid-cols-3">
                 <div className="flex flex-col border-b border-gray-100 p-6 text-center sm:border-0 sm:border-r">
                   <dt className="order-2 mt-2 text-lg font-medium leading-6 text-gray-500">
-                    Pepperoni
+                    Boletos vendidos
                   </dt>
                   <dd className="order-1 text-5xl font-bold tracking-tight text-indigo-600">
-                    100%
+                    10489
                   </dd>
                 </div>
                 <div className="flex flex-col border-t border-b border-gray-100 p-6 text-center sm:border-0 sm:border-l sm:border-r">
                   <dt className="order-2 mt-2 text-lg font-medium leading-6 text-gray-500">
-                    Delivery
+                    Eventos
                   </dt>
                   <dd className="order-1 text-5xl font-bold tracking-tight text-indigo-600">
-                    24/7
+                    310+
                   </dd>
                 </div>
                 <div className="flex flex-col border-t border-gray-100 p-6 text-center sm:border-0 sm:border-l">
                   <dt className="order-2 mt-2 text-lg font-medium leading-6 text-gray-500">
-                    Calories
+                    Boletos disponibles
                   </dt>
                   <dd className="order-1 text-5xl font-bold tracking-tight text-indigo-600">
-                    100k
+                    89178
                   </dd>
                 </div>
               </dl>

@@ -1,69 +1,144 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
-import Alert from "./UI/Alert";
+import { PlusCircleIcon } from "@heroicons/react/20/solid";
 
 function CreateEvent() {
-    const { createEvent } = useAuth();
+    const { create } = useAuth();
     const navigate = useNavigate();
+    const [artist1, setArtist1] = useState([]);
+    console.log(artist1)
     const [input, setInput] = useState({
         description: "",
-        price: "",
+        price: 0,
         date: "",
-        artist: "",
+        artist: [],
         place: "",
-        stock: "",
-        category: "",
+        stock: 0,
+        category: [],
     });
+    console.log(input)
 
-    const [error, setError] = useState({
-        error: false,
-        message: [],
-    });
+    const [error, setError] = useState({});
 
-    function handleInputChange(e) {
-        const { name, value } = e.target;
+    function validation(input) {
+        let errors = {};
+        if (input.description.length < 20) { errors.description = "Minium 20 characters"; }
+        if (input.description.length > 255) { errors.description = "Max 255 characters"; }
+        if (!Date.parse(input.date)) { errors.date = "Date of release is required"; }
+        if (!input.artist) { errors.artist = "artist is required"; }
+        if (!input.price) { errors.price = "price is required"; }
+        if (!input.stock) { errors.stock = "stock is required"; }
+        if (!input.place) { errors.place = "place is required"; }
+        if (!input.category.length) { errors.category = "Select at least a one or five genres "; }
+        return errors;
+    }
+
+    const artista = []
+    function handleArtist(e) {
+        artista.push(setInput({
+            ...input,
+            artist: [e.target.value]
+        })
+        )
+    }
+
+    function handleInpuntArtist(e) {
         setInput({
             ...input,
-            [name]: value,
-        });
+            artist: [e.target.value]
+        })
+        setError(
+            validation({
+                ...input,
+                artist: [...input.artist, e.target.value]
+            })
+        )
     };
 
-    async function handleSubmit(e) {
-        e.preventDefault();
-        try {
-            if (
-                !input.description === "" ||
-                !input.artist === "" ||
-                !input.place.length === 0 ||
-                !input.category.length === 0
-            ) {
-                await createEvent(input);
-                setInput({
-                    description: "",
-                    price: "",
-                    date: "",
-                    artist: "",
-                    place: "",
-                    stock: "",
-                    category: "",
-                });
-                navigate("/");
-            } else {
-                setError({
-                    error: true,
-                    message: [
-                        "Please enter a description",
-                        "Please enter a artist",
-                        "Please select one place",
-                        "Please select one category",
-                    ],
-                });
-            }
-        } catch (error) {
-            console.log(error.message);
-        }
+    function handleInputChange(e) {
+        setInput({
+            ...input,
+            [e.target.name]: e.target.value,
+        });
+        setError(
+            validation({
+                ...input,
+                [e.target.name]: e.target.value,
+            })
+        )
     };
+
+    function handleInputPrice(e) {
+        setInput({
+            ...input,
+            price: Number(e.target.value),
+        })
+        setError(
+            validation({
+                ...input,
+                price: [e.target.value]
+            })
+        )
+    }
+
+    function handleInputStock(e) {
+        setInput({
+            ...input,
+            stock: Number(e.target.value)
+        })
+        setError(
+            validation({
+                ...input,
+                stock: [e.target.value]
+            })
+        )
+    }
+
+    const handleSelectCategory = (e) => {
+        setInput({
+            ...input,
+            category: [...new Set([...input.category, e.target.value])]
+        })
+        setError(
+            validation({
+                ...input,
+                category: [...input.category, e.target.value]
+            })
+        )
+
+    }
+
+    const handleSelectPlace = (e) => {
+        const { value } = e.target;
+        setInput({
+            ...input,
+            place: value
+        })
+        setError(
+            validation({
+                ...input,
+                place: value
+            })
+        )
+
+    }
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        create(input);
+        setError(validation(input))
+        setInput({
+            description: "",
+            price: 0,
+            date: "",
+            artist: [],
+            place: "",
+            stock: 0,
+            category: [],
+        });
+        navigate("/");
+    }
 
     return (
         <>
@@ -78,56 +153,55 @@ function CreateEvent() {
                         Create your Event
                     </h2>
                 </div>
-                {error.error ? <Alert messages={error.message} /> : null}
                 <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
                     <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-                        <form className="space-y-6" action="#" method="POST">
+                        <form onSubmit={handleSubmit}
+                            className="space-y-6 mt-6">
                             <div>
                                 <label
-                                    htmlFor="description"
                                     className="block text-sm font-medium text-gray-700"
                                 >
                                     Description
                                 </label>
                                 <div className="mt-1">
                                     <textarea
-                                        onChange={handleInputChange}
+                                        onChange={(e) => handleInputChange(e)}
                                         id="description"
                                         name="description"
-                                        type="description"
+                                        type="text"
+                                        placeholder="Description..."
                                         className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                     />
                                 </div>
+                                {error.description && (<p> ❌{error.description}</p>)}
                             </div>
-
                             <div>
                                 <label
-                                    htmlFor="artist"
                                     className="block text-sm font-medium text-gray-700"
                                 >
                                     Artist
                                 </label>
-                                <div className="mt-1">
+                                <div className="mt-1 flex">
                                     <input
-                                        onChange={handleInputChange}
-                                        id="Artist"
-                                        name="Artist"
-                                        type="Artist"
+                                        onChange={(e) => handleInpuntArtist(e)}
+                                        id="artist"
+                                        name="artist"
+                                        type="text"
+                                        placeholder="Artist..."
                                         autoComplete="current-Artist"
                                         className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                     />
+                                    <button onSubmit={handleArtist} className="m-2"><PlusCircleIcon className="h-5 w-5 text-green-800 text-right" /></button>
                                 </div>
+                                {error.artist && (<p> ❌{error.artist}</p>)}
                             </div>
                             <div>
-                                <label
-                                    htmlFor="place"
-                                    className="block text-sm font-medium text-gray-700"
-                                >
+                                <label className="block text-sm font-medium text-gray-700" >
                                     Place
                                 </label>
                                 <div className="mt-1">
                                     <select
-                                        onChange={handleInputChange}
+                                        onChange={(e) => handleSelectPlace(e)}
                                         className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                     >
                                         <option value="Estados Unidos">Estados Unidos</option>
@@ -137,17 +211,17 @@ function CreateEvent() {
                                         <option value="Venezuela">Venezuela</option>
                                     </select>
                                 </div>
+                                {error.place && (<p> ❌{error.place}</p>)}
                             </div>
                             <div>
                                 <label
-                                    htmlFor="category"
                                     className="block text-sm font-medium text-gray-700"
                                 >
                                     Category
                                 </label>
                                 <div className="mt-1">
                                     <select
-                                        onChange={handleInputChange}
+                                        onChange={(e) => handleSelectCategory(e)}
                                         className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                     >
                                         <option value="Musica">Musica</option>
@@ -156,70 +230,78 @@ function CreateEvent() {
                                         <option value="Convenciones">Convenciones</option>
                                     </select>
                                 </div>
+                                {error.category && (<p> ❌{error.category}</p>)}
                             </div>
                             <div>
                                 <label
-                                    htmlFor="Price"
+                                    htmlFor="price"
                                     className="block text-sm font-medium text-gray-700"
                                 >
                                     Price
                                 </label>
                                 <div className="mt-1">
                                     <input
-                                        onChange={handleInputChange}
-                                        id="Price"
-                                        name="Price"
-                                        type="Price"
-                                        autoComplete="current-Price"
-                                        placeholder="$"                      
+                                        onChange={(e) => handleInputPrice(e)}
+                                        id="price"
+                                        name="price"
+                                        type="price"
+                                        placeholder="$..."
                                         className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                     />
                                 </div>
+                                {error.price && (<p> ❌{error.price}</p>)}
                             </div>
                             <div>
                                 <label
-                                    htmlFor="Stock"
                                     className="block text-sm font-medium text-gray-700"
                                 >
                                     Stock
                                 </label>
                                 <div className="mt-1">
                                     <input
-                                        onChange={handleInputChange}
-                                        id="Stock"
-                                        name="Stock"
-                                        type="Stock"
+                                        onChange={(e) => handleInputStock(e)}
+                                        id="stock"
+                                        name="stock"
+                                        type="stock"
+                                        placeholder="Stock..."
                                         autoComplete="current-Stock"
                                         className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                     />
                                 </div>
+                                {error.stock && (<p> ❌{error.stock}</p>)}
                             </div>
                             <div>
                                 <label
-                                    htmlFor="Date"
                                     className="block text-sm font-medium text-gray-700"
                                 >
                                     Date
                                 </label>
                                 <div className="mt-1">
                                     <input
-                                        onChange={handleInputChange}
-                                        id="Date"
-                                        name="Date"
-                                        type="Date"
+                                        onChange={(e) => handleInputChange(e)}
+                                        id="date"
+                                        type="date"
+                                        name="date"
                                         autoComplete="current-Date"
                                         className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                     />
                                 </div>
+                                {error.date && (<p> ❌{error.date}</p>)}
                             </div>
-                            <div className="m-24 ">
-                                <button onSubmit={handleSubmit} className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm bg-indigo-400"
-                                >Create</button>
-                            </div>
+                            <button
+                                type='submit'
+                                className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm bg-indigo-400"
+                            >Create</button>
                         </form>
-                    </div>
-                </div>
-            </div>
+                        <div className="mt-4">
+                            <a
+                                href="/"
+                                className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm text-center"
+                            ><input type="button" value="Go Back" /></a>
+                        </div>
+                    </div >
+                </div >
+            </div >
         </>
     )
 }
