@@ -1,5 +1,5 @@
 const { EventsCreated, Event} = require('../db')
-
+const fs = require('fs')
 
 const createEvent = async (req, res) => {
     const {description, price, date, artist, place, stock, category} = req.body
