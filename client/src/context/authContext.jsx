@@ -20,6 +20,7 @@ async function registerAuth(body) {
 }
 
 async function loginAuth(body) {
+  console.log(body);
   try {
     return await axios.post("http://localhost:3000/login", body);
   } catch (error) {

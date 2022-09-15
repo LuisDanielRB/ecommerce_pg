@@ -16,10 +16,9 @@ function Register() {
   });
 
   const [input, setInput] = useState({
-    name: "",
+    username: "",
     email: "",
     password: "",
-    address: "",
   });
 
   function handleInputChange(e) {
@@ -35,10 +34,9 @@ function Register() {
     try {
         await register(input);
         setInput({
-          name: "",
+          username: "",
           email: "",
-          password: "",
-          address: "",
+          password: ""
         });
         navigate("/login");
 
@@ -81,7 +79,7 @@ function Register() {
                   <input
                     onChange={handleInputChange}
                     id="name"
-                    name="name"
+                    name="username"
                     type="text"
                     required
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
@@ -127,24 +125,6 @@ function Register() {
                 </div>
               </div>
 
-              <div>
-                <label
-                  htmlFor="address"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Address
-                </label>
-                <div className="mt-1">
-                  <input
-                    onChange={handleInputChange}
-                    id="address"
-                    name="address"
-                    type="text"
-                    required
-                    className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                  />
-                </div>
-              </div>
 
               <div className="flex items-center justify-center">
                 <div className="text-sm">

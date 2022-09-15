@@ -18,7 +18,7 @@ function CreateEvent() {
         setInput({
             ...input,
             [name]: value,
-        });
+        });}
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -32,7 +32,7 @@ function CreateEvent() {
             stock: "",
             category: "",
         });
-        navigate("/");
+        navigate("/");}
 
     return (
         <>

@@ -2,11 +2,10 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-
 require('./db.js');
-
 const server = express();
 const cors = require('cors');
+require('./middleware/auth');
 
 server.name = 'API';
 
@@ -15,6 +14,7 @@ server.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 server.use(bodyParser.json({ limit: '50mb' }));
 server.use(cookieParser());
 server.use(morgan('dev'));
+
 server.use((req, res, next) => {
 	//Si en la instruccion de abajo sacamos * y ponemos la url de la pagina sirve para produccion
 	res.header('Access-Control-Allow-Origin', '*'); // update to match the domain you will make the request from
