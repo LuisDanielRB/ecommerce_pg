@@ -6,6 +6,7 @@ import Register from "./components/Register";
 import { AuthProvider } from "./context/authContext";
 // import CreateEvent from "./components/CreateEvent";
 import Events from "./components/Events";
+import CardDetail from "./components/UI/CardDetail";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/events" element={<Events />} />
           {/* <Route path="/createvent" element={<CreateEvent/>} /> */}
+          <Route path="/cardDetail" element={<CardDetail />} />
         </Routes>
       </AuthProvider>
     </div>
