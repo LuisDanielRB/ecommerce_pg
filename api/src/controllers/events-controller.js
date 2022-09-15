@@ -81,9 +81,56 @@ if(detail){
     
 }
 
+const getEventsDetailDb = async (req, res) => {
+
+    const { id } = req.params
+    let detail;
+
+    if(id.includes("-")){
+        try{
+            detail = await Event.findOne({
+                where: {
+                    id: id
+                }
+            })
+
+    }catch(error){
+        console.log(error)
+    }
+}else{
+    try{
+        const response = await Event.findOne({
+            where: {
+                id: id
+            }
+        })
+        const elem = response.dataValues;
+        detail = {
+            id: elem.id,
+            description: elem.description,
+            price: elem.price,
+            date: elem.date,
+            artist: elem.artist,
+            place: elem.place,
+            stock: elem.stock,
+            category: elem.category,
+        }
+    }catch(error){
+        console.log(error)
+    }
+}
+if(detail){
+    res.send(detail)
+} else {
+    res.status(404).send("ID not found")
+}
+
+}
+
 module.exports = {
     createEvent,
     getEvents,
-    getEventDetail
+    getEventDetail,
+    getEventsDetailDb
 
 }
