@@ -14,6 +14,6 @@ router.post('/createEvent',  createEvent)
 router.get('/users' , passport.authenticate('jwt-auth', { session: false }),getUsers)
 router.post('/createEvent', createEvent)
 router.get('/events' ,  getEvents)
-router.get('/:id', getEventDetail)
+router.get('/events/:id', getEventDetail)
 
 module.exports = router;
