@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const {register, login, getUsers , logout, upDateUser } = require('../controllers/users-controller')
-const {createEvent, getEvents} = require('../controllers/events-controller')
+const {createEvent, getEvents, getEventDetail} = require('../controllers/events-controller')
 const {fileUpload} = require('../helpers/fileUpload')
 
 
@@ -14,5 +14,6 @@ router.post('/createEvent',  createEvent)
 router.get('/users' , passport.authenticate('jwt-auth', { session: false }),getUsers)
 router.post('/createEvent', createEvent)
 router.get('/events' ,  getEvents)
+router.get('/:id', getEventDetail)
 
 module.exports = router;
