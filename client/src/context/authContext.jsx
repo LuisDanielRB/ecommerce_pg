@@ -83,6 +83,7 @@ export function AuthProvider({ children }) {
         login,
         user,
         loading,
+        getAllEvents,
         allEvents,
         create,
       }}
