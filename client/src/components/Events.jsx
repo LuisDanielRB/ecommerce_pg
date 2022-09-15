@@ -12,6 +12,7 @@ const Events = () => {
     const [events, setEvents] = useState([])
     const [eventsBU, setEventsBU] = useState([])
     const [categoriesSet, setCategoriesSet] = useState([])
+    const navigate = useNavigate()
 
 
     async function getAll(){
@@ -28,6 +29,8 @@ const Events = () => {
     },[])
   
     function selectOption(e) {
+
+        console.log(categoriesSet)
         const filterOption = e.target.value === "-" ? eventsBU : eventsBU.filter((el) => el.category === e.target.value)
         setEvents(filterOption)
     }
@@ -54,7 +57,7 @@ const Events = () => {
                 { 
                   categoriesSet?.map((el) => {
                     return (
-                      <option value={el}>{el}</option>
+                      <option key={el} value={el}>{el}</option>
                     )
                   })
                 }
@@ -66,7 +69,10 @@ const Events = () => {
         {
           events?.map((el) => {
             return (
-              <EventCards key={el.id} description={el.description} price={el.price}  brand={el.brand} title={el.title} stock={el.stock}/>
+                <div>
+                <EventCards key={el.id} description={el.description} price={el.price}  brand={el.brand} title={el.title} stock={el.stock}/>
+                </div>
+              
             )
           })
         }
