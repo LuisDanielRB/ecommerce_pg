@@ -4,7 +4,8 @@ const jwt = require('jsonwebtoken')
 const {tokenSign} = require ('../helpers/tokenSign')
 const {compare , encrypt} = require('../helpers/handleByCrypt')
 const authConfig = require('../config/auth')
-
+const uploadImage = require('../helpers/cloudinary');
+const fs = require('fs-extra');
 
 // Ruta Login
 const login = async (req, res) => {
@@ -43,6 +44,36 @@ const login = async (req, res) => {
 
 }
 
+const upDateUser = async (req, res) => {
+    const {id} = req.params;
+    const {name, email, password, address} = req.body;
+    var result;
+
+    try {
+        if(!id) res.status(404).json({message: 'id is require...'});
+
+        let user = await Users.findOne({where:{id: id}});
+        if(!user) res.status(404).json({message: 'user not found...'});
+        
+        if(req.files?.image){
+            result = await uploadImage(req.files.image.tempFilePath);
+            await Users.update({
+                name, email, password, address, image: result.secure_url
+            },{where:{id: id}});
+            await fs.unlink(req.files.image.tempFilePath);
+        }else{
+            await Users.update({
+                name, email, password, address
+            },{where:{id: id}});
+        }
+        user = await Users.findOne({where:{id: id}});
+        res.status(200).json(user);
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 // Ruta Register
 const register = async (req, res) => {
     const { name , email, password , address} = req.body
@@ -55,6 +86,7 @@ const register = async (req, res) => {
                     password: newPassword,
                     email
                 })
+
         res.json({
             user: newUser
         })
@@ -93,5 +125,6 @@ module.exports = {
     register,
     login,
     getUsers,
-    verifyToken
+    verifyToken,
+    upDateUser
 }
