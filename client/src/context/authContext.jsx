@@ -20,6 +20,7 @@ async function registerAuth(body) {
 }
 
 async function loginAuth(body) {
+  console.log(body);
   try {
     return await axios.post("http://localhost:3000/login", body);
   } catch (error) {
@@ -46,6 +47,7 @@ async function getAllEvents(body) {
     console.log("Error login: " + error.message);
   }
 }
+
 async function createEvent(body) {
   try {
     const data = await axios.post("http://localhost:3000/createEvent", body);
@@ -54,6 +56,7 @@ async function createEvent(body) {
     console.log("Error createEvent: " + error.message);
   }
 }
+
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -86,6 +89,7 @@ export function AuthProvider({ children }) {
         getAllEvents,
         allEvents,
         create,
+
       }}
     >
       {children}

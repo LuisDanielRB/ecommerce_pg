@@ -20,6 +20,7 @@ function Register() {
     email: "",
     password: "",
     address: "",
+
   });
 
   function handleInputChange(e) {
@@ -101,7 +102,7 @@ function Register() {
                   <input
                     onChange={handleInputChange}
                     id="name"
-                    name="name"
+                    name="username"
                     type="text"
                     required
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
@@ -146,7 +147,6 @@ function Register() {
                   />
                 </div>
               </div>
-
               <div>
                 <label
                   htmlFor="address"
@@ -165,7 +165,6 @@ function Register() {
                   />
                 </div>
               </div>
-
               <div className="flex items-center justify-center">
                 <div className="text-sm">
                   <a

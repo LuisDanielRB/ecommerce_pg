@@ -25,7 +25,8 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-function Navbar() {
+function Navbar({searchLive}) {
+  
   return (
     <>
       {/* When the mobile menu is open, add `overflow-hidden` to the `body` element to prevent double scrollbars */}
@@ -66,7 +67,7 @@ function Navbar() {
                             aria-hidden="true"
                           />
                         </div>
-                        <input
+                        <input onChange={(e) => searchLive(e)}
                           id="search"
                           name="search"
                           className="block w-full rounded-md border border-gray-300 bg-white py-2 pl-10 pr-3 text-sm placeholder-gray-500 focus:border-indigo-500 focus:text-gray-900 focus:placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"

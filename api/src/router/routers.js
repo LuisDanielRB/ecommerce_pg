@@ -12,7 +12,9 @@ router.get('/logout', logout)
 router.put('/user/:id/profile', fileUpload, upDateUser)
 router.post('/createEvent',  createEvent)
 router.get('/users' , passport.authenticate('jwt-auth', { session: false }),getUsers)
-router.get('/events' ,  getEvents)
-router.get('/events/:id', getEventDetail)
+router.get('/events' , getEvents)
+router.get('/eventsCreate/:id', getEventDetail)
+router.get('/eventsDB/:id' , getEventsDetailDb)
+
 
 module.exports = router;

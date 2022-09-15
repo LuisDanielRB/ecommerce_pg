@@ -59,6 +59,7 @@ function CreateEvent() {
     function handleInputChange(e) {
         setInput({
             ...input,
+
             [e.target.name]: e.target.value,
         });
         setError(
@@ -68,6 +69,7 @@ function CreateEvent() {
             })
         )
     };
+
 
     function handleInputPrice(e) {
         setInput({
@@ -142,6 +144,7 @@ function CreateEvent() {
 
     return (
         <>
+
             <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-md">
                     <img
@@ -189,6 +192,7 @@ function CreateEvent() {
                                         type="text"
                                         placeholder="Artist..."
                                         autoComplete="current-Artist"
+                                        required
                                         className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                     />
                                     <button onSubmit={handleArtist} className="m-2"><PlusCircleIcon className="h-5 w-5 text-green-800 text-right" /></button>
@@ -265,6 +269,7 @@ function CreateEvent() {
                                         type="stock"
                                         placeholder="Stock..."
                                         autoComplete="current-Stock"
+                                        required
                                         className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                     />
                                 </div>
@@ -283,6 +288,7 @@ function CreateEvent() {
                                         type="date"
                                         name="date"
                                         autoComplete="current-Date"
+                                        required
                                         className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                     />
                                 </div>
