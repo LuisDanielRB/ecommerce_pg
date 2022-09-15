@@ -10,7 +10,7 @@ module.exports = (sequelize) => {
     primaryKey: true,
     autoIncrement: true
     },
-    name: {
+    username: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true
@@ -29,12 +29,12 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: false
     },
-    address: { 
-        type: DataTypes.STRING,
+    status: {
+      type: DataTypes.ENUM(['Admin', 'User', 'Banned']),
+      defaultValue: 'User',
     },
-    rol: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
+    profile_picture: {
+      type: DataTypes.TEXT
     }
     },
   {

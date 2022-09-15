@@ -1,23 +1,68 @@
-const { verifyToken } = require('../helpers/tokenSign')
+const passport = require('passport')
+const passportJwt = require('passport-jwt')
+const ExtractJwt = passportJwt.ExtractJwt; 
+const StrategyJwt = passportJwt.Strategy; 
+const { Users } = require('../db');
+require('dotenv').config()
+const authConfig = require('../config/auth')
 
-const checkAuth = async (req, res, next) => {
-    try {
-        //TODO: authorization: Bearer 1010101010101001010100 
-        const token = req.headers.authorization.split(' ').pop() //TODO:123123213
-        const tokenData = await verifyToken(token)
-        if (tokenData.id) {
-            next()
-        } else {
-            res.status(409)
-            res.send({ error: 'Tu por aqui no pasas!' })
+//sirve para autenticar endpoints
+//el payload del jwt va a ser el Users id
+
+passport.use('jwt-auth',
+    new StrategyJwt(
+        {
+        jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), 
+        secretOrKey: authConfig.secret,
+        },
+        authenticateUser = async (jwtPayload, done) => {
+            try {
+                var findUser = await Users.findOne({ 
+                    where: { id: jwtPayload.id } 
+                })
+                done(null, findUser);
+        
+            } catch(err){
+                done(err)
+            }
+        }     
+    )
+);
+
+passport.use("jwt-admin",
+    new StrategyJwt({
+        jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+        secretOrKey: authConfig.secret,
+    },
+        authorizeAdmin = async (jwtPayload, done) => {
+            try{
+            if(jwtPayload.status === "Admin"){
+                let adminCheck = await Users.findOne({
+                    where:{
+                        id: jwtPayload.id,
+                        status: "Admin",
+                    }
+                })
+                done(null, adminCheck)
+            } else done(null, false, {message: "Users is not an admin!"}) 
+        }catch(error){
+            done(error);
         }
-
-    } catch (e) {
-        console.log(e)
-        res.status(409)
-        res.send({ error: 'Tu por aqui no pasas!' })
+    })
+    );
+    
+passport.use("jwt-banned",
+new StrategyJwt({
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: authConfig.secret,
+},
+    rejectBanned = async (jwtPayload, done) => {
+        try{
+        if(jwtPayload.status === "Banned"){
+            done(null, false, {message: "Users is banned, they cannot review!"})
+        } else done(null, true)
+    }catch(error){
+        done(error);
     }
-
-}
-
-module.exports = checkAuth
+})
+);

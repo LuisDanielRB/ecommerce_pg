@@ -3,8 +3,11 @@ import { Routes, Route, Link } from "react-router-dom";
 import Login from "./components/Login";
 import Home from "./components/Home";
 import Register from "./components/Register";
-import CreateEvent from "./components/CreateEvent";
 import { AuthProvider } from "./context/authContext";
+import CreateEvent from "./components/CreateEvent";
+import Events from "./components/Events";
+import CardDetail from "./components/UI/CardDetail";
+import Cart from "./components/Cart";
 
 function App() {
   return (
@@ -14,7 +17,10 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/createvent" element={<CreateEvent />} />
+          <Route path="/events" element={<Events />} />
+          <Route path="/createvent" element={<CreateEvent/>} />
+          <Route path="/cardDetail" element={<CardDetail />} />
+          <Route path="/cart" element={<Cart />} />
         </Routes>
       </AuthProvider>
     </div>
