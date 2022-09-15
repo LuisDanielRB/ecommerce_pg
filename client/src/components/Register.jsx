@@ -16,9 +16,11 @@ function Register() {
   });
 
   const [input, setInput] = useState({
-    username: "",
+    name: "",
     email: "",
     password: "",
+    address: "",
+
   });
 
   function handleInputChange(e) {
@@ -32,14 +34,35 @@ function Register() {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
+      if (
+        !input.name === "" ||
+        !input.email === "" ||
+        !input.password === "" ||
+        !input.address === ""
+      ) {
         await register(input);
         setInput({
-          username: "",
+          name: "",
           email: "",
-          password: ""
+          password: "",
+          address: "",
         });
         navigate("/login");
-
+      } else {
+        setError({
+          error: true,
+          message: [
+            "Please enter a valid email",
+            "Please enter a valid password",
+          ],
+        });
+        setTimeout(() => {
+          setError({
+            error: false,
+            message: [],
+          });
+        }, 4000);
+      }
     } catch (error) {
       console.log(error.message);
     }
@@ -124,8 +147,24 @@ function Register() {
                   />
                 </div>
               </div>
-
-
+              <div>
+                <label
+                  htmlFor="address"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Address
+                </label>
+                <div className="mt-1">
+                  <input
+                    onChange={handleInputChange}
+                    id="address"
+                    name="address"
+                    type="text"
+                    required
+                    className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                  />
+                </div>
+              </div>
               <div className="flex items-center justify-center">
                 <div className="text-sm">
                   <a

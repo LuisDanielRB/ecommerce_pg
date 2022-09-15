@@ -1,4 +1,4 @@
-import React, { useContext, createContext, useState } from "react";
+import React, { useContext, createContext, useState, useEffect } from "react";
 import axios from "axios";
 
 export const authContext = createContext();
@@ -48,6 +48,16 @@ async function getAllEvents(body) {
   }
 }
 
+async function createEvent(body) {
+  try {
+    const data = await axios.post("http://localhost:3000/createEvent", body);
+    return data.data
+  } catch (error) {
+    console.log("Error createEvent: " + error.message);
+  }
+}
+
+
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -65,11 +75,9 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const allEvents = (body) => getAllEvents(body)
 
-  const allEvents = (body) => getAllEvents(body) 
-
- 
-
+  const create = (body) => createEvent(body)
 
   return (
     <authContext.Provider
@@ -79,6 +87,9 @@ export function AuthProvider({ children }) {
         user,
         loading,
         getAllEvents,
+        allEvents,
+        create,
+
       }}
     >
       {children}
