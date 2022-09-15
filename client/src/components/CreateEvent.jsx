@@ -1,10 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/authContext";
-import Alert from "./UI/Alert";
-
-function CreateEvent() {
-    const { createEvent } = useAuth();
 
 function CreateEvent() {
     const navigate = useNavigate();
@@ -18,57 +13,30 @@ function CreateEvent() {
         category: "",
     });
 
-    const [error, setError] = useState({
-        error: false,
-        message: [],
-    });
-    
     function handleInputChange(e) {
         const { name, value } = e.target;
         setInput({
             ...input,
             [name]: value,
-        });
-    };
+        });}
 
     async function handleSubmit(e) {
         e.preventDefault();
-        try {
-            if (
-                !input.description === "" ||
-                !input.artist === "" ||
-                !input.place.length === 0 ||
-                !input.category.length === 0
-            ) {
-                await createEvent(input);
-                setInput({
-                    description: "",
-                    price: "",
-                    date: "",
-                    artist: "",
-                    place: "",
-                    stock: "",
-                    category: "",
-                });
-                navigate("/");
-            } else {
-                setError({
-                    error: true,
-                    message: [
-                        "Please enter a description",
-                        "Please enter a artist",
-                        "Please select one place",
-                        "Please select one category",
-                    ],
-                });
-            }
-        } catch (error) {
-            console.log(error.message);
-        }
-    };
+        await register(input);
+        setInput({
+            description: "",
+            price: "",
+            date: "",
+            artist: "",
+            place: "",
+            stock: "",
+            category: "",
+        });
+        navigate("/");}
 
     return (
         <>
+
             <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-md">
                     <img
@@ -80,7 +48,7 @@ function CreateEvent() {
                         Create your Event
                     </h2>
                 </div>
-                {error.error ? <Alert messages={error.message} /> : null}
+
                 <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
                     <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
                         <form className="space-y-6" action="#" method="POST">
@@ -97,6 +65,7 @@ function CreateEvent() {
                                         id="description"
                                         name="description"
                                         type="description"
+                                        required
                                         className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                     />
                                 </div>
@@ -116,6 +85,7 @@ function CreateEvent() {
                                         name="Artist"
                                         type="Artist"
                                         autoComplete="current-Artist"
+                                        required
                                         className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                     />
                                 </div>
@@ -129,8 +99,8 @@ function CreateEvent() {
                                 </label>
                                 <div className="mt-1">
                                     <select
-                                         onChange={handleInputChange}
-                                        className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                    onChange={handleInputChange}
+                                    className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                     >
                                         <option value="Estados Unidos">Estados Unidos</option>
                                         <option value="Argentina">Argentina</option>
@@ -173,7 +143,8 @@ function CreateEvent() {
                                         name="Price"
                                         type="Price"
                                         autoComplete="current-Price"
-                                        placeholder="$"                      
+                                        placeholder="$"
+                                        required
                                         className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                     />
                                 </div>
@@ -192,6 +163,7 @@ function CreateEvent() {
                                         name="Stock"
                                         type="Stock"
                                         autoComplete="current-Stock"
+                                        required
                                         className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                     />
                                 </div>
@@ -210,6 +182,7 @@ function CreateEvent() {
                                         name="Date"
                                         type="Date"
                                         autoComplete="current-Date"
+                                        required
                                         className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                     />
                                 </div>
