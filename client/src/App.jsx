@@ -16,9 +16,10 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/eventsDB/id" element={<CardDetail />} />
           <Route path="/events" element={<Events />} />
           {/* <Route path="/createvent" element={<CreateEvent/>} /> */}
-          <Route path="/cardDetail" element={<CardDetail />} />
+          
         </Routes>
       </AuthProvider>
     </div>

@@ -3,7 +3,7 @@ import EventCards from './UI/EventCards'
 import Footer from './UI/Footer'
 import Navbar from './UI/Navbar'
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 
 const Events = () => {
@@ -29,9 +29,7 @@ const Events = () => {
     },[])
   
     function selectOption(e) {
-
-        console.log(categoriesSet)
-        const filterOption = e.target.value === "-" ? eventsBU : eventsBU.filter((el) => el.category === e.target.value)
+        const filterOption = e.target.value === "-" ? eventsBU : eventsBU.filter((el) => el.description === e.target.value)
         setEvents(filterOption)
     }
     
@@ -39,10 +37,17 @@ const Events = () => {
         e.preventDefault()
         
         setSearch(e.target.value)
-        const filteredInput = e.target.value === "" ? eventsBU : eventsBU.filter(el => el.title.includes(e.target.value) || el.description.includes(e.target.value))
+        const filteredInput = e.target.value === "" ? eventsBU : eventsBU.filter(el => el.description.includes(e.target.value) || el.artist.includes(e.target.value))
         setEvents(filteredInput)
     }
     
+
+    // function productDetail(e, id) {
+    //     e.preventDefault()
+    //     navigate(`/eventsDB/${id}`)
+    // }
+
+
   return (
     <>
         <Navbar searchLive ={searchLive} />
@@ -69,10 +74,9 @@ const Events = () => {
         {
           events?.map((el) => {
             return (
-                <div>
-                <EventCards key={el.id} description={el.description} price={el.price}  brand={el.brand} title={el.title} stock={el.stock}/>
-                </div>
-              
+                <Link key={el.id} to={`/eventsDB/${el.id}` }>
+                <EventCards id={el.id} description={el.description} artist={el.artist} category={el.category} price={el.price} stock={el.stock} date={el.date} />
+                </Link>
             )
           })
         }

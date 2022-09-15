@@ -30,12 +30,14 @@ async function loginAuth(body) {
 
 async function getAllEvents(body) {
   try {
-    const data = await axios.get("https://dummyjson.com/products", body)
-    const datos = data.data.products 
-    const datosCategories = datos.map((el) => el.category)
+    const data = await axios.get("http://localhost:3000/events", body)
+    const datos = data.data 
+    const datosCategories = datos.map((el) => el.description)
     const categories = datosCategories.filter((item, index) => {
       return datosCategories.indexOf(item) === index
     })
+  
+  
 
     const obj = {
       categories,
