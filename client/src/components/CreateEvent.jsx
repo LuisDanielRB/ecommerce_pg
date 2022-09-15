@@ -12,10 +12,10 @@ function CreateEvent() {
         description: "",
         price: "",
         date: "",
-        artist: "",
+        artist: [],
         place: "",
         stock: "",
-        category: "",
+        category: [],
     });
 
     const [error, setError] = useState({
@@ -45,10 +45,10 @@ function CreateEvent() {
                     description: "",
                     price: "",
                     date: "",
-                    artist: "",
+                    artist: [],
                     place: "",
                     stock: "",
-                    category: "",
+                    category: [],
                 });
                 navigate("/");
             } else {
@@ -224,6 +224,6 @@ function CreateEvent() {
             </div>
         </>
     )
-}
+}}
 
 export default CreateEvent;
