@@ -4,8 +4,8 @@ import Login from "./components/Login";
 import Home from "./components/Home";
 import Register from "./components/Register";
 import { AuthProvider } from "./context/authContext";
-import Dashboard from "./components/Dashboard";
-import CreateEvent from "./components/CreateEvent";
+// import CreateEvent from "./components/CreateEvent";
+import Events from "./components/Events";
 
 function App() {
   return (
@@ -15,8 +15,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/createvent" element={<CreateEvent/>} />
+          <Route path="/events" element={<Events />} />
+          {/* <Route path="/createvent" element={<CreateEvent/>} /> */}
         </Routes>
       </AuthProvider>
     </div>

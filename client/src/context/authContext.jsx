@@ -30,7 +30,19 @@ async function loginAuth(body) {
 
 async function getAllEvents(body) {
   try {
-    return await axios.get("https://dummyjson.com/products", body)
+    const data = await axios.get("https://dummyjson.com/products", body)
+    const datos = data.data.products 
+    const datosCategories = datos.map((el) => el.category)
+    const categories = datosCategories.filter((item, index) => {
+      return datosCategories.indexOf(item) === index
+    })
+
+    const obj = {
+      categories,
+      datos
+    }
+    return obj
+
   } catch (error) {
     console.log("Error login: " + error.message);
   }
