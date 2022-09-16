@@ -1,6 +1,12 @@
 import React from 'react'
+import { authContext } from '../../context/authContext'
+
 
 const EventCards = ({stock, artist, date, price, description, id}) => {
+
+
+
+
   return (
     
        <div key={id} className='w-auto h-36 ml-1 mr-1 rounded-lg flex flex-col pt-3 pb-3'>

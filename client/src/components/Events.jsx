@@ -74,7 +74,7 @@ const Events = () => {
         {
           events?.map((el) => {
             return (
-                <Link key={el.id} to={`/eventsDB/${el.id}` }>
+                <Link key={el.id} to={`/events/${el.id}` }>
                 <EventCards id={el.id} description={el.description} artist={el.artist} category={el.category} price={el.price} stock={el.stock} date={el.date} />
                 </Link>
             )

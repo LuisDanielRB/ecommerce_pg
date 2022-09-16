@@ -37,8 +37,6 @@ async function getAllEvents(body) {
       return datosCategories.indexOf(item) === index
     })
   
-  
-
     const obj = {
       categories,
       datos
@@ -49,6 +47,23 @@ async function getAllEvents(body) {
     console.log("Error login: " + error.message);
   }
 }
+
+
+async function getCardDetail(id){
+  try {
+    const data = await axios.get("http://localhost:3000/eventsDB/" + id)
+    const datos = data.data
+    return datos
+  } catch (error) {
+    console.log("Este es el error: ", error.message)
+  }
+}
+
+
+
+
+
+
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -81,6 +96,7 @@ export function AuthProvider({ children }) {
         user,
         loading,
         getAllEvents,
+        getCardDetail,
       }}
     >
       {children}
