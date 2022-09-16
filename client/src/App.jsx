@@ -1,24 +1,31 @@
 import React from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, Router } from "react-router-dom";
 import Login from "./components/Login";
+import {LOGIN , PRIVATE ,LOGOUT, EVENTS , HOME, REGISTER , CARDDETAIL , CREATEEVENT} from './config/path'
 import Home from "./components/Home";
 import Register from "./components/Register";
 import { AuthProvider } from "./context/authContext";
 import CreateEvent from "./components/CreateEvent";
 import Events from "./components/Events";
 import CardDetail from "./components/UI/CardDetail";
+import PublicRoute from "./components/router/PublicRoute";
+import PrivateRoute from "./components/router/PrivateRoute";
 
 function App() {
   return (
     <div className="App">
       <AuthProvider>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/events" element={<Events />} />
-          <Route path="/createvent" element={<CreateEvent/>} />
-          <Route path="/cardDetail" element={<CardDetail />} />
+          <Route path="/" element={<PublicRoute/>}>
+            <Route path={LOGIN} element={<Login />} />
+            <Route path={REGISTER} element={<Register />} />
+          </Route>
+          <Route path={PRIVATE} element={<PrivateRoute/>}>
+            <Route path={HOME} element={<Home />} />
+            <Route path={EVENTS} element={<Events />} />
+            <Route path={CREATEEVENT} element={<CreateEvent/>} />
+            <Route path={CARDDETAIL} element={<CardDetail />} />
+          </Route>
         </Routes>
       </AuthProvider>
     </div>

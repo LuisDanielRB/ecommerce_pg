@@ -1,0 +1,8 @@
+export const REGISTER = '/register'
+export const LOGIN = '/login'
+export const LOGOUT = '/logout'
+export const HOME = '/private'
+export const EVENTS = '/private/events'
+export const CREATEEVENT = '/private/createvent'
+export const CARDDETAIL ='/private/cardDetail'
+export const PRIVATE = '/private'
