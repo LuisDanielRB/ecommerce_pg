@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/authContext";
-
+import {loginAuth} from '../store/actions'
+import {useSelector, useDispatch } from 'react-redux'
 import Alert from "./UI/Alert";
 
 function Login() {
-  const { login, user } = useAuth();
   const navigate = useNavigate();
-
+  const dispatch = useDispatch()
   const [input, setInput] = useState({
     email: "",
     password: "",
@@ -23,15 +22,7 @@ function Login() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    try {
-      const auth = await login(input);
-      if (auth === 200) navigate("/private");
-      else {
-        alert(`Error: ${auth}`);
-      }
-    } catch (error) {
-      console.log("Error login submit:" + error.message);
-    }
+    dispatch(loginAuth(input))
   }
 
   return (

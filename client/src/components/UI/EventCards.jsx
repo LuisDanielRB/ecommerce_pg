@@ -1,6 +1,6 @@
 import React from 'react'
-
-const EventCards = ({price, stock, title, description, brand}) => {
+import { Link } from 'react-router-dom'
+const EventCards = ({id , price, stock, title, description, brand}) => {
   return (
     
        <div className='w-auto h-36 ml-1 mr-1 rounded-lg flex flex-col pt-3 pb-3'>
@@ -15,6 +15,9 @@ const EventCards = ({price, stock, title, description, brand}) => {
             </div>
             <div className='w-full  h-1/4 pl-7'><p className='block text-sm font-medium text-gray-400'>{description}</p></div>
             <div className=' w-full h-1/4 pl-7'><p className='block text-sm font-medium text-gray-400'>${price}.00</p></div>
+            <div>
+            <Link to={`/private/cardDetail/${id}`}>VER MAS</Link>
+            </div>
        </div>
     
   )

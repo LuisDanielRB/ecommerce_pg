@@ -1,10 +1,9 @@
 import React from "react";
-import { Routes, Route, Link, Router } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Login from "./components/Login";
 import {LOGIN , PRIVATE ,LOGOUT, EVENTS , HOME, REGISTER , CARDDETAIL , CREATEEVENT} from './config/path'
 import Home from "./components/Home";
 import Register from "./components/Register";
-import { AuthProvider } from "./context/authContext";
 import CreateEvent from "./components/CreateEvent";
 import Events from "./components/Events";
 import CardDetail from "./components/UI/CardDetail";
@@ -14,7 +13,7 @@ import PrivateRoute from "./components/router/PrivateRoute";
 function App() {
   return (
     <div className="App">
-      <AuthProvider>
+
         <Routes>
           <Route path="/" element={<PublicRoute/>}>
             <Route path={LOGIN} element={<Login />} />
@@ -27,7 +26,7 @@ function App() {
             <Route path={CARDDETAIL} element={<CardDetail />} />
           </Route>
         </Routes>
-      </AuthProvider>
+
     </div>
   );
 }

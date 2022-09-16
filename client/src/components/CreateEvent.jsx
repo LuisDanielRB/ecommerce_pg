@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/authContext";
 import { PlusCircleIcon } from "@heroicons/react/20/solid";
+import {createEvent} from '../store/actions'
+import {useSelector, useDispatch } from 'react-redux'
 
 function CreateEvent() {
-    const { create } = useAuth();
+
     const navigate = useNavigate();
+    const dispatch = useDispatch()
     const [artist1, setArtist1] = useState([]);
     console.log(artist1)
     const [input, setInput] = useState({
@@ -128,7 +130,7 @@ function CreateEvent() {
 
     function handleSubmit(e) {
         e.preventDefault();
-        create(input);
+        dispatch(createEvent(input))
         setError(validation(input))
         setInput({
             description: "",
