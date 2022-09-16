@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const {register, login, getUsers , logout, upDateUser } = require('../controllers/users-controller')
-const {createEvent, getEvents, getEventDetail} = require('../controllers/events-controller')
+const {createEvent, getEvents, getEventDetail , getEventsDetailDb} = require('../controllers/events-controller')
 const {fileUpload} = require('../helpers/fileUpload')
 
 

@@ -61,14 +61,16 @@ async function createEvent(body) {
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem("jwt"))
 
   const register = (body) => registerAuth(body);
 
   const login = async (body) => {
     const login = await loginAuth(body);
-    console.log(login);
+   
     if (login.status === 200) {
       setUser(login);
+      localStorage.setItem("jwt", JSON.stringify(login.data.token))
       return login.status;
     } else {
       return login.status;
@@ -89,10 +91,14 @@ export function AuthProvider({ children }) {
         getAllEvents,
         allEvents,
         create,
-
+        isAuthenticated
       }}
     >
       {children}
     </authContext.Provider>
   );
+}
+
+export function verifyAuth () {
+  return useContext(authContext)
 }
