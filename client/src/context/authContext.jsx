@@ -61,7 +61,7 @@ async function createEvent(body) {
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem("jwt"))
+  const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem("jwt") || false)
 
   const register = (body) => registerAuth(body);
 
@@ -77,6 +77,11 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const logout = async () => { 
+    setIsAuthenticated(false)
+    localStorage.removeItem('jwt')
+  }
+
   const allEvents = (body) => getAllEvents(body)
 
   const create = (body) => createEvent(body)
@@ -91,7 +96,8 @@ export function AuthProvider({ children }) {
         getAllEvents,
         allEvents,
         create,
-        isAuthenticated
+        isAuthenticated,
+        logout
       }}
     >
       {children}

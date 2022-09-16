@@ -5,7 +5,7 @@ import { PRIVATE } from '../../config/path'
 
 export default function PublicRoute() {
     const {isAuthenticated} = verifyAuth()
-
+    
     if(isAuthenticated) {
       return <Navigate to={PRIVATE} />
     }
