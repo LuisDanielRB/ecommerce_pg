@@ -25,7 +25,7 @@ function Login() {
     e.preventDefault();
     try {
       const auth = await login(input);
-      if (auth === 200) return navigate("/private");
+      if (auth === 200) navigate("/private");
       else {
         alert(`Error: ${auth}`);
       }
