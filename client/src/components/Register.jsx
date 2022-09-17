@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/authContext";
+import {useSelector, useDispatch } from 'react-redux'
+import {registerAuth} from '../store/actions'
 
 import Alert from "./UI/Alert";
 
 function Register() {
-  const { register } = useAuth();
+  const dispatch = useDispatch()
   const navigate = useNavigate();
   const reEmail =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -40,7 +41,7 @@ function Register() {
         !input.password === "" ||
         !input.address === ""
       ) {
-        await register(input);
+        dispatch(registerAuth(input))
         setInput({
           name: "",
           email: "",
@@ -56,12 +57,6 @@ function Register() {
             "Please enter a valid password",
           ],
         });
-        setTimeout(() => {
-          setError({
-            error: false,
-            message: [],
-          });
-        }, 4000);
       }
     } catch (error) {
       console.log(error.message);

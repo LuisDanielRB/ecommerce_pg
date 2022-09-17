@@ -2,26 +2,27 @@ import React from 'react'
 import EventCards from './UI/EventCards'
 import Footer from './UI/Footer'
 import Navbar from './UI/Navbar'
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/authContext";
+import {useSelector, useDispatch } from 'react-redux'
+import {getAllEvents} from '../store/actions'
+
 
 
 
 const Dashboard = () => {
-    const {getAllEvents} = useAuth()
     
-    async function getAll() {
-        const events = await getAllEvents()
-        console.log(events.data)
-    }
+    const dispatch = useDispatch()
+    const eventos = useSelector((state) => state.events)
+    
+    useEffect(() => {
+      dispatch(getAllEvents())
+  },[dispatch])
 
-    getAll()
 
   return (
     <>
         <Navbar />
-        <EventCards />
+        <EventCards/>
         <Footer />
     </>
   )

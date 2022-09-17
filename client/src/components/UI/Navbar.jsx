@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import { Menu, Popover, Transition } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import {verifyAuth} from '../../context/authContext'
+
 
 const user = {
   name: "Chelsea Hagon",
@@ -28,7 +28,7 @@ function classNames(...classes) {
 
 function Navbar({searchLive}) {
   
-  const {logout} = verifyAuth()
+ 
 
   return (
     <>
@@ -127,7 +127,7 @@ function Navbar({searchLive}) {
                           <Menu.Item >
                             {({ active }) => (
                               <a
-                                onClick={() => logout()}
+                                onClick={() => null}
                                 href="#"
                                 className={classNames(
                                   active ? "bg-gray-100" : "",

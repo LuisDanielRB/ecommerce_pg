@@ -1,11 +1,10 @@
-
 import { Outlet , Navigate } from 'react-router-dom'
-import { verifyAuth } from '../../context/authContext'
 import { LOGIN } from '../../config/path'
+import {useSelector} from 'react-redux'
 
 export default function PrivateRoute() {
-  const {isAuthenticated} = verifyAuth()
 
+  const isAuthenticated = useSelector((state) => state.isAuthenticated)
     if(!isAuthenticated) {
       return <Navigate to={LOGIN} />
     }
