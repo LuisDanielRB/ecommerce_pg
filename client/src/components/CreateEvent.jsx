@@ -125,7 +125,6 @@ function CreateEvent() {
                 place: value
             })
         )
-
     }
 
     function handleSubmit(e) {

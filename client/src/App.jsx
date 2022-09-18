@@ -9,7 +9,7 @@ import Events from "./components/Events";
 import CardDetail from "./components/UI/CardDetail";
 import PublicRoute from "./components/router/PublicRoute";
 import Cart from "./components/UI/Cart";
-// import PrivateRoute from "./components/router/PrivateRoute";
+import PrivateRoute from "./components/router/PrivateRoute";
 
 function App() {
   return (
@@ -19,8 +19,8 @@ function App() {
           <Route path="/" element={<PublicRoute/>}>
             <Route path={LOGIN} element={<Login />} />
             <Route path={REGISTER} element={<Register />} />
-          {/* </Route> */}
-          {/* <Route path={PRIVATE} element={<PrivateRoute/>}> */}
+          </Route>
+          <Route path={PRIVATE} element={<PrivateRoute/>}>
             <Route path={HOME} element={<Home />} />
             <Route path={EVENTS} element={<Events />} />
             <Route path={CREATEEVENT} element={<CreateEvent/>} />

@@ -33,7 +33,7 @@ const CardDetail = () => {
         </div>
       </div>
         <section className=' flex flex-col align-middle w-auto h-96 mb-52 bg-black '>
-          <p className=' flex pt-20 pl-10 text-white font-extrabold text-3xl'>ARTISTA: {eventDetail && eventDetail.artist.join(" - ")}</p>
+          <p className=' flex pt-20 pl-10 text-white font-extrabold text-3xl'>ARTISTA: {eventDetail && eventDetail.artist}</p>
           <br />
           <div className='bg-white w-4/6 self-center rounded-t-lg rounded-b-lg '>
             <div className='ml-7 pt-7'>
