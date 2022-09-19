@@ -10,7 +10,7 @@ function Home() {
   const p =
     "Compra tus entradas para los mejores conciertos, eventos deportivos, obras de teatros, festivales y mucho más.";
   const a = "Explorar Eventos";
-  const cta = "/private/events";
+  const cta = "/events";
   return (
     <>
       <Navbar />

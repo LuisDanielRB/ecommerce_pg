@@ -7,7 +7,8 @@ import { RoutesWithNotFound } from "./utils/index";
 const Login = lazy(() => import('./components/Login'))
 const Register = lazy(() => import('./components/Register'))
 const Private = lazy(() => import('./components/Private/Private'))
-
+const Home = lazy(() => import('./components/Home'))
+const Events = lazy(() => import('./components/Events'))
 
 
 function App() {
@@ -19,12 +20,14 @@ function App() {
      
       <BrowserRouter>
         <RoutesWithNotFound>
-          <Route path="/" element={<Navigate to={PrivateRoute.PRIVATE}/>}/>
+          <Route path="/" element={<Home/>}/>
+          <Route path={PublicRoute.HOME} element={<Home />}/>
           <Route path={PublicRoute.LOGIN} element={<Login />}/>
           <Route path={PublicRoute.REGISTER} element={<Register />}/>
-          <Route element={<AuthGuard privateValidation={user}/>}>
+          <Route path={PublicRoute.EVENTS} element={<Events />}/>
+            <Route element={<AuthGuard />}>
               <Route path={`${PrivateRoute.PRIVATE}/*`} element={<Private/>}/>
-          </Route>
+            </Route>
         </RoutesWithNotFound>
         </BrowserRouter>
        

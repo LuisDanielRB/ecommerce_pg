@@ -1,5 +1,5 @@
 const initialState = {
-    userLogin: JSON.parse(localStorage.getItem('user')),
+    userLogin: JSON.parse(localStorage.getItem('user')) || "asd",
     userRegister: [],
     events : [],
     eventsDetail: {},

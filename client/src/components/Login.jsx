@@ -19,14 +19,14 @@ function Login() {
     });
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     dispatch(loginAuth(input));
     setInput({
       email: "",
       password: "",
     })
-    return navigate('/private')
+    return navigate('/home')
   }
 
   return (
@@ -45,11 +45,7 @@ function Login() {
 
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-            <form
-              method="post"
-              className="space-y-6"
-              onSubmit={(e) => handleSubmit(e)}
-            >
+        
               <div>
                 <label
                   htmlFor="email"
@@ -112,13 +108,13 @@ function Login() {
 
               <div>
                 <button
-                  type="submit"
+                  onClick={(e) => handleSubmit(e)}
                   className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 >
-                  Sign in
+                  Login
                 </button>
               </div>
-            </form>
+
 
             <div className="mt-6">
               <div className="relative">
