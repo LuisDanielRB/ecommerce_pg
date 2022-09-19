@@ -1,17 +1,18 @@
-import React from "react";
+import React , {Suspense }from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
 import App from "./App";
-import {Provider} from 'react-redux';
-import {store} from './store/index';
 import "./index.css";
+import Loading from "./components/UI/Loading";
+import {Provider} from 'react-redux';
+import {store} from '../src/store/index'
+
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <Provider store = {store}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-    </Provider>
+     <Suspense fallback={<><Loading/></>}>
+      <Provider store={store}>
+          <App />
+           </Provider>
+      </Suspense>
   </React.StrictMode>
 );

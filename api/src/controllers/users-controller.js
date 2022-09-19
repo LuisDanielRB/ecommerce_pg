@@ -45,6 +45,7 @@ const login = async (req, res , next) => {
 				username: userCheck.username,
 				profile_picture: userCheck.profile_picture
 			});
+
 		}
 	} catch (e) {
 		next(e);

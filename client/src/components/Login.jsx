@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate , redirect } from "react-router-dom";
 import { loginAuth } from '../store/actions'
 import { useDispatch } from 'react-redux'
 
@@ -26,7 +26,7 @@ function Login() {
       email: "",
       password: "",
     })
-    navigate('/private')
+    return navigate('/private')
   }
 
   return (
@@ -46,10 +46,9 @@ function Login() {
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
             <form
+              method="post"
               className="space-y-6"
-              action="#"
-              method="POST"
-              onSubmit={handleSubmit}
+              onSubmit={(e) => handleSubmit(e)}
             >
               <div>
                 <label
