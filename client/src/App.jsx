@@ -4,16 +4,20 @@ import { PrivateRoute, PublicRoute } from "./router/index";
 import {AuthGuard} from '../src/auth/index'
 import { useSelector } from "react-redux";
 import { RoutesWithNotFound } from "./utils/index";
+import { useEffect } from "react";
 const Login = lazy(() => import('./components/Login'))
 const Register = lazy(() => import('./components/Register'))
 const Private = lazy(() => import('./components/Private/Private'))
 const Home = lazy(() => import('./components/Home'))
 const Events = lazy(() => import('./components/Events'))
 
-
 function App() {
 
   const user = useSelector((state) => state.userLogin)
+
+  useEffect(()=> {
+    localStorage.getItem('user')
+  },[])
   
   return (
     <div className="App">
