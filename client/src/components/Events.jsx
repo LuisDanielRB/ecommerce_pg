@@ -115,11 +115,6 @@ const Events = () => {
     }
   }
 
-
-  console.log(searchFilter)
-  
-  
-
   return (
     <>
         <Navbar />

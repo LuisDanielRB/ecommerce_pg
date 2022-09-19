@@ -1,8 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 const EventCards = ({ id, price, stock, artist, description, date }) => {
-    console.log(artist)
-    console.log(date)
     return (
 
         <div className='w-auto h-36 ml-1 mr-1 rounded-lg flex flex-col pt-3 pb-3'>

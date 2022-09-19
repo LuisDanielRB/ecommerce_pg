@@ -3,15 +3,15 @@ import { Menu, Popover, Transition } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 function Navbar({ searchLive }) {
-  const name = useSelector((state) => state.userLogin.username);
-  const email = useSelector((state) => state.userLogin.email);
-  const imageUrl = useSelector((state) => state.userLogin.profile_picture);
+
+  const usuario = useSelector((state) => state.userLogin)
 
   const navigation = [
     { name: "Dashboard", href: "#", current: true },
@@ -24,12 +24,6 @@ function Navbar({ searchLive }) {
     { name: "Settings", href: "#" },
     { name: "Log out", href: "#" },
   ];  
-
-  const user = {
-    name: name,
-    email: email,
-    imageUrl: imageUrl,
-  };
 
   return (
     <>
@@ -104,19 +98,23 @@ function Navbar({ searchLive }) {
                   </a>
 
                   {/* Profile dropdown */}
-                  {user ?
+                  {usuario ?
                     <Menu as="div" className="relative ml-5 flex-shrink-0">
                       <div>
                         <Menu.Button className="flex rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                           <span className="sr-only">Open user menu</span>
                           {
-                            user ? (
+                            usuario ? (
                               <img
                                 className="h-8 w-8 rounded-full"
-                                src={user.imageUrl}
+                                src={usuario.profile_picture}
                                 alt=""
                               />
-                            ) : <></>
+                            ) : <>
+                            <button>
+                              Login
+                            </button>
+                            </>
                           }
                         </Menu.Button>
                       </div>
@@ -133,7 +131,10 @@ function Navbar({ searchLive }) {
                           <Menu.Item >
                             {({ active }) => (
                               <a
-                                onClick={() => localStorage.removeItem('jwt')}
+                                onClick={() => {
+                                  localStorage.removeItem('jwt')
+                                  localStorage.removeItem('user')
+                                }}
                                 href="/private"
                                 className={classNames(
                                   active ? "bg-gray-100" : "",
@@ -161,22 +162,20 @@ function Navbar({ searchLive }) {
                         </Menu.Items>
                       </Transition>
                     </Menu> :
-                    <div>
+                    <div className="flex justify-center">
                       <div>
-                        <a
-                          href="/login"
+                        <Link to={'/login'}
                           className="ml-6 inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         >
                           Login
-                        </a>
+                        </Link>
                       </div>
                       <div>
-                        <a
-                          href="/register"
+                        <Link to={'/register'}
                           className="ml-6 inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         >
                           Sig In
-                        </a>
+                        </Link>
                       </div>
                     </div>
                   }
@@ -205,18 +204,18 @@ function Navbar({ searchLive }) {
               <div className="border-t border-gray-200 pt-4 pb-3">
                 <div className="mx-auto flex max-w-3xl items-center px-4 sm:px-6">
                   <div className="flex-shrink-0">
-                    <img
+                    {/* <img
                       className="h-10 w-10 rounded-full"
                       src={user.imageUrl}
                       alt=""
-                    />
+                    /> */}
                   </div>
                   <div className="ml-3">
                     <div className="text-base font-medium text-gray-800">
-                      {user.name}
+                      {/* {usuario.name} */}
                     </div>
                     <div className="text-sm font-medium text-gray-500">
-                      {user.email}
+                      {/* {usuario.email} */}
                     </div>
                   </div>
                   <button

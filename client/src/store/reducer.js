@@ -1,5 +1,5 @@
 const initialState = {
-    userLogin: JSON.parse(localStorage.getItem('user')) || "asd",
+    userLogin: JSON.parse(localStorage.getItem('user')),
     userRegister: [],
     events : [],
     eventsDetail: {},
@@ -20,7 +20,7 @@ function rootReducer(state = initialState, action) {
             localStorage.setItem('user', JSON.stringify(action.payload.data))
             return {
                 ...state,
-                isAuthenticated: true
+                isAuthenticated: true,
             }
 
         case 'POST_REGISTRO':
