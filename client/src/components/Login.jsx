@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {loginAuth} from '../store/actions'
-import {useSelector, useDispatch } from 'react-redux'
-import Alert from "./UI/Alert";
+import { loginAuth } from '../store/actions'
+import { useDispatch } from 'react-redux'
 
 function Login() {
   const navigate = useNavigate();
@@ -20,9 +19,14 @@ function Login() {
     });
   }
 
-  async function handleSubmit(e) {
+  function handleSubmit(e) {
     e.preventDefault();
-    dispatch(loginAuth(input))
+    dispatch(loginAuth(input));
+    setInput({
+      email: "",
+      password: "",
+    })
+    navigate('/private')
   }
 
   return (

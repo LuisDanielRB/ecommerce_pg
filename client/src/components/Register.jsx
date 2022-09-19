@@ -1,67 +1,77 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {useSelector, useDispatch } from 'react-redux'
-import {registerAuth} from '../store/actions'
-
-import Alert from "./UI/Alert";
+import { useSelector, useDispatch } from 'react-redux'
+import { registerAuth } from '../store/actions';
 
 function Register() {
+  const allEvents = useSelector((state) => state.events)
   const dispatch = useDispatch()
   const navigate = useNavigate();
   const reEmail =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const [error, setError] = useState({});
 
-  const [error, setError] = useState({
-    error: false,
-    message: [],
-  });
+  function validation(input) {
+    let errors = {};
+    if (allEvents.find((e) => e.username === input.username)) { errors.username = "That Name exists"; }
+    if (!/^[a-zA-Z0-9\s]+$/.test(input.username)) { errors.name = "Only letters and number accepted"; }
+    if (input.username.length > 10) { errors.username = "Only ten characters"; }
+    if (input.username === " ") { errors.username = "The first character is not space-bar"; }
+    if (!input.username) { errors.username = "Name is required"; }
+    if (!reEmail.test(input.email)) { errors.email = "The email isn't valid"; }
+    if (!/^[a-zA-Z0-9\s]+$/.test(input.password)) { errors.password = "Only letters and number accepted"; }
+    return errors;
+  }
 
   const [input, setInput] = useState({
-    name: "",
+    username: "",
     email: "",
     password: "",
-    address: "",
-
   });
 
   function handleInputChange(e) {
-    const { name, value } = e.target;
     setInput({
       ...input,
-      [name]: value,
+      [e.target.name]: e.target.value
     });
+    setError(
+      validation({
+        ...input,
+        [e.target.name]: e.target.value
+      })
+    )
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
-    try {
-      if (
-        !input.name === "" ||
-        !input.email === "" ||
-        !input.password === "" ||
-        !input.address === ""
-      ) {
-        dispatch(registerAuth(input))
-        setInput({
-          name: "",
-          email: "",
-          password: "",
-          address: "",
-        });
-        navigate("/login");
-      } else {
-        setError({
-          error: true,
-          message: [
-            "Please enter a valid email",
-            "Please enter a valid password",
-          ],
-        });
-      }
-    } catch (error) {
-      console.log(error.message);
+    if (!input.username) {
+      return alert('Enter name')
     }
+    else if (input.username.length > 10) {
+      return alert('Only ten characters')
+    }
+    dispatch(registerAuth(input))
+    setError(validation(input))
+    setInput({
+      username: "",
+      email: "",
+      password: "",
+    })
+    navigate('/private')
   }
+
+  const [disabledButton, setDisabledButton] = useState(true);
+
+  useEffect(() => {
+    if (
+      !input.password ||
+      !reEmail.test(input.email)
+    ) {
+      return (setDisabledButton(true));
+    } else {
+      return (setDisabledButton(false));
+    }
+  }, [error, input, setDisabledButton])
 
   return (
     <>
@@ -79,7 +89,6 @@ function Register() {
 
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-            {error.error ? <Alert messages={error.message} /> : null}
             <form
               className="space-y-6 mt-6"
               action="#"
@@ -99,10 +108,10 @@ function Register() {
                     id="name"
                     name="username"
                     type="text"
-                    required
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   />
                 </div>
+                {error.username && (<p> ❌{error.username}</p>)}
               </div>
               <div>
                 <label
@@ -117,12 +126,11 @@ function Register() {
                     id="email"
                     name="email"
                     type="email"
-                    required
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   />
                 </div>
+                {error.email && (<p> ❌{error.email}</p>)}
               </div>
-
               <div>
                 <label
                   htmlFor="password"
@@ -137,28 +145,10 @@ function Register() {
                     name="password"
                     type="password"
                     autoComplete="current-password"
-                    required
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   />
                 </div>
-              </div>
-              <div>
-                <label
-                  htmlFor="address"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Address
-                </label>
-                <div className="mt-1">
-                  <input
-                    onChange={handleInputChange}
-                    id="address"
-                    name="address"
-                    type="text"
-                    required
-                    className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                  />
-                </div>
+                {error.password && (<p> ❌{error.password}</p>)}
               </div>
               <div className="flex items-center justify-center">
                 <div className="text-sm">
@@ -173,6 +163,7 @@ function Register() {
 
               <div>
                 <button
+                  disabled={disabledButton}
                   type="submit"
                   className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 >

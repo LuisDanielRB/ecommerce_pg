@@ -98,6 +98,7 @@ const register = async (req, res , next) => {
 			res.status(400).send('Email already registered');
 			return;
 		}
+		
 		const alreadyExistsUsername = await Users.findAll({
 			where: { username: username },
 		});
@@ -132,7 +133,6 @@ const register = async (req, res , next) => {
 }
 
 const getUsers = async (req, res) => {
-
     const allUsers = await Users.findAll()
     res.json(allUsers)
 }
