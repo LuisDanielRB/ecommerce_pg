@@ -1,10 +1,10 @@
 const initialState = {
-    userLogin: [],
+    userLogin: JSON.parse(localStorage.getItem('user')) || "asd",
     userRegister: [],
     events : [],
     eventsDetail: {},
     eventsDB: [],
-    isAuthenticated: localStorage.getItem('jwt'),
+    isAuthenticated: JSON.parse(localStorage.getItem('jwt')),
     categories: [],
     artists: [],
     places: [],
@@ -16,16 +16,17 @@ function rootReducer(state = initialState, action) {
 
     switch (action.type) {
         case 'POST_LOGIN':
+            localStorage.setItem('jwt', JSON.stringify(action.payload.data.token))
+            localStorage.setItem('user', JSON.stringify(action.payload.data))
             return {
                 ...state,
-                isAuthenticated: localStorage.setItem('jwt', JSON.stringify(action.payload.data.token)),
-                userLogin: action.payload
+                isAuthenticated: true
             }
 
         case 'POST_REGISTRO':
             return {
                 ...state,
-                userRegister: [...action.payload],
+                userRegister: action.payload
             } 
 
         case 'GET_EVENT_DETAIL':

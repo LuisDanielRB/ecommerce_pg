@@ -2,6 +2,7 @@ import axios from 'axios';
 
 
 export const loginAuth = body => async (dispatch) => {
+    console.log(body);
     try {
         let login = await axios.post("http://localhost:3000/login", body)
         return dispatch({
