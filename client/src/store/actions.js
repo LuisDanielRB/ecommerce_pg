@@ -2,6 +2,7 @@ import axios from 'axios';
 
 
 export const loginAuth = body => async (dispatch) => {
+    console.log(body);
     try {
         let login = await axios.post("http://localhost:3000/login", body)
         return dispatch({
@@ -63,7 +64,6 @@ export const getAllEvents = () => async dispatch => {
 
         let place = datos.map((el) => el.place)
         let uniquePlace = concat(place)
-      
 
 
         let newObj = {
@@ -97,5 +97,13 @@ export function searchLive(payload){
     return {
         type: "SEARCH_LIVE",
         payload
+    }
+}
+
+export function cleanDetail() {
+    return function (dispatch) {
+        return dispatch({
+            type: "CLEAN_DETAIL",
+        })
     }
 }

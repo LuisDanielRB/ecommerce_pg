@@ -1,7 +1,7 @@
 import React from 'react'
 import Footer from './Footer'
 import { useSelector, useDispatch } from 'react-redux'
-import { getEventDetail } from '../../store/actions'
+import { cleanDetail, getEventDetail } from '../../store/actions'
 import { Link, useParams } from 'react-router-dom'
 import { useEffect } from 'react'
 
@@ -13,6 +13,9 @@ const CardDetail = () => {
 
   useEffect(() => {
     dispatch(getEventDetail(id))
+    return () => {
+            dispatch(cleanDetail())
+        }
   }, [dispatch, id])
 
   return (
@@ -21,13 +24,13 @@ const CardDetail = () => {
         <div className="relative flex justify-between lg:gap-8 xl:grid xl:grid-cols-12">
           <div className="flex md:absolute md:inset-y-0 md:left-0 lg:static xl:col-span-2">
             <div className="flex flex-shrink-0 items-center">
-              <a href="/private">
+              <Link to={"/"}>
                 <img
                   className="block h-8 w-auto"
                   src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                   alt="Your Company"
                 />
-              </a>
+              </Link>
             </div>
           </div>
         </div>

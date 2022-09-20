@@ -5,7 +5,6 @@ const {register, login, getUsers , logout, upDateUser } = require('../controller
 const {createEvent, getEvents, getEventDetail , getEventsDetailDb} = require('../controllers/events-controller')
 const {fileUpload} = require('../helpers/fileUpload')
 
-
 router.post('/login', login )
 router.post('/register' , register)
 router.get('/logout', logout)
@@ -15,6 +14,5 @@ router.get('/users' , getUsers)
 router.get('/events' , getEvents)
 router.get('/eventsCreate/:id', getEventDetail)
 router.get('/eventsDB/:id' , getEventsDetailDb)
-
 
 module.exports = router;
