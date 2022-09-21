@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-const {paymentStripe} = require('../controllers/payments-controller')
+const {mercadopagoPayment} = require('../controllers/payments-controller')
 const {register, login, getUsers , logout, upDateUser } = require('../controllers/users-controller')
 const {createEvent, getEvents, getEventDetail , getEventsDetailDb} = require('../controllers/events-controller')
 const {fileUpload} = require('../helpers/fileUpload')
@@ -17,7 +17,7 @@ router.post('/createEvent',  createEvent)
 router.get('/users' , getUsers)
 router.get('/events' , getEvents)
 router.get('/eventsCreate/:id', getEventDetail)
-router.post('/api/checkout', paymentStripe)
+router.post('/payment', mercadopagoPayment)
 router.get('/eventsDB/:id' , getEventsDetailDb)
 router.get("/auth/user", (req, res) => {
     res.json(req.user);
