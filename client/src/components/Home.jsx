@@ -8,9 +8,9 @@ function Home() {
   const sp1 = "Consigue los mejores boletos,";
   const sp2 = "a los mejores precios!";
   const p =
-    "Ac euismod vel sit maecenas id pellentesque eu sed consectetur. Malesuada adipiscing sagittis vel nulla nec.";
+    "Compra tus entradas para los mejores conciertos, eventos deportivos, obras de teatros, festivales y mucho más.";
   const a = "Explorar Eventos";
-  const cta = "/login";
+  const cta = "/events";
   return (
     <>
       <Navbar />

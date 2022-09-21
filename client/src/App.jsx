@@ -1,17 +1,40 @@
-import React from "react";
-import { Routes, Route, Link } from "react-router-dom";
-import Login from "./components/Login";
-import Home from "./components/Home";
-import Register from "./components/Register";
+import React , {lazy } from "react";
+import { Route, Navigate , BrowserRouter } from "react-router-dom";
+import { PrivateRoute, PublicRoute } from "./router/index";
+import {AuthGuard} from '../src/auth/index'
+import { useSelector } from "react-redux";
+import { RoutesWithNotFound } from "./utils/index";
+import { useEffect } from "react";
+const Login = lazy(() => import('./components/Login'))
+const Register = lazy(() => import('./components/Register'))
+const Private = lazy(() => import('./components/Private/Private'))
+const Home = lazy(() => import('./components/Home'))
+const Events = lazy(() => import('./components/Events'))
 
 function App() {
+
+  const user = useSelector((state) => state.userLogin)
+
+  useEffect(()=> {
+    localStorage.getItem('user')
+  },[])
+  
   return (
     <div className="App">
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
+     
+      <BrowserRouter>
+        <RoutesWithNotFound>
+          <Route path="/" element={<Home/>}/>
+          <Route path={PublicRoute.HOME} element={<Home />}/>
+          <Route path={PublicRoute.LOGIN} element={<Login />}/>
+          <Route path={PublicRoute.REGISTER} element={<Register />}/>
+          <Route path={PublicRoute.EVENTS} element={<Events />}/>
+            <Route element={<AuthGuard />}>
+              <Route path={`${PrivateRoute.PRIVATE}/*`} element={<Private/>}/>
+            </Route>
+        </RoutesWithNotFound>
+        </BrowserRouter>
+       
     </div>
   );
 }
