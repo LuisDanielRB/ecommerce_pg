@@ -2,15 +2,17 @@ import { Fragment } from "react";
 import { Menu, Popover, Transition } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { useSelector } from "react-redux";
+import {  useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import axios from "axios";
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 function Navbar({ searchLive }) {
-
+  const dispatch = useDispatch()
   const usuario = useSelector((state) => state.userLogin)
 
   const navigation = [
@@ -24,6 +26,13 @@ function Navbar({ searchLive }) {
     { name: "Settings", href: "#" },
     { name: "Log out", href: "#" },
   ];  
+
+  const logout = async () => {
+    try {
+      await axios.get('http://localhost:3000/logout' , {withCredentials: true});
+    } catch (error) {
+      console.log(error);
+  }}
 
   return (
     <>
@@ -130,19 +139,16 @@ function Navbar({ searchLive }) {
                         <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                           <Menu.Item >
                             {({ active }) => (
-                              <a
-                                onClick={() => {
-                                  localStorage.removeItem('jwt')
-                                  localStorage.removeItem('user')
-                                }}
-                                href="/private"
+                              <button
+                                onClick={logout}
+                                href="#"
                                 className={classNames(
                                   active ? "bg-gray-100" : "",
                                   "block py-2 px-4 text-sm text-gray-700"
                                 )}
                               >
                                 Logout
-                              </a>
+                              </button>
                             )}
                           </Menu.Item>
                           <Menu.Item >

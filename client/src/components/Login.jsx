@@ -130,11 +130,13 @@ function Login() {
 
               <div className="mt-6 grid grid-cols-3 gap-3">
                 <div>
-                  <a
-                    href="#"
+                  <button
+                    onClick={() => {
+                      window.open('http://localhost:3000/login/google' , "_blank", "width=500,height=600")
+                    }}
                     className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
                   >
-                    <span className="sr-only">Sign in with Facebook</span>
+                    <span className="sr-only">Sign in with Google</span>
                     <svg
                       className="h-5 w-5"
                       aria-hidden="true"
@@ -147,7 +149,7 @@ function Login() {
                         clipRule="evenodd"
                       />
                     </svg>
-                  </a>
+                  </button>
                 </div>
 
                 <div>
@@ -168,8 +170,10 @@ function Login() {
                 </div>
 
                 <div>
-                  <a
-                    href="#"
+                  <button
+                    onClick={()=> {
+                      window.open('http://localhost:3000/auth/github' , "_blank", "width=500,height=600")
+                    }}
                     className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
                   >
                     <span className="sr-only">Sign in with GitHub</span>
@@ -185,7 +189,7 @@ function Login() {
                         clipRule="evenodd"
                       />
                     </svg>
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
