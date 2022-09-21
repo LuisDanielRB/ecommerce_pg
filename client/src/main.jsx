@@ -11,7 +11,7 @@ import axios from "axios";
 
 // const API = process.env.API;
 
-axios.defaults.baseURL = import.meta.env.API || "http://localhost:3000";
+axios.defaults.baseURL = import.meta.env.VITE_API || "http://localhost:3000";
 // import.meta.env.VITE_APP_API || "http://localhost:3001";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
