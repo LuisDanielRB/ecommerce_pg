@@ -28,9 +28,7 @@ function Navbar({ searchLive }) {
 
   const logout = async () => {
     try {
-      await axios.get("http://localhost:3000/logout", {
-        withCredentials: true,
-      });
+      await axios.get("/logout");
     } catch (error) {
       console.log(error);
     }
@@ -216,7 +214,7 @@ function Navbar({ searchLive }) {
                   <div className="flex-shrink-0">
                     <img
                       className="h-10 w-10 rounded-full"
-                      src={usuario.profile_picture}
+                      // src={usuario.profile_picture}
                       alt=""
                     />
                   </div>
