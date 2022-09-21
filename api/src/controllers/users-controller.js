@@ -1,4 +1,4 @@
-const { Users , EventsCreated} = require('../db')
+const { Users , Event} = require('../db')
 const jwt = require('jsonwebtoken')
 const {compare , encrypt} = require('../helpers/handleByCrypt')
 const authConfig = require('../config/auth')
@@ -7,7 +7,6 @@ const fsExtra = require('fs-extra');
 
 // Ruta Login
 const login = async (req, res , next) => {
-	console.log(req.body)
     const { email, password } = req.body;
 	try {
             let userCheck = await Users.findOne({
@@ -139,10 +138,19 @@ const getUsers = async (req, res) => {
 }
 
 
-const logout = async (req, res) => {
-    res.cookie('jwt' , '' , {maxAge: 1})
-    res.redirect('/login')
+const logout =  (req, res) => {
+
+	try {
+	   req.logOut();
+		res.clearCookie('session.sig', { path: '/' });
+		res.clearCookie('session', { path: '/' });
+		res.redirect('/');
+		
+	} catch (error) {
+		console.log(error);
+	}
 }
+
 
 module.exports = {
     register,

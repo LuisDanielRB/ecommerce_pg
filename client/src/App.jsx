@@ -5,20 +5,24 @@ import {AuthGuard} from '../src/auth/index'
 import { useSelector } from "react-redux";
 import { RoutesWithNotFound } from "./utils/index";
 import { useEffect } from "react";
+import axios from "axios";
 const Login = lazy(() => import('./components/Login'))
 const Register = lazy(() => import('./components/Register'))
 const Private = lazy(() => import('./components/Private/Private'))
 const Home = lazy(() => import('./components/Home'))
 const Events = lazy(() => import('./components/Events'))
-
+const LoginSuccess = lazy(() => import('./components/UI/LoginSuccess'))
 function App() {
 
-  const user = useSelector((state) => state.userLogin)
-
-  useEffect(()=> {
-    localStorage.getItem('user')
-  },[])
+  const getUser = async () => {
+    const data = await axios.get('http://localhost:3000/auth/user', {withCredentials: true})
+    console.log(data.data);
+  }
   
+  useEffect(() => {
+    getUser()
+  },[])
+
   return (
     <div className="App">
      
@@ -29,6 +33,7 @@ function App() {
           <Route path={PublicRoute.LOGIN} element={<Login />}/>
           <Route path={PublicRoute.REGISTER} element={<Register />}/>
           <Route path={PublicRoute.EVENTS} element={<Events />}/>
+          <Route path={PublicRoute.LOGINSUCCESS} element={<LoginSuccess/>} />
             <Route element={<AuthGuard />}>
               <Route path={`${PrivateRoute.PRIVATE}/*`} element={<Private/>}/>
             </Route>
