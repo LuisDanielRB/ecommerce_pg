@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
+const {paymentStripe} = require('../controllers/payments-controller')
 const {register, login, getUsers , logout, upDateUser } = require('../controllers/users-controller')
 const {createEvent, getEvents, getEventDetail , getEventsDetailDb} = require('../controllers/events-controller')
 const {fileUpload} = require('../helpers/fileUpload')
@@ -16,6 +17,7 @@ router.post('/createEvent',  createEvent)
 router.get('/users' , getUsers)
 router.get('/events' , getEvents)
 router.get('/eventsCreate/:id', getEventDetail)
+router.post('/api/checkout', paymentStripe)
 router.get('/eventsDB/:id' , getEventsDetailDb)
 router.get("/auth/user", (req, res) => {
     res.json(req.user);
@@ -33,6 +35,7 @@ router.get('/auth/github', passport.authenticate('github', { scope: [ 'user:emai
 router.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/login' }), function(req, res) {
     res.redirect(successLoginUrl);
   });
+
 
 
 module.exports = router;
