@@ -131,7 +131,7 @@ function Login() {
                   <button
                     onClick={() => {
                       window.open(
-                        "/login/google",
+                        `${import.meta.env.VITE_APP_API}/login/google`,
                         "_blank",
                         "width=500,height=600"
                       );
