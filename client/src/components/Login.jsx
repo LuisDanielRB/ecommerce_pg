@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { useNavigate , redirect } from "react-router-dom";
-import { loginAuth } from '../store/actions'
-import { useDispatch } from 'react-redux'
+import { useNavigate, redirect } from "react-router-dom";
+import { loginAuth } from "../store/actions";
+import { useDispatch } from "react-redux";
 
 function Login() {
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [input, setInput] = useState({
     email: "",
     password: "",
@@ -25,8 +25,8 @@ function Login() {
     setInput({
       email: "",
       password: "",
-    })
-    return navigate('/home')
+    });
+    return navigate("/home");
   }
 
   return (
@@ -45,76 +45,74 @@ function Login() {
 
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-        
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700"
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Email address
+              </label>
+              <div className="mt-1">
+                <input
+                  onChange={handleInputChange}
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Password
+              </label>
+              <div className="mt-1">
+                <input
+                  onChange={handleInputChange}
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  required
+                  className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="text-sm">
+                <a
+                  href="/register"
+                  className="font-medium text-indigo-600 hover:text-indigo-500"
                 >
-                  Email address
-                </label>
-                <div className="mt-1">
-                  <input
-                    onChange={handleInputChange}
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    required
-                    className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                  />
-                </div>
+                  Don't have an account?
+                </a>
               </div>
 
-              <div>
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium text-gray-700"
+              <div className="text-sm">
+                <a
+                  href="#"
+                  className="font-medium text-indigo-600 hover:text-indigo-500"
                 >
-                  Password
-                </label>
-                <div className="mt-1">
-                  <input
-                    onChange={handleInputChange}
-                    id="password"
-                    name="password"
-                    type="password"
-                    autoComplete="current-password"
-                    required
-                    className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                  />
-                </div>
+                  Forgot your password?
+                </a>
               </div>
+            </div>
 
-              <div className="flex items-center justify-between">
-                <div className="text-sm">
-                  <a
-                    href="/register"
-                    className="font-medium text-indigo-600 hover:text-indigo-500"
-                  >
-                    Don't have an account?
-                  </a>
-                </div>
-
-                <div className="text-sm">
-                  <a
-                    href="#"
-                    className="font-medium text-indigo-600 hover:text-indigo-500"
-                  >
-                    Forgot your password?
-                  </a>
-                </div>
-              </div>
-
-              <div>
-                <button
-                  onClick={(e) => handleSubmit(e)}
-                  className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                >
-                  Login
-                </button>
-              </div>
-
+            <div>
+              <button
+                onClick={(e) => handleSubmit(e)}
+                className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              >
+                Login
+              </button>
+            </div>
 
             <div className="mt-6">
               <div className="relative">
@@ -132,7 +130,11 @@ function Login() {
                 <div>
                   <button
                     onClick={() => {
-                      window.open('http://localhost:3000/login/google' , "_blank", "width=500,height=600")
+                      window.open(
+                        "/login/google",
+                        "_blank",
+                        "width=500,height=600"
+                      );
                     }}
                     className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
                   >
@@ -171,8 +173,12 @@ function Login() {
 
                 <div>
                   <button
-                    onClick={()=> {
-                      window.open('http://localhost:3000/auth/github' , "_blank", "width=500,height=600")
+                    onClick={() => {
+                      window.open(
+                        "/auth/github",
+                        "_blank",
+                        "width=500,height=600"
+                      );
                     }}
                     className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
                   >
