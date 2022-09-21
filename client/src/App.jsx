@@ -15,7 +15,7 @@ const LoginSuccess = lazy(() => import('./components/UI/LoginSuccess'))
 function App() {
 
   const getUser = async () => {
-    const data = await axios.get('http://localhost:3000/auth/user', {withCredentials: true})
+    const data = await axios.get('http://localhost:3000/auth/user')
     console.log(data.data);
   }
   

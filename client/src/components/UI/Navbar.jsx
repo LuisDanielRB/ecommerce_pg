@@ -29,7 +29,7 @@ function Navbar({ searchLive }) {
 
   const logout = async () => {
     try {
-      await axios.get('http://localhost:3000/logout' , {withCredentials: true});
+      await axios.get('http://localhost:3000/logout');
     } catch (error) {
       console.log(error);
   }}
