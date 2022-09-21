@@ -6,13 +6,9 @@ import Loading from "./components/UI/Loading";
 import { Provider } from "react-redux";
 import { store } from "../src/store/index";
 import axios from "axios";
-// import dotenv from "dotenv";
-// dotenv.config();
 
-// const API = process.env.API;
-
-axios.defaults.baseURL = import.meta.env.VITE_API || "http://localhost:3000";
-// import.meta.env.VITE_APP_API || "http://localhost:3001";
+axios.defaults.baseURL =
+  import.meta.env.VITE_APP_API || "http://localhost:3000";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
