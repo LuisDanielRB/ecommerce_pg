@@ -1,15 +1,16 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const GitHubStrategy = require('passport-github2').Strategy
+const GitHubStrategy = require("passport-github2").Strategy;
 
-const {UserGoogle} = require("../db");
+const { UserGoogle } = require("../db");
 
-const GOOGLE_CALLBACK_URL = "http://localhost:3000/google/callback";
-const GITHUB_CALLBACK_URL = "http://localhost:3000/auth/github/callback"
+const GOOGLE_CALLBACK_URL = "/google/callback";
+const GITHUB_CALLBACK_URL = "/auth/github/callback";
 passport.use(
   new GoogleStrategy(
     {
-      clientID: "275596479317-80mgtpci0b2gvt0hr48uieh57uvvh2e9.apps.googleusercontent.com",
+      clientID:
+        "275596479317-80mgtpci0b2gvt0hr48uieh57uvvh2e9.apps.googleusercontent.com",
       clientSecret: "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",
       callbackURL: GOOGLE_CALLBACK_URL,
       passReqToCallback: true,
@@ -35,16 +36,18 @@ passport.use(
   )
 );
 
-
-passport.use(new GitHubStrategy({
-  clientID: "8fb5600f62baf43736ee",
-  clientSecret: 'f1f6945961b7f679220849820ac84c9ae25e1946',
-  callbackURL: GITHUB_CALLBACK_URL
-},
-function (accessToken, refreshToken, profile, done) {
-  done(null, profile);
-}
-));
+passport.use(
+  new GitHubStrategy(
+    {
+      clientID: "8fb5600f62baf43736ee",
+      clientSecret: "f1f6945961b7f679220849820ac84c9ae25e1946",
+      callbackURL: GITHUB_CALLBACK_URL,
+    },
+    function (accessToken, refreshToken, profile, done) {
+      done(null, profile);
+    }
+  )
+);
 
 passport.serializeUser((user, done) => {
   done(null, user);
