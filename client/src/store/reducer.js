@@ -10,6 +10,7 @@ const initialState = {
     places: [],
     searchLive: [],
     cart: [],
+    numberCart: 0,
 }
 
 function rootReducer(state = initialState, action) {
@@ -66,46 +67,18 @@ function rootReducer(state = initialState, action) {
             let items = state.events;
             let product = items.filter((el) => el.id === id)
             let carts = state.cart
-            if (items.map((el) => el.id === id)) {
-                return
-            } else {
-                carts.push(product)
-                return
-                {                    
-                        ...state,
-                        cart: carts
-                }
-            }
-
-        case 'REMOVE_ALL_CART':
+            carts.push(product)
             return {
                 ...state,
-                cart: state.cart.filter((item) => item.id !== action.payload),
-            };
-
-        case 'REMOVE_ONE_CART':
-            let itemToDelete = state.cart.filter((item) => item.id === action.payload);
-
-            return itemToDelete.quantity > 1
-                ? {
-                    ...state,
-                    cart: state.cart.map((item) =>
-                        item.id === action.payload
-                            ? { ...item, quantity: item.quantity - 1 }
-                            : item
-                    ),
-                }
-                : {
-                    ...state,
-                    cart: state.cart.filter((item) => item.id !== action.payload),
-                };
-
-        case 'CLEAR_CART':
-            return {
-                ...state,
-                cart: []
+                cart: carts,
+                numberCart: state.numberCart + 1,
             }
 
+        // case 'DELETE_CART':
+
+        // case 'INCREASE_QUANTITY':
+
+        // case 'DECREASE_QUANTITY':
 
         default: return state
     }

@@ -115,23 +115,21 @@ export function addCart(id) {
     }
 };
 
-export function deleteCart(id) {
-    return {
-        type: "REMOVE_ALL_CART",
-        payload: id
-    }
-};
+// export function deleteCart(){
+//     return{
+//         type: "DELETE_CART"
+//     }
+// }
 
-export function deleteOneCart(id) {
-    return {
-        type: "REMOVE_ONE_CART",
-        payload: id
-    } 
-};
-
-export function clearCart(){
-    return{
-        type: "CLEAR_CART"
-    }
-}
-
+// export function IncreaseQuantity(payload){
+//     return{
+//         type:'INCREASE_QUANTITY',
+//         payload
+//     }
+// }
+// export function DecreaseQuantity(payload){
+//     return{
+//         type:'DECREASE_QUANTITY',
+//         payload
+//     }
+// }

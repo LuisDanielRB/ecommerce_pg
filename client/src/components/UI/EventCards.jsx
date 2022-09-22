@@ -5,14 +5,10 @@ import { addCart } from '../../store/actions';
 const EventCards = ({ id, price, stock, artist, description, date }) => {
     const dispatch = useDispatch();
     const allCart = useSelector((state) => state.cart);
-    const [count, setCount] = useState()
 
     function handleSubmit(e) {
         dispatch(addCart(e))
-        setCount(allCart)
     }
-
-    console.log(allCart)
 
     return (
         <div className='w-auto h-36 ml-1 mr-1 rounded-lg flex flex-col pt-3 pb-3'>

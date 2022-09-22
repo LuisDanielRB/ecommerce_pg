@@ -12,6 +12,7 @@ function classNames(...classes) {
 function Navbar({ searchLive }) {
 
   const usuario = useSelector((state) => state.userLogin)
+  const count = useSelector((state) => state.numberCart);
 
   const navigation = [
     { name: "Dashboard", href: "#", current: true },
@@ -100,7 +101,7 @@ function Navbar({ searchLive }) {
                     href="/private/cart"
                     className="ml-5"
                   >
-                    <ShoppingCartIcon className="h-6 w-6" aria-hidden="true"/>
+                    <ShoppingCartIcon className="h-6 w-6" aria-hidden="true"/>{count}
                   </a>
 
                   {/* Profile dropdown */}

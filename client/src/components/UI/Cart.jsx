@@ -1,25 +1,24 @@
-import React, { useState } from "react";
-import { useSelector, useDispatch } from 'react-redux';
-import { addCart } from '../../store/actions'
-import EventCards from "./EventCards";
+import React from "react";
+import { useSelector} from 'react-redux';
 
 export default function Cart() {
-    const dispatch = useDispatch()
-    const {events, cart} = useSelector((state) => state)
+
+   const cart = useSelector((state) => state.cart)
 
     return (
         <div className="">
             <h2>Shopping Cart</h2>
-            <h3>Products</h3>
-            <article className="box grid-responsive">
-                {events.map((el) => {
-                    <EventCards 
-                    key={el.id}
-                    data={el}
-                    addCart={() => dispatch(addCart(el.id))}
-                    />
-                })}
-            </article>
+            <h3>Carrito:</h3>
+            {cart.map((el, key) => {
+                console.log(el.artist)
+                return (
+                    <tr key={key}>
+                        <td>{el.artist}</td>
+                        <td><img src={el.image} /></td>
+                        <td>{el.price} $</td>
+                    </tr>
+                )
+            })}
         </div>
     )
 }
