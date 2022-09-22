@@ -2,7 +2,7 @@ const { Users , Event} = require('../db')
 const jwt = require('jsonwebtoken')
 const {compare , encrypt} = require('../helpers/handleByCrypt')
 const authConfig = require('../config/auth')
-const uploadImage = require('../helpers/cloudinary');
+const {uploadImage, deleteImage} = require('../helpers/cloudinary');
 const fsExtra = require('fs-extra');
 
 // Ruta Login
@@ -53,11 +53,11 @@ const login = async (req, res , next) => {
 
 }
 
-const upDateUser = async (req, res) => {
+const updateUser = async (req, res) => {
     const {id} = req.params;
     const {username , email, password , status} = req.body;
-    var result;
-
+	var result;
+	
     try {
         if(!id) res.status(404).json({message: 'id is require...'});
 
@@ -69,11 +69,22 @@ const upDateUser = async (req, res) => {
 		if(password) await Users.update({password},{where:{id: id}});
 		if(status) await Users.update({status},{where:{id: id}});
 
-
         if(req.files?.image){
-            result = await uploadImage(req.files.image.tempFilePath);
-            await Users.update({profile_picture: result.secure_url},{where:{id: id}});
-            await fsExtra.unlink(req.files.image.tempFilePath);
+			if(!user.profile_picture_id){
+				result = await uploadImage(req.files.image.tempFilePath);
+				await Users.update({profile_picture: result.secure_url,
+									profile_picture_id: result.public_id},
+								   {where:{id: id}});
+				await fsExtra.unlink(req.files.image.tempFilePath);
+
+			}else{
+				await deleteImage(user.profile_picture_id)
+				result = await uploadImage(req.files.image.tempFilePath);
+				await Users.update({profile_picture: result.secure_url,
+									profile_picture_id: result.public_id},
+								   {where:{id: id}});
+				await fsExtra.unlink(req.files.image.tempFilePath);
+			}
         }
 
         user = await Users.findOne({where:{id: id}});
@@ -157,5 +168,5 @@ module.exports = {
     login,
     getUsers,
     logout,
-	upDateUser
+	updateUser
 }

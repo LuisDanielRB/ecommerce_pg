@@ -1,12 +1,20 @@
 const { EventsCreated, Event} = require('../db')
 const fs = require('fs')
-const uploadImage = require('../helpers/cloudinary')
+const {uploadImage, deleteImage} = require('../helpers/cloudinary')
 const fsExtra = require('fs-extra')
 
 const createEvent = async (req, res) => {
-    const {description, price, date, artist, place, stock, category} = req.body
+    const {description, price, date, artist, place, stock, category} = req.body;
+    const {id} = req.params;
     var result;
     try {
+        if(!description) res.status(404).json({message: 'description is require'});
+        if(!price) res.status(404).json({message: 'price is require'});
+        if(!date) res.status(404).json({message: 'date is require'});
+        if(!artist) res.status(404).json({message: 'artist is require'});
+        if(!place) res.status(404).json({message: 'place is require'});
+        if(!stock) res.status(404).json({message: 'stock is require'});
+        if(!category) res.status(404).json({message: 'category is require'});
         if(req.files?.image){
             result = await uploadImage(req.files.image.tempFilePath);
             await fsExtra.unlink(req.files.image.tempFilePath)
@@ -20,13 +28,45 @@ const createEvent = async (req, res) => {
             place,
             stock,
             category,
-            image: result?result.secure_url:'undefined'
+            image: result?result.secure_url:'undefined',
+            imageId: result?result.public_id:'undefined',
+            usersID: id
         })
         res.json({
             eventsCreated: newEvent
         })
     } catch (error) {
         console.log(error)
+    }
+}
+
+const updateEvent = async (req, res) => {
+    const {description, price, date, artist, place, stock, category} = req.body;
+    const {id} = req.params;
+    try {
+        if(!id) res.status(404).json({message: 'id is require...'});
+        let eventUpdate = await EventsCreated.findOne({where:{id}});
+        if(!eventUpdate) res.status(404).json({message: 'event not found...'});
+
+        if(description) await EventsCreated.update({description}, {where:{id}});
+        if(price) await EventsCreated.update({price}, {where:{id}});
+        if(date) await EventsCreated.update({date}, {where:{id}});
+        if(artist) await EventsCreated.update({artist}, {where:{id}});
+        if(place) await EventsCreated.update({place}, {where:{id}});
+        if(stock) await EventsCreated.update({stock}, {where:{id}});
+        if(category) await EventsCreated.update({category}, {where:{id}});
+        if(req.files?.image){
+            await deleteImage(eventUpdate.imageId);
+            const result = await uploadImage(req.files.image.tempFilePath);
+            await EventsCreated.update({image: result.secure_url,
+                                        imageId: result.public_id},{where: {id}});
+            await fsExtra.unlink(req.files.image.tempFilePath);
+        }
+        eventUpdate = await EventsCreated.findOne({where: {id}});
+        res.status(200).json(eventUpdate);
+
+    } catch (error) {
+        console.log(error);
     }
 }
 
@@ -139,6 +179,6 @@ module.exports = {
     createEvent,
     getEvents,
     getEventDetail,
-    getEventsDetailDb
-
+    getEventsDetailDb,
+    updateEvent
 }
