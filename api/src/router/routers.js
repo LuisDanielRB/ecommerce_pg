@@ -5,7 +5,8 @@ const {mercadopagoPayment} = require('../controllers/payments-controller')
 const {register, login, getUsers , logout, upDateUser } = require('../controllers/users-controller')
 const {createEvent, getEvents, getEventDetail , getEventsDetailDb, deleteEvents} = require('../controllers/events-controller')
 const {fileUpload} = require('../helpers/fileUpload')
-const {isUserAuthenticated} = require('../middleware/isAuthenticate')
+const {isUserAuthenticated} = require('../middleware/isAuthenticate');
+const { sendMailWelcome } = require('../controllers/email-controller');
 const successLoginUrl = "http://localhost:5173/login/success";
 const errorLoginUrl = "http://localhost:5173/login/error";
 
@@ -37,6 +38,7 @@ router.get('/auth/github/callback', passport.authenticate('github', { failureRed
     res.redirect(successLoginUrl);
   });
 
+  router.post('/email', sendMailWelcome)
 
 
 module.exports = router;
