@@ -1,4 +1,8 @@
 const {createTransport} = require('nodemailer');
+const path = require('path')
+const hbs = require('nodemailer-express-handlebars')
+
+
 
 let password='jdwosmhgbyqjjzls'
 let correo='tickethenryinfo@gmail.com'
@@ -12,22 +16,37 @@ const transporter = createTransport({
     }
 })
 
-const mailOptions = {
-    from: 'Prueba desde el servidor de NodeJS',
-    to: 'horusinhue@gmail.com',
-    subject: 'Creando una prueba',
-    html: 'Creando una prueba más'
-}
+
+
 
 
 const sendMailWelcome = async (req, res) => {
     let {name, to} = req.body
 
+    /* */
+    const handlebarOptions = {
+        viewEngine: {
+            extName: '.handlebars',
+            partialsDir: path.resolve('./views'),
+            defaultLayout: false,
+        },
+        viewPath: path.join(__dirname, '../views'),
+        extName: '.handlebars'
+    }
+    
+    transporter.use('compile', hbs(handlebarOptions))
+
+    /* */
+
     const mailOptions = {
         from: 'Prueba desde el servidor de NodeJS',
         to: to,
         subject: 'Creando una prueba',
-        html: `Hola ${name}, te damos la bienvenida HenryTicket donde tendrás acceso a los mejores eventos`
+        template: 'email',
+        context: {
+            user: name,
+            mail: to
+        }
     }
     
     try {
