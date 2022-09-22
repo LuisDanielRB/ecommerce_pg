@@ -7,6 +7,8 @@ import { useSelector, useDispatch } from "react-redux";
 function CreateEvent() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const {userId} = useSelector((state) => state)
+  console.log(userId);
   const artistInput = useRef(null);
   const [error, setError] = useState({});
   const [artists, setArtists] = useState([]);
@@ -18,6 +20,7 @@ function CreateEvent() {
     place: "",
     stock: 0,
     category: [],
+    userId
   });
 
   function validation(input) {
@@ -163,6 +166,7 @@ function CreateEvent() {
       place: "",
       stock: 0,
       category: [],
+      userId: userId
     });
     navigate("/");
   }

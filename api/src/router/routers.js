@@ -1,15 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const passport = require('passport');
 const {mercadopagoPayment} = require('../controllers/payments-controller')
-const {register, login, getUsers , logout, upDateUser } = require('../controllers/users-controller')
-const {createEvent, getEvents, getEventDetail , getEventsDetailDb, deleteEvents} = require('../controllers/events-controller')
+const {register, login, getUsers , logout, upDateUser, googleSignIn } = require('../controllers/users-controller')
+const {createEvent, getEvents, getEventDetail , getEventsDetailDb, deleteEvents , getEventsForUsers} = require('../controllers/events-controller')
 const {fileUpload} = require('../helpers/fileUpload')
 const {isUserAuthenticated} = require('../middleware/isAuthenticate');
 const { sendMailWelcome } = require('../controllers/email-controller');
 const successLoginUrl = "http://localhost:5173/login/success";
 const errorLoginUrl = "http://localhost:5173/login/error";
 
+
+router.post('/user/google' , googleSignIn)
 router.post('/login', login )
 router.post('/register' , register)
 router.get('/logout', logout)
@@ -21,22 +22,8 @@ router.get('/eventsCreate/:id', getEventDetail)
 router.post('/payment', mercadopagoPayment)
 router.put('/events/:id', deleteEvents)
 router.get('/eventsDB/:id' , getEventsDetailDb)
-router.get("/auth/user", (req, res) => {
-    res.json(req.user);
-  });
-router.get("/login/google", passport.authenticate("google", { scope: ["profile", "email"] }));
-router.get( "/google/callback",passport.authenticate("google", {
-      failureMessage: "Cannot login to Google, please try again later!",
-      failureRedirect: errorLoginUrl,
-      successRedirect: (successLoginUrl),
-    }), (req, res) => {
-      res.send("Thank you for signing in!");
-    });
-router.get('/auth/github', passport.authenticate('github', { scope: [ 'user:email' ] }));
+router.get('/eventsUsers/:id' , getEventsForUsers)
 
-router.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/login' }), function(req, res) {
-    res.redirect(successLoginUrl);
-  });
 
   router.post('/email', sendMailWelcome)
 

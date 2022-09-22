@@ -137,6 +137,64 @@ const getUsers = async (req, res) => {
     res.json(allUsers)
 }
 
+const googleSignIn = async (req, res, next) => {
+	const { username, email, profile_picture, password } = req.body;
+	try {
+		const alreadyExists = await Users.findOne({ where: { email: email } });
+		if (alreadyExists) {
+			const jwtToken = jwt.sign(
+				{
+					//token creation
+					id: alreadyExists.id,
+					email: alreadyExists.email,
+					status: 'User',
+				},
+				authConfig.secret,
+				{ expiresIn: '12h' }
+			);
+
+			res.status(200).json({
+				token: jwtToken,
+				status: 'User',
+				id: alreadyExists.id,
+				email: alreadyExists.email,
+				username: alreadyExists.username,
+				profile_picture: profile_picture,
+				favorites: alreadyExists.favorites,
+			});
+		}
+		if (!alreadyExists) {
+			const create = await Users.create({
+				email: email,
+				username: username,
+				profile_picture: profile_picture,
+				password
+			});
+			const jwtToken = jwt.sign(
+				{
+					//token creation
+					id: create.id,
+					email: create.email,
+					status: create.status,
+				},
+				authConfig.secret,
+				{ expiresIn: '12h' }
+			);
+			res.status(200).json({
+				token: jwtToken,
+				status: create.status,
+				id: create.id,
+				email: create.email,
+				username: create.username,
+				profile_picture: create.profile_picture,
+			});
+		}
+	} catch (e) {
+		console.log(e);
+		next(e);
+	}
+};
+
 
 const logout =  (req, res) => {
 
@@ -157,5 +215,6 @@ module.exports = {
     login,
     getUsers,
     logout,
-	upDateUser
+	upDateUser,
+	googleSignIn
 }
