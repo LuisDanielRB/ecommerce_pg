@@ -56,11 +56,11 @@ const {EventsCreated , Users , UserGoogle} = sequelize.models;
 
 // Aca vendrian las relaciones
 Users.hasMany(EventsCreated, {
-	foreignKey: 'usersID',
+	foreignKey: 'userId',
 	sourceKey: 'id',
 })
 EventsCreated.belongsTo(Users, {
-	foreignKey: 'usersID',
+	foreignKey: 'userId',
 	targetKey: 'id',
 })
 

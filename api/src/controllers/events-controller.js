@@ -1,17 +1,16 @@
-const { EventsCreated, Event} = require('../db')
+const { EventsCreated, Event , Users} = require('../db')
 const fs = require('fs')
 const uploadImage = require('../helpers/cloudinary')
 const fsExtra = require('fs-extra')
 
 const createEvent = async (req, res) => {
-    const {description, price, date, artist, place, stock, category} = req.body
+    const {description, price, date, artist, place, stock, category , userId} = req.body
     var result;
     try {
         if(req.files?.image){
             result = await uploadImage(req.files.image.tempFilePath);
             await fsExtra.unlink(req.files.image.tempFilePath)
         }
-
         const newEvent = await EventsCreated.create({
             description,
             price,
@@ -22,6 +21,7 @@ const createEvent = async (req, res) => {
             category,
             image: result?result.secure_url:'undefined'
         })
+        newEvent.setUser(userId)
         res.json({
             eventsCreated: newEvent
         })
@@ -150,10 +150,23 @@ if(detail){
 
 }
 
+const getEventsForUsers = async (req, res) => {
+    const {id} = req.params
+    console.log(id);
+    const allEventsCreated = await EventsCreated.findAll({
+        where: {
+            userId: id
+        }
+    })
+
+    res.json(allEventsCreated)
+}
+
 module.exports = {
     createEvent,
     getEvents,
     getEventDetail,
     getEventsDetailDb,
-    deleteEvents
+    deleteEvents,
+    getEventsForUsers
 }

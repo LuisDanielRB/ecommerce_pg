@@ -45,7 +45,7 @@ const initialState = {
     userProfilePicture: userProfileImageFromLocalStorage,
     userRole: userRoleFromLocalStorage,
     isValid: isValidFromLocalStorage,
-    
+    eventsUsers: []
 }
 
 
@@ -93,6 +93,12 @@ function rootReducer(state = initialState, action) {
             artists: action.payload.uniqueArtist,
             places: action.payload.uniquePlace
         }
+        case 'GET_ALL_EVENTS_CREATE': {
+            return {
+                ...state,
+                eventsUsers: action.payload
+            }
+        }
         case 'POST_EVENT':
             return {
                 ...state,
@@ -111,6 +117,7 @@ function rootReducer(state = initialState, action) {
 			localStorage.setItem('userRole', null);
 			localStorage.setItem('userEmail', null);
 			localStorage.removeItem('token');
+            localStorage.removeItem('isValid');
             return {
 				...state,
 				token: '',
@@ -141,8 +148,9 @@ function rootReducer(state = initialState, action) {
                     }
                 };
             case "CHECK_STATUS": {
+
                 return {
-                    ...state,
+                    ...state
                 }
             }    
     default: return state

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {mercadopagoPayment} = require('../controllers/payments-controller')
 const {register, login, getUsers , logout, upDateUser, googleSignIn } = require('../controllers/users-controller')
-const {createEvent, getEvents, getEventDetail , getEventsDetailDb, deleteEvents} = require('../controllers/events-controller')
+const {createEvent, getEvents, getEventDetail , getEventsDetailDb, deleteEvents , getEventsForUsers} = require('../controllers/events-controller')
 const {fileUpload} = require('../helpers/fileUpload')
 const {isUserAuthenticated} = require('../middleware/isAuthenticate')
 
@@ -18,6 +18,7 @@ router.get('/eventsCreate/:id', getEventDetail)
 router.post('/payment', mercadopagoPayment)
 router.delete('/:id', deleteEvents)
 router.get('/eventsDB/:id' , getEventsDetailDb)
+router.get('/eventsUsers/:id' , getEventsForUsers)
 
 
 

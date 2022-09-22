@@ -1,12 +1,11 @@
 import axios from "axios";
 
-export function checkStates() {
-	return async function (dispatch) {
+export const checkStates = () => (dispatch) => {
 		return dispatch({
-			type: 'CHECK_STATUS',
+			type: 'CHECK_STATUS'
 		});
 	};
-}
+
 
 export const loginAuth = (body) => async (dispatch) => {
   try {
@@ -35,7 +34,6 @@ export const registerAuth = (body) => async (dispatch) => {
 export const getEventDetail = (id) => async (dispatch) => {
   try {
     let eventsDB = await axios.get(`/eventsDB/${id}`);
-    console.log(eventsDB);
     return dispatch({
       type: "GET_EVENT_DETAIL",
       payload: eventsDB.data,
@@ -44,6 +42,15 @@ export const getEventDetail = (id) => async (dispatch) => {
     console.log(error);
   }
 };
+
+export const getAllEventsCreated = (id) => async (dispatch) => {
+  let eventsDB = await axios.get(`/eventsUsers/${id}`);
+  console.log(eventsDB);
+  return dispatch({
+    type: 'GET_ALL_EVENTS_CREATE',
+    payload: eventsDB.data
+  })
+}
 
 export const getAllEvents = () => async (dispatch) => {
   function concat(array) {

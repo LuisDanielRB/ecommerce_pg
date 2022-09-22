@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginAuth } from "../store/actions";
+import { loginAuth, checkStates } from "../store/actions";
 import { useDispatch } from "react-redux";
 import { GoogleButton } from 'react-google-button';
 import { UserAuth } from '../firebase/context';
@@ -46,10 +46,12 @@ function Login() {
   async function handleSubmit(e) {
     e.preventDefault();
     dispatch(loginAuth(input));
+    dispatch(checkStates())
     setInput({
       email: "",
       password: "",
     });
+
     return navigate("/home");
   }
 
