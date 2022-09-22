@@ -1,13 +1,13 @@
-const { EventsCreated, Event} = require('../db')
+const { EventsCreated, Event } = require('../db')
 const fs = require('fs')
 const uploadImage = require('../helpers/cloudinary')
 const fsExtra = require('fs-extra')
 
 const createEvent = async (req, res) => {
-    const {description, price, date, artist, place, stock, category} = req.body
+    const { description, price, date, artist, place, stock, category } = req.body
     var result;
     try {
-        if(req.files?.image){
+        if (req.files?.image) {
             result = await uploadImage(req.files.image.tempFilePath);
             await fsExtra.unlink(req.files.image.tempFilePath)
         }
@@ -20,7 +20,7 @@ const createEvent = async (req, res) => {
             place,
             stock,
             category,
-            image: result?result.secure_url:'undefined'
+            image: result ? result.secure_url : 'undefined'
         })
         res.json({
             eventsCreated: newEvent
@@ -33,24 +33,52 @@ const createEvent = async (req, res) => {
 const deleteEvents = async (req, res) => {
     const { id } = req.params
 
-    try {
-        EventsCreated.destroy({
-            where: {
-                id: id
+    if (id.includes("-")) {
+        try {
+            let deleteEvent = await Event.update({ isActive: false }, {
+                where: {
+                    id: id
+                }
+            })
+            if (deleteEvent[0] === 0) {
+               return res.status(404).send("Event not found")
             }
-        });
-        res.status(200).send("The event was removed successfully")
-    } catch (error) {
-        console.log(error);
+
+            console.log(deleteEvent)
+            res.status(200).send("The event was removed successfully")
+
+        } catch (error) {
+            console.log(error)
+            res.status(404).send("Event not found")
+        }
+    } else {
+        try {
+            let response = await EventsCreated.update({ isActive: false }, {
+                where: {
+                    id: id
+                }
+            })
+            if (response[0] === 0) {
+                return res.status(404).send("Event not found")
+             }
+            console.log(response)
+            res.status(200).send("The event was removed successfully")
+        } catch (error) {
+            console.log(error)
+            res.status(404).send("Event not found")
+        }
     }
+
+
+
 }
 
 const getEvents = async (req, res) => {
-    
-    const allEvents = await Event.findAll()
-    const data = JSON.parse(fs.readFileSync('dataBase.json' ,'utf8'))
 
-      if (allEvents.length === 0) {
+    const allEvents = await Event.findAll()
+    const data = JSON.parse(fs.readFileSync('dataBase.json', 'utf8'))
+
+    if (allEvents.length === 0) {
         const events = await Event.bulkCreate(data)
         res.json(events)
     } else {
@@ -63,45 +91,46 @@ const getEventDetail = async (req, res, next) => {
     const { id } = req.params
     let detail;
 
-    if(id.includes("-")){
-        try{
+    if (id.includes("-")) {
+        try {
             detail = await Event.findOne({
                 where: {
                     id: id
                 }
             })
 
-    }catch(error){
-        console.log(error)
-    }
-}else{
-    try{
-        const response = await EventsCreated.findOne({
-            where: {
-                id: id
-            }
-        })
-        const elem = response.dataValues;
-        detail = {
-            id: elem.id,
-            description: elem.description,
-            price: elem.price,
-            date: elem.date,
-            artist: elem.artist,
-            place: elem.place,
-            stock: elem.stock,
-            category: elem.category,
+        } catch (error) {
+            console.log(error)
         }
-    }catch(error){
-        console.log(error)
+    } else {
+        try {
+            const response = await EventsCreated.findOne({
+                where: {
+                    id: id
+                }
+            })
+            const elem = response.dataValues;
+            detail = {
+                id: elem.id,
+                description: elem.description,
+                price: elem.price,
+                date: elem.date,
+                artist: elem.artist,
+                place: elem.place,
+                stock: elem.stock,
+                category: elem.category,
+                isActive: elem.isActive
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
-}
-if(detail){
-    res.send(detail)
-} else {
-    res.status(404).send("ID not found")
-}
-    
+    if (detail) {
+        res.send(detail)
+    } else {
+        res.status(404).send("ID not found")
+    }
+
 }
 
 const getEventsDetailDb = async (req, res) => {
@@ -109,44 +138,44 @@ const getEventsDetailDb = async (req, res) => {
     const { id } = req.params
     let detail;
 
-    if(id.includes("-")){
-        try{
+    if (id.includes("-")) {
+        try {
             detail = await Event.findOne({
                 where: {
                     id: id
                 }
             })
 
-    }catch(error){
-        console.log(error)
-    }
-}else{
-    try{
-        const response = await Event.findOne({
-            where: {
-                id: id
-            }
-        })
-        const elem = response.dataValues;
-        detail = {
-            id: elem.id,
-            description: elem.description,
-            price: elem.price,
-            date: elem.date,
-            artist: elem.artist,
-            place: elem.place,
-            stock: elem.stock,
-            category: elem.category,
+        } catch (error) {
+            console.log(error)
         }
-    }catch(error){
-        console.log(error)
+    } else {
+        try {
+            const response = await Event.findOne({
+                where: {
+                    id: id
+                }
+            })
+            const elem = response.dataValues;
+            detail = {
+                id: elem.id,
+                description: elem.description,
+                price: elem.price,
+                date: elem.date,
+                artist: elem.artist,
+                place: elem.place,
+                stock: elem.stock,
+                category: elem.category,
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
-}
-if(detail){
-    res.send(detail)
-} else {
-    res.status(404).send("ID not found")
-}
+    if (detail) {
+        res.send(detail)
+    } else {
+        res.status(404).send("ID not found")
+    }
 
 }
 
