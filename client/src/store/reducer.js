@@ -1,27 +1,77 @@
+let tokenFromLocalStorage = localStorage.getItem('token');
+if (!tokenFromLocalStorage) {
+	tokenFromLocalStorage = null;
+};
+let userIdFromLocalStorage = localStorage.getItem('userId');
+if (!userIdFromLocalStorage) {
+	userIdFromLocalStorage = null;
+};
+let userProfileImageFromLocalStorage = localStorage.getItem('userProfileImage');
+if (!userProfileImageFromLocalStorage) {
+	userProfileImageFromLocalStorage = null;
+}
+
+let userRoleFromLocalStorage = localStorage.getItem('userRole');
+if (!userRoleFromLocalStorage) {
+	userRoleFromLocalStorage = null;
+}
+
+let userNameFromLocalStorage = localStorage.getItem('userName');
+if (!userNameFromLocalStorage) {
+	userNameFromLocalStorage = null;
+}
+
+let userEmailFromLocalStorage = localStorage.getItem('userEmail');
+if (!userEmailFromLocalStorage) {
+	userEmailFromLocalStorage = null;
+}
+let isValidFromLocalStorage = localStorage.getItem('isValid')
+if(!isValidFromLocalStorage) {
+    isValidFromLocalStorage = false;
+}
+
 const initialState = {
-    userLogin: JSON.parse(localStorage.getItem('user')),
-    userRegister: [],
     events : [],
     eventsDetail: {},
     eventsDB: [],
-    isAuthenticated: JSON.parse(localStorage.getItem('jwt')),
     categories: [],
     artists: [],
     places: [],
-    searchLive: []
-
+    searchLive: [],
+    token: tokenFromLocalStorage,
+    userId: userIdFromLocalStorage,
+    userName: userNameFromLocalStorage,
+    userEmail: userEmailFromLocalStorage,
+    userProfilePicture: userProfileImageFromLocalStorage,
+    userRole: userRoleFromLocalStorage,
+    isValid: isValidFromLocalStorage,
+    
 }
+
 
 function rootReducer(state = initialState, action) {
 
     switch (action.type) {
         case 'POST_LOGIN':
-            localStorage.setItem('jwt', JSON.stringify(action.payload.data.token))
-            localStorage.setItem('user', JSON.stringify(action.payload.data))
+            localStorage.setItem('token' , action.payload.token )
+            localStorage.setItem('userId', action.payload.id);
+			localStorage.setItem('userName', action.payload.username);
+			localStorage.setItem('userEmail', action.payload.email);
+			localStorage.setItem( 'userProfileImage', action.payload.profile_picture);
+            localStorage.setItem('userRole'  , action.payload.status)
+            localStorage.setItem('isValid' , true)
             return {
-                ...state,
-                isAuthenticated: true,
-            }
+				...state,
+                currenteUser: {
+                    token: action.payload.token,
+                    userRole: action.payload.status,
+                    userId: action.payload.id,
+                    userName: action.payload.username,
+                    userEmail: action.payload.email,
+                    userProfilePicture: action.payload.profile_picture,
+                    isValid: true
+                }
+			};
 
         case 'POST_REGISTRO':
             return {
@@ -54,7 +104,47 @@ function rootReducer(state = initialState, action) {
                 ...state,
                 searchLive: action.payload
             }
+        
+        case 'LOG_OUT' :
+			localStorage.setItem('isValid', false);
+			localStorage.setItem('userId', null);
+			localStorage.setItem('userRole', null);
+			localStorage.setItem('userEmail', null);
+			localStorage.removeItem('token');
+            return {
+				...state,
+				token: '',
+				isValid: false,
+				userId: null,
+				userRole: null,
+				userEmail: null,
+			};
 
+        case "LOGIN_GOOGLE":
+                localStorage.setItem('token' , action.payload.token )
+                localStorage.setItem('userId', action.payload.id);
+                localStorage.setItem('userName', action.payload.username);
+                localStorage.setItem('userEmail', action.payload.email);
+                localStorage.setItem('userProfileImage',action.payload.profile_picture);
+                localStorage.setItem('userRole'  , action.payload.status)
+                localStorage.setItem('isValid' , true)
+                return {
+                    ...state,
+                    currenteUser: {
+                        token: action.payload.token,
+                        userRole: action.payload.status,
+                        userId: action.payload.id,
+                        userName: action.payload.username,
+                        userEmail: action.payload.email,
+                        userProfilePicture: action.payload.profile_picture,
+                        isValid: true
+                    }
+                };
+            case "CHECK_STATUS": {
+                return {
+                    ...state,
+                }
+            }    
     default: return state
     }
 }

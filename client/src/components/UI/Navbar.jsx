@@ -1,18 +1,37 @@
-import { Fragment } from "react";
+import { Fragment , useEffect} from "react";
 import { Menu, Popover, Transition } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
+import { userSignOut, checkStates } from '../../store/actions';
 import { Link } from "react-router-dom";
-import axios from "axios";
+import { UserAuth } from '../../firebase/context';
+
+
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 function Navbar({ searchLive }) {
+
   const dispatch = useDispatch();
-  const usuario = useSelector((state) => state.userLogin);
+  const {logOut} = UserAuth()
+  const isValid = useSelector((state) => state.isValid)
+  console.log(isValid);
+ 
+  const handleClick = (e) => {
+    e.preventDefault();
+    dispatch(userSignOut())
+    logOut();
+  };
+
+  useEffect(()=> {
+    dispatch(checkStates())
+  },[dispatch])
+
+
 
   const navigation = [
     { name: "Dashboard", href: "#", current: true },
@@ -25,14 +44,6 @@ function Navbar({ searchLive }) {
     { name: "Settings", href: "#" },
     { name: "Log out", href: "#" },
   ];
-
-  const logout = async () => {
-    try {
-      await axios.get("/logout");
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <>
@@ -108,65 +119,13 @@ function Navbar({ searchLive }) {
                   </a>
 
                   {/* Profile dropdown */}
-                  {usuario ? (
-                    <Menu as="div" className="relative ml-5 flex-shrink-0">
-                      <div>
-                        <Menu.Button className="flex rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                          <span className="sr-only">Open user menu</span>
-                          {usuario ? (
-                            <img
-                              className="h-8 w-8 rounded-full"
-                              src={usuario.profile_picture}
-                              alt=""
-                            />
-                          ) : (
-                            <>
-                              <button>Login</button>
-                            </>
-                          )}
-                        </Menu.Button>
-                      </div>
-                      <Transition
-                        as={Fragment}
-                        enter="transition ease-out duration-100"
-                        enterFrom="transform opacity-0 scale-95"
-                        enterTo="transform opacity-100 scale-100"
-                        leave="transition ease-in duration-75"
-                        leaveFrom="transform opacity-100 scale-100"
-                        leaveTo="transform opacity-0 scale-95"
-                      >
-                        <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                          <Menu.Item>
-                            {({ active }) => (
-                              <button
-                                onClick={logout}
-                                href="#"
-                                className={classNames(
-                                  active ? "bg-gray-100" : "",
-                                  "block py-2 px-4 text-sm text-gray-700"
-                                )}
-                              >
-                                Logout
-                              </button>
-                            )}
-                          </Menu.Item>
-                          <Menu.Item>
-                            {({ active }) => (
-                              <a
-                                onClick={() => null}
-                                href="/private/createvent"
-                                className={classNames(
-                                  active ? "bg-gray-100" : "",
-                                  "block py-2 px-4 text-sm text-gray-700"
-                                )}
-                              >
-                                New Event
-                              </a>
-                            )}
-                          </Menu.Item>
-                        </Menu.Items>
-                      </Transition>
-                    </Menu>
+                  {isValid ? ( <div className="flex justify-center items-center">
+                          <button
+                            onClick={(e) => handleClick(e)}
+                          >
+                            Log Out
+                          </button>
+                          </div>
                   ) : (
                     <div className="flex justify-center">
                       <div>
@@ -214,16 +173,16 @@ function Navbar({ searchLive }) {
                   <div className="flex-shrink-0">
                     <img
                       className="h-10 w-10 rounded-full"
-                      // src={usuario.profile_picture}
+                      // src={user.profile_picture}
                       alt=""
                     />
                   </div>
                   <div className="ml-3">
                     <div className="text-base font-medium text-gray-800">
-                      {/* {usuario.name} */}
+                      {/* {user.name} */}
                     </div>
                     <div className="text-sm font-medium text-gray-500">
-                      {/* {usuario.email} */}
+                      {/* {user.email} */}
                     </div>
                   </div>
                   <button

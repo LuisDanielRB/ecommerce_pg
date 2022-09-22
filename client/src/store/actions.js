@@ -1,11 +1,19 @@
 import axios from "axios";
 
+export function checkStates() {
+	return async function (dispatch) {
+		return dispatch({
+			type: 'CHECK_STATUS',
+		});
+	};
+}
+
 export const loginAuth = (body) => async (dispatch) => {
   try {
     let login = await axios.post("/login", body);
     return dispatch({
       type: "POST_LOGIN",
-      payload: login,
+      payload: login.data,
     });
   } catch (error) {
     console.log(error);
@@ -92,4 +100,31 @@ export function searchLive(payload) {
     type: "SEARCH_LIVE",
     payload,
   };
+}
+
+export function userSignOut() {
+	return { type: "LOG_OUT" };
+}
+
+export function addGoogleUser(currentUser) {
+	//con esta action me creo un usuario en la db y me loggea al mismo tiempo (soy crack lo se)
+
+	return async function (dispatch) {
+		try {
+			if (currentUser !== null && currentUser.hasOwnProperty('email')) {
+				var addToDb = await axios.post("/user/google", {
+					username: currentUser.displayName,
+					email: currentUser.email,
+					profile_picture: currentUser.photoURL,
+          password: currentUser.uid
+				});
+				return dispatch({
+					type: "LOGIN_GOOGLE",
+					payload: addToDb.data,
+				});
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
 }
