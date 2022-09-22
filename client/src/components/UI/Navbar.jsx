@@ -24,6 +24,7 @@ function Navbar({ searchLive }) {
     { name: "Your Profile", href: "#" },
     { name: "Settings", href: "#" },
     { name: "Log out", href: "#" },
+    { name: "Dashboard", href: "/private/admindashboard" },
   ];
 
   const logout = async () => {
@@ -161,6 +162,20 @@ function Navbar({ searchLive }) {
                                 )}
                               >
                                 New Event
+                              </a>
+                            )}
+                          </Menu.Item>
+                          <Menu.Item>
+                            {({ active }) => (
+                              <a
+                                onClick={() => null}
+                                href="/private/admindashboard"
+                                className={classNames(
+                                  active ? "bg-gray-100" : "",
+                                  "block py-2 px-4 text-sm text-gray-700"
+                                )}
+                              >
+                                Admin Dashboard
                               </a>
                             )}
                           </Menu.Item>
