@@ -39,9 +39,8 @@ const sendMailWelcome = async (req, res) => {
     /* */
 
     const mailOptions = {
-        from: 'Prueba desde el servidor de NodeJS',
         to: to,
-        subject: 'Creando una prueba',
+        subject: 'Confirmación de suscripción',
         template: 'email',
         context: {
             user: name,
