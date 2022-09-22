@@ -4,7 +4,7 @@ import Footer from './UI/Footer'
 import Navbar from './UI/Navbar'
 import { useState } from "react";
 import {useSelector, useDispatch } from 'react-redux'
-import {getAllEvents} from '../store/actions'
+import {getAllEvents , getAllEventsCreated} from '../store/actions'
 import { useNavigate } from "react-router-dom";
 
 
@@ -13,6 +13,8 @@ const Events = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const eventos = useSelector((state) => state.events)
+  const {eventsUsers} = useSelector((state) => state)
+  const {userId} = useSelector((state) => state)
   const categories = useSelector((state) => state.categories)
   const artists = useSelector((state) => state.artists)
   const place = useSelector((state) => state.places)
@@ -24,6 +26,7 @@ const Events = () => {
  
   useEffect(() => {
       dispatch(getAllEvents())
+      dispatch(getAllEventsCreated(userId))
       getFiltered()
       // searching()
   },[dispatch, filters])
@@ -182,6 +185,15 @@ const Events = () => {
                   </div>
           )
         })
+        }
+        {
+          eventsUsers?.map((el) => {
+            return (
+              <div key={el.id}>
+                <EventCards key={el.id} description={el.description} id={el.id} price={el.price}  brand={el.brand} title={el.title} stock={el.stock}/>
+              </div>
+            )
+          })
         }
 
         <Footer />

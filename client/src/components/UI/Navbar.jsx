@@ -1,18 +1,32 @@
-import { Fragment } from "react";
+import { Fragment , useEffect} from "react";
 import { Menu, Popover, Transition } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
+import { userSignOut, checkStates } from '../../store/actions';
 import { Link } from "react-router-dom";
-import axios from "axios";
+import { UserAuth } from '../../firebase/context';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-function Navbar({ searchLive }) {
+function Navbar() {
+
   const dispatch = useDispatch();
-  const usuario = useSelector((state) => state.userLogin);
+  const {logOut} = UserAuth()
+  const isValid = useSelector((state) => state.isValid)
+
+
+  useEffect(()=> {
+    dispatch(checkStates())
+  },[dispatch , isValid])
+  
+  const handleClick = (e) => {
+    e.preventDefault();
+    dispatch(userSignOut())
+    logOut();
+  };
 
   const navigation = [
     { name: "Dashboard", href: "#", current: true },
@@ -24,15 +38,8 @@ function Navbar({ searchLive }) {
     { name: "Your Profile", href: "#" },
     { name: "Settings", href: "#" },
     { name: "Log out", href: "#" },
+    { name: "Dashboard", href: "/private/admindashboard" },
   ];
-
-  const logout = async () => {
-    try {
-      await axios.get("/logout");
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <>
@@ -107,16 +114,14 @@ function Navbar({ searchLive }) {
                     <BellIcon className="h-6 w-6" aria-hidden="true" />
                   </a>
 
-                  {/* Profile dropdown */}
-                  {usuario ? (
+                  {isValid ? (
                     <Menu as="div" className="relative ml-5 flex-shrink-0">
                       <div>
                         <Menu.Button className="flex rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                           <span className="sr-only">Open user menu</span>
-                          {usuario ? (
+                          {isValid ? (
                             <img
                               className="h-8 w-8 rounded-full"
-                              src={usuario.profile_picture}
                               alt=""
                             />
                           ) : (
@@ -139,7 +144,7 @@ function Navbar({ searchLive }) {
                           <Menu.Item>
                             {({ active }) => (
                               <button
-                                onClick={logout}
+                                onClick={handleClick}
                                 href="#"
                                 className={classNames(
                                   active ? "bg-gray-100" : "",
@@ -161,6 +166,20 @@ function Navbar({ searchLive }) {
                                 )}
                               >
                                 New Event
+                              </a>
+                            )}
+                          </Menu.Item>
+                          <Menu.Item>
+                            {({ active }) => (
+                              <a
+                                onClick={() => null}
+                                href="/private/admindashboard"
+                                className={classNames(
+                                  active ? "bg-gray-100" : "",
+                                  "block py-2 px-4 text-sm text-gray-700"
+                                )}
+                              >
+                                Admin Dashboard
                               </a>
                             )}
                           </Menu.Item>

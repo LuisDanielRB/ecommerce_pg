@@ -2,25 +2,16 @@ import React, { lazy } from "react";
 import { Route, Navigate, BrowserRouter } from "react-router-dom";
 import { PrivateRoute, PublicRoute } from "./router/index";
 import { AuthGuard } from "../src/auth/index";
-import { useSelector } from "react-redux";
 import { RoutesWithNotFound } from "./utils/index";
-import { useEffect } from "react";
-import axios from "axios";
 const Login = lazy(() => import("./components/Login"));
 const Register = lazy(() => import("./components/Register"));
 const Private = lazy(() => import("./components/Private/Private"));
 const Home = lazy(() => import("./components/Home"));
 const Events = lazy(() => import("./components/Events"));
 const LoginSuccess = lazy(() => import("./components/UI/LoginSuccess"));
-function App() {
-  const getUser = async () => {
-    const data = await axios.get("/auth/user");
-    console.log(data.data);
-  };
 
-  useEffect(() => {
-    getUser();
-  }, []);
+
+function App() {
 
   return (
     <div className="App">
