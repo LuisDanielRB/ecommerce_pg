@@ -16,7 +16,7 @@ router.get('/users' , getUsers)
 router.get('/events' , getEvents)
 router.get('/eventsCreate/:id', getEventDetail)
 router.post('/payment', mercadopagoPayment)
-router.delete('/:id', deleteEvents)
+router.put('/events/:id', deleteEvents)
 router.get('/eventsDB/:id' , getEventsDetailDb)
 router.get('/eventsUsers/:id' , getEventsForUsers)
 
