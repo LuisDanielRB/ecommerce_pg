@@ -13,9 +13,15 @@ import {
 } from "@heroicons/react/24/outline";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import GridList from "./UI/GridList";
+import StatsDashboard from "./UI/StatsDashboard";
 
 const navigation = [
-  { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
+  {
+    name: "Dashboard",
+    href: "/private/admindashboard",
+    icon: HomeIcon,
+    current: true,
+  },
   { name: "Events", href: "#", icon: UsersIcon, current: false },
   // { name: "Projects", href: "#", icon: FolderIcon, current: false },
   // { name: "Calendar", href: "#", icon: CalendarIcon, current: false },
@@ -37,14 +43,6 @@ export default function Example() {
 
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-gray-100">
-        <body class="h-full">
-        ```
-      */}
       <div>
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog
@@ -146,11 +144,13 @@ export default function Example() {
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex min-h-0 flex-1 flex-col bg-gray-800">
             <div className="flex h-16 flex-shrink-0 items-center bg-gray-900 px-4">
-              <img
-                className="h-8 w-auto"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                alt="Your Company"
-              />
+              <a href="/">
+                <img
+                  className="h-8 w-auto"
+                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                  alt="Your Company"
+                />
+              </a>
             </div>
             <div className="flex flex-1 flex-col overflow-y-auto">
               <nav className="flex-1 space-y-1 px-2 py-4">
@@ -275,6 +275,8 @@ export default function Example() {
                 </h1>
               </div>
               <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
+                <StatsDashboard />
+                <br />
                 <GridList />
                 {/* <div className="py-4">
                   <div className="h-96 rounded-lg border-4 border-dashed border-gray-200" />
