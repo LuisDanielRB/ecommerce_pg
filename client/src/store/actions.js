@@ -1,11 +1,18 @@
 import axios from "axios";
 
-export const checkStates = () => (dispatch) => {
-		return dispatch({
-			type: 'CHECK_STATUS'
-		});
-	};
+export const cartStateSet = (cartState) => (dispatch) => {
+  console.log(cartState);
+  return dispatch({
+    type: "CART_STATE",
+    payload: cartState,
+  });
+};
 
+export const checkStates = () => (dispatch) => {
+  return dispatch({
+    type: "CHECK_STATUS",
+  });
+};
 
 export const loginAuth = (body) => async (dispatch) => {
   try {
@@ -48,10 +55,10 @@ export const getAllEventsCreated = (id) => async (dispatch) => {
   let eventsDB = await axios.get(`/eventsUsers/${id}`);
   console.log(eventsDB);
   return dispatch({
-    type: 'GET_ALL_EVENTS_CREATE',
-    payload: eventsDB.data
-  })
-}
+    type: "GET_ALL_EVENTS_CREATE",
+    payload: eventsDB.data,
+  });
+};
 
 export const getAllEvents = () => async (dispatch) => {
   function concat(array) {
@@ -111,28 +118,28 @@ export function searchLive(payload) {
 }
 
 export function userSignOut() {
-	return { type: "LOG_OUT" };
+  return { type: "LOG_OUT" };
 }
 
 export function addGoogleUser(currentUser) {
-	//con esta action me creo un usuario en la db y me loggea al mismo tiempo (soy crack lo se)
+  //con esta action me creo un usuario en la db y me loggea al mismo tiempo (soy crack lo se)
 
-	return async function (dispatch) {
-		try {
-			if (currentUser !== null && currentUser.hasOwnProperty('email')) {
-				var addToDb = await axios.post("/user/google", {
-					username: currentUser.displayName,
-					email: currentUser.email,
-					profile_picture: currentUser.photoURL,
-          password: currentUser.uid
-				});
-				return dispatch({
-					type: "LOGIN_GOOGLE",
-					payload: addToDb.data,
-				});
-			}
-		} catch (error) {
-			console.log(error);
-		}
-	};
+  return async function (dispatch) {
+    try {
+      if (currentUser !== null && currentUser.hasOwnProperty("email")) {
+        var addToDb = await axios.post("/user/google", {
+          username: currentUser.displayName,
+          email: currentUser.email,
+          profile_picture: currentUser.photoURL,
+          password: currentUser.uid,
+        });
+        return dispatch({
+          type: "LOGIN_GOOGLE",
+          payload: addToDb.data,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 }
