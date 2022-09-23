@@ -2,7 +2,7 @@ const { Users , Event} = require('../db')
 const jwt = require('jsonwebtoken')
 const {compare , encrypt} = require('../helpers/handleByCrypt')
 const authConfig = require('../config/auth')
-const uploadImage = require('../helpers/cloudinary');
+const {uploadImage, deleteImage} = require('../helpers/cloudinary');
 const fsExtra = require('fs-extra');
 
 // Ruta Login
@@ -71,9 +71,20 @@ const upDateUser = async (req, res) => {
 
 
         if(req.files?.image){
-            result = await uploadImage(req.files.image.tempFilePath);
-            await Users.update({profile_picture: result.secure_url},{where:{id: id}});
-            await fsExtra.unlink(req.files.image.tempFilePath);
+            if(!user.imageId){
+				result = await uploadImage(req.files.image.tempFilePath);
+				await Users.update({profile_picture: result.secure_url,
+									profile_picture_id: result.public_id},
+									{where:{id: id}});
+				await fsExtra.unlink(req.files.image.tempFilePath);
+			}else{
+				await deleteImage(user.imageId);
+				result = await uploadImage(req.files.image.tempFilePath);
+				await Users.update({profile_picture: result.secure_url,
+									profile_picture_id: result.public_id},
+									{where:{id: id}});
+				await fsExtra.unlink(req.files.image.tempFilePath);
+			}
         }
 
         user = await Users.findOne({where:{id: id}});
