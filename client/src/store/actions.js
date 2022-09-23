@@ -1,7 +1,6 @@
 import axios from "axios";
 
 export const cartStateSet = (cartState) => (dispatch) => {
-  console.log(cartState);
   return dispatch({
     type: "CART_STATE",
     payload: cartState,

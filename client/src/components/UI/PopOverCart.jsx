@@ -2,12 +2,23 @@ import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { cartStateSet } from "../../store/actions";
 
 export default function PopOverCart() {
+  const dispatch = useDispatch();
   const cartState = useSelector((state) => state.cartState);
-
   const [open, setOpen] = useState(cartState);
+
+  const user = {
+    // name: "Dog",
+  };
+
+  function handleClick() {
+    if (open === true) {
+      dispatch(cartStateSet(false));
+    }
+  }
 
   useEffect(() => {
     setOpen(cartState);
@@ -15,7 +26,7 @@ export default function PopOverCart() {
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={setOpen}>
+      <Dialog as="div" className="relative z-10" onClose={handleClick}>
         <div className="fixed inset-0" />
 
         <div className="fixed inset-0 overflow-hidden">
@@ -35,13 +46,13 @@ export default function PopOverCart() {
                     <div className="px-4 sm:px-6">
                       <div className="flex items-start justify-between">
                         <Dialog.Title className="text-lg font-medium text-gray-900">
-                          Panel title
+                          Tu Carrito {user.name ? user.name : "Invitado"}!
                         </Dialog.Title>
                         <div className="ml-3 flex h-7 items-center">
                           <button
                             type="button"
                             className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                            onClick={() => setOpen(false)}
+                            onClick={handleClick}
                           >
                             <span className="sr-only">Close panel</span>
                             <XMarkIcon className="h-6 w-6" aria-hidden="true" />
@@ -51,6 +62,7 @@ export default function PopOverCart() {
                     </div>
                     <div className="relative mt-6 flex-1 px-4 sm:px-6">
                       {/* Replace with your content */}
+                      <p className="m-2">Hi</p>
                       <div className="absolute inset-0 px-4 sm:px-6">
                         <div
                           className="h-full border-2 border-dashed border-gray-200"

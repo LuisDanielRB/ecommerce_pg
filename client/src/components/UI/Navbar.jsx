@@ -44,10 +44,8 @@ function Navbar() {
   function handleCartClick() {
     console.log(cartState);
     if (cartState === false) {
-      console.log("Dispatch false");
       dispatch(cartStateSet(true));
     } else {
-      console.log("Dispatch true");
       dispatch(cartStateSet(false));
     }
   }
