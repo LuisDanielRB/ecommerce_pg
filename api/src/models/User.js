@@ -35,6 +35,9 @@ module.exports = (sequelize) => {
     },
     profile_picture: {
       type: DataTypes.TEXT
+    },
+    profile_picture_id: {
+      type: DataTypes.TEXT
     }
     },
   {

@@ -33,6 +33,12 @@ module.exports = (sequelize) => {
     category: {
       type: DataTypes.ARRAY(DataTypes.STRING)
     },
+    image:{
+      type: DataTypes.STRING
+    },
+    imageId:{
+      type: DataTypes.STRING
+    },
     isActive: {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
