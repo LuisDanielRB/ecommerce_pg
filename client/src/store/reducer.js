@@ -31,12 +31,16 @@ if (!isValidFromLocalStorage) {
 }
 
 const initialState = {
+  // eventos
   events: [],
+  // existen?
   eventsDetail: {},
   eventsDB: [],
+  // eventos con filtrado
   categories: [],
   artists: [],
   places: [],
+  // --------------------
   searchLive: [],
   token: tokenFromLocalStorage,
   userId: userIdFromLocalStorage,
@@ -46,9 +50,10 @@ const initialState = {
   userRole: userRoleFromLocalStorage,
   isValid: isValidFromLocalStorage,
   eventsUsers: [],
+  // estados del carrito
   cartState: false,
+  cart: [],
 };
-
 
 function rootReducer(state = initialState, action) {
   switch (action.type) {
@@ -91,12 +96,14 @@ function rootReducer(state = initialState, action) {
         artists: action.payload.uniqueArtist,
         places: action.payload.uniquePlace,
       };
+
     case "GET_ALL_EVENTS_CREATE": {
       return {
         ...state,
         eventsUsers: action.payload,
       };
     }
+
     case "POST_EVENT":
       return {
         ...state,
@@ -147,6 +154,7 @@ function rootReducer(state = initialState, action) {
           userProfilePicture: action.payload.profile_picture,
           isValid: true,
       };
+
     case "CHECK_STATUS": {
       return {
         ...state,
@@ -159,6 +167,7 @@ function rootReducer(state = initialState, action) {
         cartState: action.payload,
       };
     }
+
     default:
       return state;
   }

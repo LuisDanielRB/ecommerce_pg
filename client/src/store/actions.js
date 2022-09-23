@@ -98,7 +98,6 @@ export const getAllEvents = () => async (dispatch) => {
 
 export const createEvent = (body) => async (dispatch) => {
   try {
-
     const data = await axios.post("/createEvent", body ,{
       headers: {
         "Content-Type": "application/json",
