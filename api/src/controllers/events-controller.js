@@ -26,9 +26,7 @@ const createEvent = async (req, res) => {
       imageId: result ? result.public_id : "undefined"
     });
     newEvent.setUser(userId);
-    res.json({
-      eventsCreated: newEvent,
-    });
+    res.json(newEvent);
   } catch (error) {
     console.log(error);
   }

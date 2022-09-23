@@ -98,7 +98,13 @@ export const getAllEvents = () => async (dispatch) => {
 
 export const createEvent = (body) => async (dispatch) => {
   try {
-    const data = await axios.post("/createEvent", body);
+
+    const data = await axios.post("/createEvent", body ,{
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + localStorage.getItem("token")
+      }
+    });
     return dispatch({
       type: "POST_EVENT",
       payload: data,
