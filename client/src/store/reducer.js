@@ -6,7 +6,7 @@ let userIdFromLocalStorage = localStorage.getItem("userId");
 if (!userIdFromLocalStorage) {
   userIdFromLocalStorage = null;
 }
-let userProfileImageFromLocalStorage = localStorage.getItem("userProfileImage");
+let userProfileImageFromLocalStorage = localStorage.getItem("userProfilePicture");
 if (!userProfileImageFromLocalStorage) {
   userProfileImageFromLocalStorage = null;
 }
@@ -43,7 +43,7 @@ const initialState = {
   // --------------------
   searchLive: [],
   token: tokenFromLocalStorage,
-  userId: JSON.parse(userIdFromLocalStorage),
+  userId: userIdFromLocalStorage,
   userName: userNameFromLocalStorage,
   userEmail: userEmailFromLocalStorage,
   userProfilePicture: userProfileImageFromLocalStorage,
@@ -62,12 +62,11 @@ function rootReducer(state = initialState, action) {
       localStorage.setItem("userId", action.payload.id);
       localStorage.setItem("userName", action.payload.username);
       localStorage.setItem("userEmail", action.payload.email);
-      localStorage.setItem("userProfileImage", action.payload.profile_picture);
+      localStorage.setItem("userProfilePicture", action.payload.profile_picture);
       localStorage.setItem("userRole", action.payload.status);
       localStorage.setItem("isValid", true);
       return {
         ...state,
-        currenteUser: {
           token: action.payload.token,
           userRole: action.payload.status,
           userId: action.payload.id,
@@ -75,7 +74,6 @@ function rootReducer(state = initialState, action) {
           userEmail: action.payload.email,
           userProfilePicture: action.payload.profile_picture,
           isValid: true,
-        },
       };
 
     case "POST_REGISTRO":
@@ -119,19 +117,23 @@ function rootReducer(state = initialState, action) {
       };
 
     case "LOG_OUT":
-      localStorage.setItem("isValid", false);
-      localStorage.setItem("userId", null);
-      localStorage.setItem("userRole", null);
-      localStorage.setItem("userEmail", null);
+      localStorage.removeItem("isValid");
+      localStorage.removeItem("userId");
+      localStorage.removeItem("userRole");
+      localStorage.removeItem("userEmail");
       localStorage.removeItem("token");
       localStorage.removeItem("isValid");
+      localStorage.removeItem("userProfilePicture")
+      localStorage.removeItem("userName");
       return {
         ...state,
-        token: "",
+        token: null,
         isValid: false,
         userId: null,
         userRole: null,
         userEmail: null,
+        userProfilePicture: null,
+        userName: null,
       };
 
     case "LOGIN_GOOGLE":
@@ -144,7 +146,6 @@ function rootReducer(state = initialState, action) {
       localStorage.setItem("isValid", true);
       return {
         ...state,
-        currenteUser: {
           token: action.payload.token,
           userRole: action.payload.status,
           userId: action.payload.id,
@@ -152,7 +153,6 @@ function rootReducer(state = initialState, action) {
           userEmail: action.payload.email,
           userProfilePicture: action.payload.profile_picture,
           isValid: true,
-        },
       };
 
     case "CHECK_STATUS": {

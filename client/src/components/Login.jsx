@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginAuth, checkStates } from "../store/actions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { GoogleButton } from 'react-google-button';
 import { UserAuth } from '../firebase/context';
 import { useEffect } from "react";
@@ -11,13 +11,21 @@ function Login() {
   const { googleSignIn , user , gitHubSignIn } = UserAuth();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const {token} = useSelector((state) => state)
   
 
   const [input, setInput] = useState({
     email: "",
     password: "",
   });
+
+  useEffect(()=> {
+    dispatch(checkStates())
+    if(user != null || token != null)  {
+      navigate('/')
+    } 
+   
+  },[user , token]); 
 
   function handleInputChange(e) {
     const { name, value } = e.target;
@@ -30,7 +38,6 @@ function Login() {
   const handleGoogleSignIn = async () => {
 		try {
 			await googleSignIn();
-      localStorage.setItem('isValid' , true);
 		} catch (error) {
 			console.log(error);
 		}
@@ -47,20 +54,13 @@ function Login() {
   async function handleSubmit(e) {
     e.preventDefault();
     dispatch(loginAuth(input));
-    dispatch(checkStates())
     setInput({
       email: "",
       password: "",
     });
 
-    return navigate("/home");
+    return navigate("/");
   }
-
-  useEffect(()=> {
-    if(user != null)  {
-      navigate('/')
-    }
-  },[user])
 
   return (
     <>

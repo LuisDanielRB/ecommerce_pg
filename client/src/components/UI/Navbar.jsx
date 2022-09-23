@@ -20,8 +20,9 @@ function classNames(...classes) {
 function Navbar() {
   const dispatch = useDispatch();
   const { logOut } = UserAuth();
-  const isValid = useSelector((state) => state.isValid);
-  const cartState = useSelector((state) => state.cartState);
+  const {isValid} = useSelector((state) => state);
+  const {userProfilePicture} = useSelector((state) => state);
+  const {cartState} = useSelector((state) => state);
 
   useEffect(() => {
     dispatch(checkStates());
@@ -136,7 +137,7 @@ function Navbar() {
                         <Menu.Button className="flex rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                           <span className="sr-only">Open user menu</span>
                           {isValid ? (
-                            <img className="h-8 w-8 rounded-full" alt="" />
+                            <img className="h-8 w-8 rounded-full" src={userProfilePicture} alt="" />
                           ) : (
                             <>
                               <button>Login</button>
