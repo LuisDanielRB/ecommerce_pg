@@ -1,30 +1,30 @@
-import { Fragment , useEffect} from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Menu, Popover, Transition } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
-import { userSignOut, checkStates } from '../../store/actions';
+import { userSignOut, checkStates, cartStateSet } from "../../store/actions";
 import { Link } from "react-router-dom";
-import { UserAuth } from '../../firebase/context';
+import { UserAuth } from "../../firebase/context";
+import PopOverCart from "./PopOverCart";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 function Navbar() {
-
   const dispatch = useDispatch();
-  const {logOut} = UserAuth()
-  const isValid = useSelector((state) => state.isValid)
+  const { logOut } = UserAuth();
+  const isValid = useSelector((state) => state.isValid);
+  const cartState = useSelector((state) => state.cartState);
 
+  useEffect(() => {
+    dispatch(checkStates());
+  }, [dispatch, isValid, cartState]);
 
-  useEffect(()=> {
-    dispatch(checkStates())
-  },[dispatch , isValid])
-  
   const handleClick = (e) => {
     e.preventDefault();
-    dispatch(userSignOut())
+    dispatch(userSignOut());
     logOut();
   };
 
@@ -41,8 +41,18 @@ function Navbar() {
     { name: "Dashboard", href: "/private/admindashboard" },
   ];
 
+  function handleCartClick() {
+    console.log(cartState);
+    if (cartState === false) {
+      dispatch(cartStateSet(true));
+    } else {
+      dispatch(cartStateSet(false));
+    }
+  }
+
   return (
     <>
+      <PopOverCart />
       {/* When the mobile menu is open, add `overflow-hidden` to the `body` element to prevent double scrollbars */}
       <Popover
         as="header"
@@ -107,6 +117,7 @@ function Navbar() {
                 </div>
                 <div className="hidden lg:flex lg:items-center lg:justify-end xl:col-span-4">
                   <a
+                    onClick={handleCartClick}
                     href="#"
                     className="ml-5 flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                   >
@@ -120,10 +131,7 @@ function Navbar() {
                         <Menu.Button className="flex rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                           <span className="sr-only">Open user menu</span>
                           {isValid ? (
-                            <img
-                              className="h-8 w-8 rounded-full"
-                              alt=""
-                            />
+                            <img className="h-8 w-8 rounded-full" alt="" />
                           ) : (
                             <>
                               <button>Login</button>
