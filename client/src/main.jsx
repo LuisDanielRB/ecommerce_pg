@@ -13,19 +13,18 @@ axios.defaults.baseURL =
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-        <Suspense
+    <Suspense
       fallback={
         <>
           <Loading />
         </>
       }
-      >
+    >
       <Provider store={store}>
         <AuthContextProvider>
-        <App />
+          <App />
         </AuthContextProvider>
       </Provider>
-      </Suspense>
-
+    </Suspense>
   </React.StrictMode>
 );
