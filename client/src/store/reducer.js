@@ -39,7 +39,7 @@ const initialState = {
     places: [],
     searchLive: [],
     token: tokenFromLocalStorage,
-    userId: userIdFromLocalStorage,
+    userId: JSON.parse(userIdFromLocalStorage),
     userName: userNameFromLocalStorage,
     userEmail: userEmailFromLocalStorage,
     userProfilePicture: userProfileImageFromLocalStorage,

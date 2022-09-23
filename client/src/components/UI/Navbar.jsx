@@ -16,11 +16,9 @@ function Navbar() {
   const dispatch = useDispatch();
   const {logOut} = UserAuth()
   const isValid = useSelector((state) => state.isValid)
-
-
   useEffect(()=> {
     dispatch(checkStates())
-  },[dispatch , isValid])
+  },[isValid])
   
   const handleClick = (e) => {
     e.preventDefault();

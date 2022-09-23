@@ -30,6 +30,7 @@ function Login() {
   const handleGoogleSignIn = async () => {
 		try {
 			await googleSignIn();
+      localStorage.setItem('isValid' , true);
 		} catch (error) {
 			console.log(error);
 		}

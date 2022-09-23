@@ -13,8 +13,6 @@ const Events = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const eventos = useSelector((state) => state.events)
-  const {eventsUsers} = useSelector((state) => state)
-  const {userId} = useSelector((state) => state)
   const categories = useSelector((state) => state.categories)
   const artists = useSelector((state) => state.artists)
   const place = useSelector((state) => state.places)
@@ -26,9 +24,7 @@ const Events = () => {
  
   useEffect(() => {
       dispatch(getAllEvents())
-      dispatch(getAllEventsCreated(userId))
       getFiltered()
-      // searching()
   },[dispatch, filters])
 
 
@@ -181,21 +177,11 @@ const Events = () => {
           eventos?.map((el) => {
           return (
             <div key={el.id}>
-                  <EventCards key={el.id} description={el.description} id={el.id} price={el.price}  brand={el.brand} title={el.title} stock={el.stock}/>
+                  <EventCards image={el.image} key={el.id} description={el.description} id={el.id} price={el.price}  brand={el.brand} title={el.title} stock={el.stock}/>
                   </div>
           )
         })
         }
-        {
-          eventsUsers?.map((el) => {
-            return (
-              <div key={el.id}>
-                <EventCards key={el.id} description={el.description} id={el.id} price={el.price}  brand={el.brand} title={el.title} stock={el.stock}/>
-              </div>
-            )
-          })
-        }
-
         <Footer />
     </>
   )
