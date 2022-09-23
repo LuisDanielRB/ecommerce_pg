@@ -42,6 +42,7 @@ const CardDetail = () => {
               <p className='font-extrabold text-xl m-3'>Date: {eventDetail && eventDetail.date}</p>
               <p className='font-extrabold text-xl m-3'>Price: {"$" + eventDetail.price}</p>
               <p className='font-extrabold text-xl m-3'>Stock: {eventDetail && eventDetail.stock}</p>
+              <img src={eventDetail.image} alt="" />
             </div>
             <Link to="/private/cart">
               <button className='bg-gray-200 w-full pl-8 mt-60 text-left h-10 rounded-b-lg'>Comprar tu boleto</button>

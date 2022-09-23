@@ -39,7 +39,7 @@ const initialState = {
   places: [],
   searchLive: [],
   token: tokenFromLocalStorage,
-  userId: userIdFromLocalStorage,
+  userId: JSON.parse(userIdFromLocalStorage),
   userName: userNameFromLocalStorage,
   userEmail: userEmailFromLocalStorage,
   userProfilePicture: userProfileImageFromLocalStorage,
@@ -48,6 +48,7 @@ const initialState = {
   eventsUsers: [],
   cartState: false,
 };
+
 
 function rootReducer(state = initialState, action) {
   switch (action.type) {

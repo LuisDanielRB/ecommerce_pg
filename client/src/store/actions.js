@@ -39,7 +39,6 @@ export const registerAuth = (body) => async (dispatch) => {
 
 export const getEventDetail = (id) => async (dispatch) => {
   try {
-    console.log(id);
     let eventsDB = await axios.get(`/eventsDB/${id}`);
     return dispatch({
       type: "GET_EVENT_DETAIL",

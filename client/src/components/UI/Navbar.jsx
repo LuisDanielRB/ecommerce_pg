@@ -22,6 +22,7 @@ function Navbar() {
     dispatch(checkStates());
   }, [dispatch, isValid, cartState]);
 
+
   const handleClick = (e) => {
     e.preventDefault();
     dispatch(userSignOut());
