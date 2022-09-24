@@ -21,6 +21,6 @@ router.post("/payment", mercadopagoPayment);
 router.delete("/events/:id", deleteEvents);
 router.get("/eventsDB/:id", getEventsDetailDb);
 router.get("/eventsUsers/:id", getEventsForUsers);
-router.post("/email", sendMailWelcome);
+
 
 module.exports = router;
