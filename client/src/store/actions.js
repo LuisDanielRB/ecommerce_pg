@@ -49,9 +49,8 @@ export const getEventDetail = (id) => async (dispatch) => {
   }
 };
 
-export const getAllEventsCreated = (id) => async (dispatch) => {
-  let eventsDB = await axios.get(`/eventsUsers/${id}`);
-  console.log(eventsDB);
+export const getAllEventsCreated = () => async (dispatch) => {
+  let eventsDB = await axios.get(`/eventsUsers`);
   return dispatch({
     type: "GET_ALL_EVENTS_CREATE",
     payload: eventsDB.data,

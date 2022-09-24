@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import EventCards from "./UI/EventCards";
+import EventCardsDB from "./UI/EventCardDB";
 import Footer from "./UI/Footer";
 import Navbar from "./UI/Navbar";
 import { useState } from "react";
@@ -12,6 +13,7 @@ const Events = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const eventos = useSelector((state) => state.events);
+  const {eventsUsers} = useSelector((state) => state)
   const categories = useSelector((state) => state.categories);
   const artists = useSelector((state) => state.artists);
   const place = useSelector((state) => state.places);
@@ -22,9 +24,10 @@ const Events = () => {
     place: "-",
   });
   const [searchFilter, setSearchFilter] = useState();
-
+console.log(eventsUsers)
   useEffect(() => {
     dispatch(getAllEvents());
+    dispatch(getAllEventsCreated())
     getFiltered();
   }, [dispatch, filters]);
 
@@ -219,6 +222,7 @@ const Events = () => {
       ) : (
         <div className="mx-8">
           <EventCards eventos={eventos} />
+          <EventCardsDB eventsUsers={eventsUsers} />
         </div>
       )}
 
