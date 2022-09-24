@@ -4,6 +4,13 @@ const {compare , encrypt} = require('../helpers/handleByCrypt')
 const authConfig = require('../config/auth')
 const {uploadImage, deleteImage} = require('../helpers/cloudinary');
 const fsExtra = require('fs-extra');
+//EMAIL CONFIRMATION
+const { sendMailWelcome } = require('./email-controller');
+
+
+
+
+
 
 // Ruta Login
 const login = async (req, res , next) => {
@@ -130,7 +137,7 @@ const register = async (req, res , next) => {
 			profile_picture:
 				'https://media.istockphoto.com/vectors/man-reading-book-and-question-marks-vector-id1146072534?k=20&m=1146072534&s=612x612&w=0&h=sMqSGvSjf4rg1IjZD-6iHEJxHDHOw3ior1ZRmc-E1YQ=',
 		});
-        
+        sendMailWelcome(username, email)
 		res.json({
 			message: 'User created succesfully!',
 			id: newUser.id,
@@ -191,6 +198,8 @@ const googleSignIn = async (req, res, next) => {
 				authConfig.secret,
 				{ expiresIn: '12h' }
 			);
+			//AQUÍ EJECUTO LA FUNCIÓN DEL CORREO
+			sendMailWelcome(username, email)
 			res.status(200).json({
 				token: jwtToken,
 				status: create.status,
@@ -199,6 +208,7 @@ const googleSignIn = async (req, res, next) => {
 				username: create.username,
 				profile_picture: create.profile_picture,
 			});
+			
 		}
 	} catch (e) {
 		console.log(e);

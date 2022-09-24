@@ -20,8 +20,8 @@ const transporter = createTransport({
 
 
 
-const sendMailWelcome = async (req, res) => {
-    let {name, to} = req.body
+const sendMailWelcome = async (us, mail) => {
+    
 
     /* */
     const handlebarOptions = {
@@ -40,12 +40,12 @@ const sendMailWelcome = async (req, res) => {
 
     const mailOptions = {
         from: 'Prueba desde el servidor de NodeJS',
-        to: to,
+        to: mail,
         subject: 'Creando una prueba',
         template: 'email',
         context: {
-            user: name,
-            mail: to
+            user: us,
+            mail: mail
         }
     }
     
