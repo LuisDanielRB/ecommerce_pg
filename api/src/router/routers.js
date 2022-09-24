@@ -20,7 +20,7 @@ router.get("/eventsCreate/:id", getEventDetail);
 router.post("/payment", mercadopagoPayment);
 router.delete("/events/:id", deleteEvents);
 router.get("/eventsDB/:id", getEventsDetailDb);
-router.get("/eventsUsers/:id", getEventsForUsers);
+router.get("/eventsUsers", getEventsForUsers);
 
 
 module.exports = router;

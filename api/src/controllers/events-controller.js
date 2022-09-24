@@ -207,13 +207,9 @@ const getEventsDetailDb = async (req, res) => {
 };
 
 const getEventsForUsers = async (req, res) => {
-  const { id } = req.params;
+
   try {
-    const allEventsCreated = await EventsCreated.findAll({
-      where: {
-        userId: id,
-      },
-    });
+    const allEventsCreated = await EventsCreated.findAll();
     res.json(allEventsCreated);
   } catch (error) {
     console.log(error.message);
