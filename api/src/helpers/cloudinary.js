@@ -13,5 +13,8 @@ const uploadImage = async (filePath)=>{
         folder: 'Images-Proyect-Ecommerce'
     })
 }
+const deleteImage = async (imageId)=>{
+    return await cloudinary.uploader.destroy(imageId);
+}
 
-module.exports = uploadImage;
+module.exports = {uploadImage, deleteImage};

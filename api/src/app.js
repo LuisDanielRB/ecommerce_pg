@@ -1,44 +1,28 @@
-const express = require('express');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
-const morgan = require('morgan');
-require('./db.js');
+const express = require("express");
+const bodyParser = require("body-parser");
+const morgan = require("morgan");
+require("dotenv").config();
+require("./db.js");
 const server = express();
-const cors = require('cors');
-require('./middleware/auth');
-
-server.name = 'API';
-
+const cors = require("cors");
+require("./middleware/authWithJWT");
 server.use(cors());
-server.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
-server.use(bodyParser.json({ limit: '50mb' }));
-server.use(cookieParser());
-server.use(morgan('dev'));
-
+server.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
+server.use(bodyParser.json({ limit: "50mb" }));
+server.use(morgan("dev"));
 server.use((req, res, next) => {
-	//Si en la instruccion de abajo sacamos * y ponemos la url de la pagina sirve para produccion
-	res.header('Access-Control-Allow-Origin', '*'); // update to match the domain you will make the request from
-	res.header('Access-Control-Allow-Credentials', 'true');
-	res.header(
-		'Access-Control-Allow-Headers',
-		'Origin, X-Requested-With, Content-Type, Accept'
-	);
-	res.header(
-		'Access-Control-Allow-Methods',
-		'GET, POST, OPTIONS, PUT, DELETE'
-	);
-	next();
+  //Si en la instruccion de abajo sacamos * y ponemos la url de la pagina sirve para produccion
+  res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+  next();
 });
 
 // CONEXION DEL ROUTER
-server.use('/' , require('./router/routers'))
-
-// Error catching endware.
-server.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
-  const status = err.status || 500;
-  const message = err.message || err;
-  console.error(err);
-  res.status(status).send(message);
-});
+server.use("/", require("./router/routers"));
 
 module.exports = server;
