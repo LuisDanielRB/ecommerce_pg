@@ -174,7 +174,7 @@ function rootReducer(state = initialState, action) {
       }
 
     case "ADD_TO_CART":
-            console.log(action.payload)
+      console.log(action.payload)
       if (state.cart.length === 0) {
         console.log("ya estoy aqui")
         let item = {
@@ -208,11 +208,23 @@ function rootReducer(state = initialState, action) {
         ...state,
       }
 
-    // case 'DELETE_CART':
+    case 'DELETE_CART':
+      let deletes = state.cart.filter((item) => item.id != action.payload);
+      console.log(deletes)
+      return {
+        ...state,
+        cart: deletes,
+      }
 
-    // case 'INCREASE_QUANTITY':
+    case 'DECREASE_QUANTITY':
+      if (state.cart.quantity > 1) {
+        var dltOne = state.cart.quantity -= 1
+      }
+      return {
+        ...state,
+        cart: dltOne,
+      }
 
-    // case 'DECREASE_QUANTITY':
 
     default: return state
   };

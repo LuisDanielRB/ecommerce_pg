@@ -164,21 +164,16 @@ export function addCart(id) {
   }
 }
 
-// export function deleteCart(){
-//     return{
-//         type: "DELETE_CART"
-//     }
-// }
+export function DeleteCart(id) {
+  return {
+    type: "DELETE_CART",
+    payload: id,
+  }
+}
 
-// export function IncreaseQuantity(payload){
-//     return{
-//         type:'INCREASE_QUANTITY',
-//         payload
-//     }
-// }
-// export function DecreaseQuantity(payload){
-//     return{
-//         type:'DECREASE_QUANTITY',
-//         payload
-//     }
-// }
+export function decreaseQuantity(id) {
+  return {
+    type: "DECREASE_QUANTITY",
+    payload: id
+  }
+}
