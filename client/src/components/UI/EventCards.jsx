@@ -8,15 +8,20 @@ import {
     DocumentIcon,
     HeartIcon,
 } from "@heroicons/react/20/solid";
+import {userAddFavorite} from '../../store/actions'
 import { useDispatch, useSelector } from "react-redux";
 
 const EventCards = ({ eventos, id }) => {
-    //   const { image, id, price, stock, artist, description, date } = eventos;    const dispatch = useDispatch();
-    const dispatch = useDispatch();
 
+    const dispatch = useDispatch();
+    const {user} = useSelector((state) => state)
 
     function handleSubmit(e) {
         dispatch(addCart(e))
+    }
+
+    const addFavorite = (idEvent) => {
+        dispatch(userAddFavorite(user.id , idEvent));
     }
 
     return (
@@ -72,7 +77,7 @@ const EventCards = ({ eventos, id }) => {
                         </div>
                         <div className="-ml-px flex max-w-xs flex-1">
                             <button
-                                href="#"
+                                onClick={() => addFavorite(evento.id)} 
                                 className=" relative inline-flex  flex-1 items-center justify-center text-gray-700 hover:text-red-500"
                             ><HeartIcon /></button>
                         </div>

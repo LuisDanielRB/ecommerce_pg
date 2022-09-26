@@ -166,3 +166,30 @@ export function decreaseQuantity(id) {
   }
 }
 
+
+export function userAddFavorite(userId, idEvent) {
+	return async function () {
+		return await axios.put('/favorites', {
+			idUser: userId,
+			idEvent: idEvent,
+		});
+	};
+}
+
+export function userDeleteFavorite(userId, idEvent) {
+	return async function () {
+		return await axios.delete('/favorites', {
+			data: {
+				idUser: userId,
+				idEvent: idEvent,
+			},
+		});
+	};
+}
+
+export function userGetFavorite(userId) {
+	return async function (dispatch) {
+		let favorites = await axios.get(`/favorites/${userId}`);
+		return dispatch({ type: "USER_GET_FAVORITES", payload: favorites.data });
+	};
+}

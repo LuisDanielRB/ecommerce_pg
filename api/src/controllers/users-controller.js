@@ -49,7 +49,8 @@ const login = async (req, res , next) => {
 				id: userCheck.id,
 				email: userCheck.email,
 				username: userCheck.username,
-				profile_picture: userCheck.profile_picture
+				profile_picture: userCheck.profile_picture,
+				favorites: userCheck.favorites,
 			});
 
 		}
@@ -207,6 +208,7 @@ const googleSignIn = async (req, res, next) => {
 				email: create.email,
 				username: create.username,
 				profile_picture: create.profile_picture,
+				favorites: create.favorites,
 			});
 			
 		}
@@ -217,25 +219,99 @@ const googleSignIn = async (req, res, next) => {
 };
 
 
-const logout =  (req, res) => {
+// LOGICA PARA FAVORITOS
+const addFavorite = async (req, res) => {
+	let { idUser, idEvent } = req.body;
+	console.log(req.body);
+	try {
+		let user = await Users.findByPk(idUser)
+		console.log(user);
+		if (user) {
+			let newArray = user.favorites;
+			if (!newArray.includes(idEvent)) {
+				newArray.push(idEvent);
+			} else {
+				throw new Error('Invalid id');
+			}
+
+			await Users.upsert({
+				id: user.id,
+				email: user.email,
+				password: user.password,
+				username: user.username,
+				profile_picture: user.profile_picture,
+				status: user.status,
+				favorites: newArray,
+			});
+
+			return res.send('Added id');
+		} else {
+			throw new Error('Invalid user');
+		}
+	} catch (error) {
+		res.status(400).json(error.message);
+	}
+};
+
+const deleteFavorite = async (req, res) => {
+	let { idUser, idEvent } = req.body;
 
 	try {
-	   req.logOut();
-		res.clearCookie('session.sig', { path: '/' });
-		res.clearCookie('session', { path: '/' });
-		res.redirect('/');
-		
+		let user = await Users.findByPk(idUser);
+
+		if (user) {
+			let newArray = user.favorites;
+			if (newArray.includes(idEvent)) {
+				newArray = newArray.filter((e) => e !== idEvent);
+			} else {
+				throw new Error('Invalid id');
+			}
+
+			await Users.upsert({
+				id: user.id,
+				email: user.email,
+				password: user.password,
+				username: user.username,
+				profile_picture: user.profile_picture,
+				status: user.status,
+				favorites: newArray,
+			});
+
+			res.send('Id removed');
+		} else {
+			throw new Error('Invalid user');
+		}
 	} catch (error) {
-		console.log(error);
+		res.status(400).json(error.message);
 	}
-}
+};
+
+const getFavorite = async (req, res) => {
+	let { idUser } = req.params;
+
+	try {
+		let user = await Users.findByPk(idUser);
+
+		if (user) {
+			let response = user.favorites;
+			res.send(response);
+		} else {
+			throw new Error('Invalid user');
+		}
+	} catch (error) {
+		res.status(400).json(error.message);
+	}
+};
+
 
 
 module.exports = {
     register,
     login,
     getUsers,
-    logout,
 	upDateUser,
-	googleSignIn
+	googleSignIn,
+	addFavorite,
+	deleteFavorite,
+	getFavorite
 }
