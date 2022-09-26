@@ -167,6 +167,7 @@ function rootReducer(state = initialState, action) {
         cartState: action.payload,
       };
     }
+
     case 'CLEAN_DETAIL':
       return {
         ...state,
@@ -231,3 +232,4 @@ function rootReducer(state = initialState, action) {
 };
 
 export default rootReducer;
+

@@ -7,33 +7,6 @@ import { addCart, cartStateSet, decreaseQuantity, DeleteCart } from "../../store
 import { MinusCircleIcon} from "@heroicons/react/20/solid";
 
 // TODO: Remplazar products por el estado global del carrito
-const products = [
-  {
-    id: 1,
-    name: "Throwback Hip Bag",
-    href: "#",
-    color: "Salmon",
-    price: "$90.00",
-    quantity: 1,
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
-    imageAlt:
-      "Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
-  },
-  {
-    id: 2,
-    name: "Medium Stuff Satchel",
-    href: "#",
-    color: "Blue",
-    price: "$32.00",
-    quantity: 1,
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
-    imageAlt:
-      "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
-  },
-  // More products...
-];
 
 export default function PopOverCart({ handleSubmit }) {
   const dispatch = useDispatch();
@@ -61,8 +34,8 @@ export default function PopOverCart({ handleSubmit }) {
   }
 
   //con esto quitamos elementos individualmente del Carrito
-  function handleDeleteOne(id) {
-    dispatch(decreaseQuantity(id))
+  function handleDeleteOne(item) {
+    dispatch(decreaseQuantity(item))
   }
 
   //averiguamos el totalPrice
@@ -154,7 +127,7 @@ export default function PopOverCart({ handleSubmit }) {
                                   </div>
                                   <div className="flex  items-center justify-between ">
                                       <p className="text-gray-500">
-                                        <MinusCircleIcon onClick={() => handleDeleteOne(item.id)}  />
+                                        <MinusCircleIcon onClick={() => handleDeleteOne(item)}  />
                                       Qty: {item.quantity}
                                         <PlusCircleIcon onClick={() => handleSubmit(item)} />
                                       </p>

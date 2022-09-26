@@ -49,9 +49,9 @@ export const getEventDetail = (id) => async (dispatch) => {
   }
 };
 
-export const getAllEventsCreated = (id) => async (dispatch) => {
-  let eventsDB = await axios.get(`/eventsUsers/${id}`);
-  console.log(eventsDB);
+
+export const getAllEventsCreated = () => async (dispatch) => {
+  let eventsDB = await axios.get(`/eventsUsers`);
   return dispatch({
     type: "GET_ALL_EVENTS_CREATE",
     payload: eventsDB.data,
@@ -98,7 +98,7 @@ export const getAllEvents = () => async (dispatch) => {
 
 export const createEvent = (body) => async (dispatch) => {
   try {
-    const data = await axios.post("/createEvent", body, {
+    const data = await axios.post("/createEvent", body ,{
       headers: {
         "Content-Type": "application/json",
         "Authorization": "Bearer " + localStorage.getItem("token")
@@ -125,8 +125,6 @@ export function userSignOut() {
 }
 
 export function addGoogleUser(currentUser) {
-  //con esta action me creo un usuario en la db y me loggea al mismo tiempo (soy crack lo se)
-
   return async function (dispatch) {
     try {
       if (currentUser !== null && currentUser.hasOwnProperty("email")) {
@@ -177,3 +175,4 @@ export function decreaseQuantity(id) {
     payload: id
   }
 }
+

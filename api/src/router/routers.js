@@ -7,6 +7,7 @@ const {fileUpload} = require('../helpers/fileUpload')
 const { sendMailWelcome } = require('../controllers/email-controller');
 const passport = require("passport");
 
+
 router.post("/user/google", googleSignIn);
 router.post("/login", login);
 router.post("/register", register);
@@ -20,7 +21,11 @@ router.get("/eventsCreate/:id", getEventDetail);
 router.post("/payment", mercadopagoPayment);
 router.delete("/events/:id", deleteEvents);
 router.get("/eventsDB/:id", getEventsDetailDb);
-router.get("/eventsUsers/:id", getEventsForUsers);
+router.get("/eventsUsers", getEventsForUsers);
 
 
 module.exports = router;
+
+
+
+

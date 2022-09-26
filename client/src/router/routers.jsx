@@ -12,4 +12,6 @@ export const PrivateRoute = {
   EVENTDETAIL: "events/:id",
   CART: "cart",
   ADMIN_DASHBOARD: "admindashboard",
+
 };
+
