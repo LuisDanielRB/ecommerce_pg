@@ -11,7 +11,7 @@ function Login() {
   const { googleSignIn , user , gitHubSignIn } = UserAuth();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const {token} = useSelector((state) => state)
+  const token = useSelector((state) => state.user)
   
 
   const [input, setInput] = useState({

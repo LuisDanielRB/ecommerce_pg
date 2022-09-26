@@ -54,7 +54,8 @@ export default function PopOverCart({ handleSubmit }) {
   const sendCart  = async () => {
     try {
       let res = await axios.post('/payment' , {price})
-      navigate(`../${res.data}`, { replace: true })
+      console.log(res);
+      window.location = res.data
     } catch (error) {
       console.log(error);
     }
