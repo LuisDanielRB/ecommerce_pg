@@ -108,10 +108,12 @@ const deleteEvents = async (req, res) => {
 };
 
 const getEvents = async (req, res) => {
-  const allEvents = await Event.findAll();
+  const events = await Event.findAll();
+  const eventsCreated = await EventsCreated.findAll();
+
   const data = JSON.parse(fs.readFileSync("dataBase.json", "utf8"));
   try {
-    res.status(200).json(data.concat(allEvents));
+    res.status(200).json(data.concat(eventsCreated));
   } catch (error) {
     console.log(error)
   }
