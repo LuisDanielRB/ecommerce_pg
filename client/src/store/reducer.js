@@ -35,7 +35,6 @@ const initialState = {
   events: [],
   // existen?
   eventsDetail: {},
-  eventsDB: [],
   // eventos con filtrado
   categories: [],
   artists: [],
@@ -49,7 +48,6 @@ const initialState = {
   userProfilePicture: userProfileImageFromLocalStorage,
   userRole: userRoleFromLocalStorage,
   isValid: isValidFromLocalStorage,
-  eventsUsers: [],
   // estados del carrito
   cartState: false,
   cart: [],
@@ -95,19 +93,6 @@ function rootReducer(state = initialState, action) {
         categories: action.payload.uniqueCAtegories,
         artists: action.payload.uniqueArtist,
         places: action.payload.uniquePlace,
-      };
-
-    case "GET_ALL_EVENTS_CREATE": {
-      return {
-        ...state,
-        eventsUsers: action.payload,
-      };
-    }
-
-    case "POST_EVENT":
-      return {
-        ...state,
-        eventsDB: action.payload,
       };
 
     case "SEARCH_LIVE":

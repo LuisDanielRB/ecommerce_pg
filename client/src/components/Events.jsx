@@ -5,7 +5,7 @@ import Footer from "./UI/Footer";
 import Navbar from "./UI/Navbar";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getAllEvents, getAllEventsCreated } from "../store/actions";
+import { getAllEvents} from "../store/actions";
 import { useNavigate } from "react-router-dom";
 
 const Events = () => {
@@ -29,7 +29,6 @@ const Events = () => {
 
   useEffect(() => {
     dispatch(getAllEvents());
-    dispatch(getAllEventsCreated())
     getFiltered();
   }, [dispatch, filters]);
 
