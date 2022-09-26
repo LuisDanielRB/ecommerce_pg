@@ -20,17 +20,18 @@ function classNames(...classes) {
 function Navbar() {
   const dispatch = useDispatch();
   const { logOut } = UserAuth();
-  const {isValid} = useSelector((state) => state);
-  const {userProfilePicture} = useSelector((state) => state);
+  const {user} = useSelector((state) => state);
   const {cartState} = useSelector((state) => state);
+
+  
 
   useEffect(() => {
     dispatch(checkStates());
-  }, [dispatch, isValid, cartState]);
+  }, [dispatch, user, cartState]);
 
   const handleClick = (e) => {
     e.preventDefault();
-    dispatch(userSignOut());
+    dispatch(userSignOut("user"));
     logOut();
   };
 
@@ -131,13 +132,13 @@ function Navbar() {
                     <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
                   </a>
 
-                  {isValid ? (
+                  {user ? (
                     <Menu as="div" className="relative ml-5 flex-shrink-0">
                       <div>
                         <Menu.Button className="flex rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                           <span className="sr-only">Open user menu</span>
-                          {isValid ? (
-                            <img className="h-8 w-8 rounded-full" src={userProfilePicture} alt="" />
+                          {user ? (
+                            <img className="h-8 w-8 rounded-full" src={user.profile_picture} alt="" />
                           ) : (
                             <>
                               <button>Login</button>

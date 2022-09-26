@@ -107,8 +107,11 @@ export function searchLive(payload) {
   };
 }
 
-export function userSignOut() {
-  return { type: "LOG_OUT" };
+export function userSignOut(datos) {
+  return {
+    type: "LOG_OUT",
+    payload: datos
+};
 }
 
 export function addGoogleUser(currentUser) {

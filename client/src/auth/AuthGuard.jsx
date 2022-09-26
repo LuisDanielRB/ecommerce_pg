@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
  
 const AuthGuard = () => {
   const {user} = UserAuth()
-  const auth = useSelector((state) => state.token)
+  const auth = useSelector((state) => state.user)
   return user != null || auth ? <Outlet /> : <Navigate replace to={PublicRoute.LOGIN} />;
 };
 

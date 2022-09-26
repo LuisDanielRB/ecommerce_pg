@@ -1,34 +1,4 @@
-let tokenFromLocalStorage = localStorage.getItem("token");
-if (!tokenFromLocalStorage) {
-  tokenFromLocalStorage = null;
-}
-let userIdFromLocalStorage = localStorage.getItem("userId");
-if (!userIdFromLocalStorage) {
-  userIdFromLocalStorage = null;
-}
-let userProfileImageFromLocalStorage = localStorage.getItem("userProfilePicture");
-if (!userProfileImageFromLocalStorage) {
-  userProfileImageFromLocalStorage = null;
-}
-
-let userRoleFromLocalStorage = localStorage.getItem("userRole");
-if (!userRoleFromLocalStorage) {
-  userRoleFromLocalStorage = null;
-}
-
-let userNameFromLocalStorage = localStorage.getItem("userName");
-if (!userNameFromLocalStorage) {
-  userNameFromLocalStorage = null;
-}
-
-let userEmailFromLocalStorage = localStorage.getItem("userEmail");
-if (!userEmailFromLocalStorage) {
-  userEmailFromLocalStorage = null;
-}
-let isValidFromLocalStorage = localStorage.getItem("isValid");
-if (!isValidFromLocalStorage) {
-  isValidFromLocalStorage = false;
-}
+import { persisLocalStorage, removeLocalStorage} from '../utils/index'
 
 const initialState = {
   // eventos
@@ -41,13 +11,8 @@ const initialState = {
   places: [],
   // --------------------
   searchLive: [],
-  token: tokenFromLocalStorage,
-  userId: userIdFromLocalStorage,
-  userName: userNameFromLocalStorage,
-  userEmail: userEmailFromLocalStorage,
-  userProfilePicture: userProfileImageFromLocalStorage,
-  userRole: userRoleFromLocalStorage,
-  isValid: isValidFromLocalStorage,
+  // Datos usuarios
+  user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null,
   // estados del carrito
   cartState: false,
   cart: [],
@@ -56,22 +21,10 @@ const initialState = {
 function rootReducer(state = initialState, action) {
   switch (action.type) {
     case "POST_LOGIN":
-      localStorage.setItem("token", action.payload.token);
-      localStorage.setItem("userId", action.payload.id);
-      localStorage.setItem("userName", action.payload.username);
-      localStorage.setItem("userEmail", action.payload.email);
-      localStorage.setItem("userProfilePicture", action.payload.profile_picture);
-      localStorage.setItem("userRole", action.payload.status);
-      localStorage.setItem("isValid", true);
+      persisLocalStorage('user' , action.payload)
       return {
         ...state,
-        token: action.payload.token,
-        userRole: action.payload.status,
-        userId: action.payload.id,
-        userName: action.payload.username,
-        userEmail: action.payload.email,
-        userProfilePicture: action.payload.profile_picture,
-        isValid: true,
+        user: action.payload,
       };
 
     case "POST_REGISTRO":
@@ -102,42 +55,17 @@ function rootReducer(state = initialState, action) {
       };
 
     case "LOG_OUT":
-      localStorage.removeItem("isValid");
-      localStorage.removeItem("userId");
-      localStorage.removeItem("userRole");
-      localStorage.removeItem("userEmail");
-      localStorage.removeItem("token");
-      localStorage.removeItem("isValid");
-      localStorage.removeItem("userProfilePicture")
-      localStorage.removeItem("userName");
+      removeLocalStorage(action.payload)
       return {
         ...state,
-        token: null,
-        isValid: false,
-        userId: null,
-        userRole: null,
-        userEmail: null,
-        userProfilePicture: null,
-        userName: null,
+        user: null
       };
 
     case "LOGIN_GOOGLE":
-      localStorage.setItem("token", action.payload.token);
-      localStorage.setItem("userId", action.payload.id);
-      localStorage.setItem("userName", action.payload.username);
-      localStorage.setItem("userEmail", action.payload.email);
-      localStorage.setItem("userProfileImage", action.payload.profile_picture);
-      localStorage.setItem("userRole", action.payload.status);
-      localStorage.setItem("isValid", true);
+      persisLocalStorage('user' , action.payload)
       return {
         ...state,
-        token: action.payload.token,
-        userRole: action.payload.status,
-        userId: action.payload.id,
-        userName: action.payload.username,
-        userEmail: action.payload.email,
-        userProfilePicture: action.payload.profile_picture,
-        isValid: true,
+        user: action.payload
       };
 
     case "CHECK_STATUS": {
@@ -160,7 +88,6 @@ function rootReducer(state = initialState, action) {
       }
 
     case "ADD_TO_CART":
-      console.log(action.payload)
       if (state.cart.length === 0) {
         console.log("ya estoy aqui")
         let item = {
