@@ -6,6 +6,7 @@ import {
     PhoneIcon,
     PlusIcon,
     DocumentIcon,
+    HeartIcon,
 } from "@heroicons/react/20/solid";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -13,7 +14,8 @@ const EventCards = ({ eventos, id }) => {
     //   const { image, id, price, stock, artist, description, date } = eventos;    const dispatch = useDispatch();
     const dispatch = useDispatch();
 
-   function handleSubmit(e) {
+
+    function handleSubmit(e) {
         dispatch(addCart(e))
     }
 
@@ -67,6 +69,12 @@ const EventCards = ({ eventos, id }) => {
                                 onClick={(e) => handleSubmit(evento)} value={id}
                                 className="relative inline-flex w-0 flex-1 items-center justify-center rounded-br-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500"
                             >Add to cart</button>
+                        </div>
+                        <div className="-ml-px flex max-w-xs flex-1">
+                            <button
+                                href="#"
+                                className=" relative inline-flex  flex-1 items-center justify-center text-gray-700 hover:text-red-500"
+                            ><HeartIcon /></button>
                         </div>
                     </div>
                 </li>
