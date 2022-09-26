@@ -206,25 +206,14 @@ const getEventsDetailDb = async (req, res) => {
   }
 };
 
-const getEventsForUsers = async (req, res) => {
-  try {
-    const allEventsCreated = await EventsCreated.findAll({
-      where: {
-        userId: id,
-      },
-    });
-  } catch (error) {
-    console.log(error.message);
-    res.send(error.message);
-  }
-};
-
 module.exports = {
   createEvent,
   getEvents,
   getEventDetail,
   getEventsDetailDb,
   deleteEvents,
-  getEventsForUsers,
   updateEvent,
 };
+
+
+

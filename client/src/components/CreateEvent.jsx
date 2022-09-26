@@ -8,7 +8,6 @@ function CreateEvent() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { userId } = useSelector((state) => state);
-  console.log(userId);
   const artistInput = useRef(null);
   const [error, setError] = useState({});
   const [artists, setArtists] = useState([]);
@@ -358,4 +357,6 @@ function CreateEvent() {
   );
 }
 
+
 export default CreateEvent;
+

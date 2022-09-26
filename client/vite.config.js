@@ -9,7 +9,3 @@ export default defineConfig({
     host: true,
   },
 });
-
-// EnvironmentPlugin(
-//   { API: "https://pfhenryg.herokuapp.com" },
-//   { defineOn: "import.meta.env" }

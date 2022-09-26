@@ -17,7 +17,9 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-function Navbar({count}) {
+
+function Navbar() {
+
   const dispatch = useDispatch();
   const { logOut } = UserAuth();
   const {user} = useSelector((state) => state);

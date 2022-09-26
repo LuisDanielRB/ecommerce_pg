@@ -1,5 +1,6 @@
 import { persisLocalStorage, removeLocalStorage } from '../utils/index'
 
+
 const initialState = {
   // eventos
   events: [],
@@ -21,7 +22,7 @@ const initialState = {
 function rootReducer(state = initialState, action) {
   switch (action.type) {
     case "POST_LOGIN":
-      persisLocalStorage('user', action.payload)
+      persisLocalStorage('user' , action.payload)
       return {
         ...state,
         user: action.payload,
@@ -147,9 +148,9 @@ function rootReducer(state = initialState, action) {
           cart: deletes
         }
       }
-
     default: return state
   };
 };
 
 export default rootReducer;
+

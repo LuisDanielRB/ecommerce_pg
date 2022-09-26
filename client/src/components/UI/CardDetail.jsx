@@ -99,4 +99,6 @@ export default CardDetail;
                   </a>
                 </div>
               </div> */
+
 }
+
