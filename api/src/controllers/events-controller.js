@@ -110,13 +110,18 @@ const deleteEvents = async (req, res) => {
 const getEvents = async (req, res) => {
   const allEvents = await Event.findAll();
   const data = JSON.parse(fs.readFileSync("dataBase.json", "utf8"));
-
-  if (allEvents.length === 0) {
-    const events = await Event.bulkCreate(data);
-    res.json(events);
-  } else {
-    res.json(allEvents);
+  try {
+    res.status(200).json(data.concat(allEvents));
+  } catch (error) {
+    console.log(error)
   }
+
+  // if (allEvents.length === 0) {
+  //   const events = await Event.bulkCreate(data);
+  //   res.json(events);
+  // } else {
+  //   res.json(allEvents);
+  // }
 };
 
 const getEventDetail = async (req, res, next) => {
