@@ -5,7 +5,7 @@ import Footer from "./UI/Footer";
 import Navbar from "./UI/Navbar";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getAllEvents} from "../store/actions";
+import { getAllEvents } from "../store/actions";
 import { useNavigate } from "react-router-dom";
 
 const Events = () => {
@@ -13,7 +13,7 @@ const Events = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const eventos = useSelector((state) => state.events);
-  const {eventsDB} = useSelector((state) => state)
+  const { eventsDB } = useSelector((state) => state);
   const categories = useSelector((state) => state.categories);
   const artists = useSelector((state) => state.artists);
   const place = useSelector((state) => state.places);
@@ -24,8 +24,6 @@ const Events = () => {
     place: "-",
   });
   const [searchFilter, setSearchFilter] = useState();
-
-
 
   useEffect(() => {
     dispatch(getAllEvents());
