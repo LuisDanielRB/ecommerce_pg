@@ -89,7 +89,6 @@ function rootReducer(state = initialState, action) {
 
     case "ADD_TO_CART":
       if (state.cart.length === 0) {
-        console.log("ya estoy aqui")
         let item = {
           id: action.payload.id,
           quantity: 1,
