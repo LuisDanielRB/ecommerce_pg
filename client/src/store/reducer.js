@@ -1,4 +1,5 @@
-import { persisLocalStorage, removeLocalStorage} from '../utils/index'
+import { persisLocalStorage, removeLocalStorage } from '../utils/index'
+
 
 const initialState = {
   // eventos
@@ -62,7 +63,7 @@ function rootReducer(state = initialState, action) {
       };
 
     case "LOGIN_GOOGLE":
-      persisLocalStorage('user' , action.payload)
+      persisLocalStorage('user', action.payload)
       return {
         ...state,
         user: action.payload
@@ -129,15 +130,24 @@ function rootReducer(state = initialState, action) {
       }
 
     case 'DECREASE_QUANTITY':
-      if (state.cart.quantity > 1) {
-        var dltOne = state.cart.quantity -= 1
+      let item = action.payload;
+      console.log(item)
+      if (item.quantity > 1) {
+        state.cart.map((item, key) => {
+          if (item.id === action.payload.id) {
+            state.cart[key].quantity--;
+          }
+        })
+        return {
+          ...state
+        }
+      } else {
+        let deletes = state.cart.filter((item) => item.id != action.payload);
+        return {
+          ...state,
+          cart: deletes
+        }
       }
-      return {
-        ...state,
-        cart: dltOne,
-      }
-
-
     default: return state
   };
 };

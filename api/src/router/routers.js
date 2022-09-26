@@ -23,7 +23,9 @@ router.get("/eventsDB/:id", getEventsDetailDb);
 
 
 
+
 module.exports = router;
+
 
 
 

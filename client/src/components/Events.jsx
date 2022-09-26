@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import EventCards from "./UI/EventCards";
-import EventCardsDB from "./UI/EventCardDB";
 import Footer from "./UI/Footer";
 import Navbar from "./UI/Navbar";
 import { useState } from "react";
@@ -227,4 +226,6 @@ const Events = () => {
     </>
   );
 };
+
 export default Events;
+

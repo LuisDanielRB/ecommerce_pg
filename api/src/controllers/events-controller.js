@@ -206,8 +206,6 @@ const getEventsDetailDb = async (req, res) => {
   }
 };
 
-
-
 module.exports = {
   createEvent,
   getEvents,
@@ -216,4 +214,6 @@ module.exports = {
   deleteEvents,
   updateEvent,
 };
+
+
 

@@ -1,15 +1,24 @@
 import React from "react";
-import { useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { addCart } from "../../store/actions";
+import EventCards from "./EventCards";
 
-export default function Cart({cart}) {
+export default function Cart() {
+    const dispatch = useDispatch()
+    const { events, cart } = useSelector((state) => state)
 
-    const {artist, image, price} = cart;
 
     return (
         <div className="">
             <h2>Shopping Cart</h2>
             <h3>Carrito:</h3>
-            <p>{artist}</p>
-        </div>
+            {events.map((e, id) => {
+                return (
+                    <span>
+                        <EventCards key={id} data={e} addCart={() => dispatch(addCart(e.id))} />
+                    </span>
+                )
+            })}
+        </div >
     )
 }

@@ -3,6 +3,7 @@ const { mercadopago } = require('../helpers/mercadopago')
 const mercadopagoPayment = async (req, res) => {
     const { price } = req.body
     console.log(price);
+
     try {
         let preference = {
             items: [
@@ -24,7 +25,6 @@ const mercadopagoPayment = async (req, res) => {
 
         mercadopago.preferences.create(preference)
             .then(function (response) {
-                console.log(response)
                 res.json(response.body.init_point);
             })
             .catch(function (error) {

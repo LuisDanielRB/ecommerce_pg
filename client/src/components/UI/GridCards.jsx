@@ -97,4 +97,6 @@ function GridCards({ eventos }) {
   );
 }
 
+
 export default GridCards;
+

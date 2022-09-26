@@ -17,13 +17,14 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
+
 function Navbar() {
+
   const dispatch = useDispatch();
   const { logOut } = UserAuth();
   const {user} = useSelector((state) => state);
   const {cartState} = useSelector((state) => state);
 
-  
 
   useEffect(() => {
     dispatch(checkStates());
@@ -131,7 +132,6 @@ function Navbar() {
                     <span className="sr-only">View notifications</span>
                     <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
                   </a>
-
                   {user ? (
                     <Menu as="div" className="relative ml-5 flex-shrink-0">
                       <div>
