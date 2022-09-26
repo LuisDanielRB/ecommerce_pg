@@ -5,6 +5,8 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addCart, cartStateSet, decreaseQuantity, DeleteCart } from "../../store/actions";
 import { MinusCircleIcon} from "@heroicons/react/20/solid";
+import { useNavigate , Navigate} from 'react-router-dom' 
+import axios from "axios";
 
 // TODO: Remplazar products por el estado global del carrito
 
@@ -17,6 +19,8 @@ export default function PopOverCart({ handleSubmit }) {
   const user = {
     // name: "Dog",
   };
+
+  const navigate = useNavigate();
 
   function handleClick() {
     if (open === true) {
@@ -45,6 +49,15 @@ export default function PopOverCart({ handleSubmit }) {
       price = (item.price + price) * item.quantity
     });
     setPrice(price);
+  }
+
+  const sendCart  = async () => {
+    try {
+      let res = await axios.post('/payment' , {price})
+      navigate(`../${res.data}`, { replace: true })
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   useEffect(() => {
@@ -159,12 +172,12 @@ export default function PopOverCart({ handleSubmit }) {
                         Shipping and taxes calculated at checkout.
                       </p>
                       <div className="mt-6">
-                        <a
-                          href="#"
+                        <button
+                          onClick={() => sendCart(price)}
                           className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                         >
                           Checkout
-                        </a>
+                        </button>
                       </div>
                       <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                         <p>

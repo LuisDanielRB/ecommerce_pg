@@ -10,22 +10,6 @@
     "category": ["Music Event"]
   },
   {
-    "image": "https://www.urosarioradio.co/images/contenidos/noticias/990e001e633b793d81b103b5b760abac.jpg",
-    "description": "The Two Queens",
-    "price": 2500,
-    "date": "24-09-2022",
-    "artist": [
-      "Paula Cantone",
-      "Victoria Aragon",
-      "Romina Maidana",
-      "Juan Lucero",
-      "Guillermo Alfaro"
-    ],
-    "place": "Colon Theater, CABA",
-    "stock": 2000,
-    "category": ["Cultural Event", "Social Event", "Teather"]
-  },
-  {
     "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBAXCm32QaZOy5vfxuQAP0OhkgSvhmSOtJYQ&usqp=CAU",
     "description": "Tennis Match",
     "price": 4100,
@@ -183,16 +167,6 @@
     "price": 413
   },
   {
-    "description": "ABBA The Concert at Hollywood Bowl",
-    "stock": 2022092,
-    "image": "https://images.sk-static.com/images/media/profile_images/artists/8726874/huge_avatar",
-    "place": "Hollywood Bowl",
-    "artist": ["ABBA The Concert"],
-    "date": "2022-09-23",
-    "category": ["Music Event"],
-    "price": 413
-  },
-  {
     "description": "ABBA The Concert at Hollywood Bow",
     "stock": 2022092,
     "image": "https://images.sk-static.com/images/media/profile_images/artists/8726874/huge_avatar",
@@ -253,46 +227,6 @@
     "price": 413
   },
   {
-    "description": "Jack Johnson at Hollywood Bowl",
-    "stock": 11,
-    "image": "https://images.sk-static.com/images/media/profile_images/artists/111365/huge_avatar",
-    "place": "Hollywood Bowl",
-    "artist": [
-      "Jack Johnson",
-      "Lake Street Dive",
-      "Ron Artis II",
-      "Thunderstorm Artis"
-    ],
-    "date": "2022-10-01",
-    "category": ["Music Event"],
-    "price": 413
-  },
-  {
-    "description": "Jack Johnson at Hollywood Bowl at 2022-10-02T18:00:00-0700",
-    "stock": 202,
-    "image": "https://images.sk-static.com/images/media/profile_images/artists/111365/huge_avatar",
-    "place": "Hollywood Bowl",
-    "artist": [
-      "Jack Johnson",
-      "Lake Street Dive",
-      "Ron Artis II",
-      "Thunderstorm Artis"
-    ],
-    "date": "2022-10-02",
-    "category": ["Music Event"],
-    "price": 413
-  },
-  {
-    "image": "https://www.collinsdictionary.com/images/full/concert_295115348_1000.jpg?version=4.0.276",
-    "description": "Concert",
-    "price": 1000,
-    "date": "20-09-2022",
-    "artist": ["TINI", "LALI", "PAULO LONDRA", "BAD BUUNY", "DADDY YANKEE"],
-    "place": "River Plate Stadium, CABA",
-    "stock": 20000,
-    "category": ["Music Event"]
-  },
-  {
     "image": "https://www.urosarioradio.co/images/contenidos/noticias/990e001e633b793d81b103b5b760abac.jpg",
     "description": "The Two Queens",
     "price": 2500,
@@ -307,25 +241,5 @@
     "place": "Colon Theater, CABA",
     "stock": 2000,
     "category": ["Cultural Event", "Social Event", "Teather"]
-  },
-  {
-    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBAXCm32QaZOy5vfxuQAP0OhkgSvhmSOtJYQ&usqp=CAU",
-    "description": "Tennis Match",
-    "price": 4100,
-    "date": "2-10-2022",
-    "artist": ["Martin Del Potro", "Rafael Nadal"],
-    "place": "Racket CLub, Buenos Aires",
-    "stock": 2300,
-    "category": ["Sporting Event", "Social Event"]
-  },
-  {
-    "image": "http://e00-ar-marca.uecdn.es/claro/assets/multimedia/imagenes/2019/09/16/15685961492865.jpg",
-    "description": "Soccer Match",
-    "price": 3500,
-    "date": "6-10-2022",
-    "artist": ["Team Boca Jr", "Team Estudiantes LP"],
-    "place": "Bombonera Stadium, Buenos Aires",
-    "stock": 54000,
-    "category": ["Sporting Event", "Social Event"]
   }
 ]

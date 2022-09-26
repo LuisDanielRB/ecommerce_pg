@@ -1,7 +1,8 @@
 const { mercadopago } = require('../helpers/mercadopago')
 
 const mercadopagoPayment = async (req, res) => {
-    const { totalPrice } = req.body
+    const { price } = req.body
+    console.log(price);
     try {
         let preference = {
             items: [
@@ -10,13 +11,13 @@ const mercadopagoPayment = async (req, res) => {
                     "description": "Con esta compra eres capaz de unirte a los eventos",
                     "category_id": "categoria123",
                     "quantity": 1,
-                    "unit_price": totalPrice
+                    "unit_price": price
                 }
             ],
             back_urls: {
                 failure: "/failure",
                 pending: "/pending",
-                success: "http://127.0.0.1:5173",
+                success: "http://localhost:5173/payment/success",
             },
             auto_return: "approved",
         };
@@ -24,7 +25,7 @@ const mercadopagoPayment = async (req, res) => {
         mercadopago.preferences.create(preference)
             .then(function (response) {
                 console.log(response)
-                res.json({ global: response.body.init_point });
+                res.json(response.body.init_point);
             })
             .catch(function (error) {
                 console.log(error);
