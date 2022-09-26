@@ -17,4 +17,6 @@ export default function Loading() {
   <div className='flex justify-center items-center h-screen '>
     <Lottie {...options}/>
   </div>)
+
 }
+

@@ -25,4 +25,6 @@ server.use((req, res, next) => {
 // CONEXION DEL ROUTER
 server.use("/", require("./router/routers"));
 
+
 module.exports = server;
+

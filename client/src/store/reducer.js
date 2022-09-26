@@ -67,13 +67,13 @@ function rootReducer(state = initialState, action) {
       localStorage.setItem("isValid", true);
       return {
         ...state,
-          token: action.payload.token,
-          userRole: action.payload.status,
-          userId: action.payload.id,
-          userName: action.payload.username,
-          userEmail: action.payload.email,
-          userProfilePicture: action.payload.profile_picture,
-          isValid: true,
+        token: action.payload.token,
+        userRole: action.payload.status,
+        userId: action.payload.id,
+        userName: action.payload.username,
+        userEmail: action.payload.email,
+        userProfilePicture: action.payload.profile_picture,
+        isValid: true,
       };
 
     case "POST_REGISTRO":
@@ -146,13 +146,13 @@ function rootReducer(state = initialState, action) {
       localStorage.setItem("isValid", true);
       return {
         ...state,
-          token: action.payload.token,
-          userRole: action.payload.status,
-          userId: action.payload.id,
-          userName: action.payload.username,
-          userEmail: action.payload.email,
-          userProfilePicture: action.payload.profile_picture,
-          isValid: true,
+        token: action.payload.token,
+        userRole: action.payload.status,
+        userId: action.payload.id,
+        userName: action.payload.username,
+        userEmail: action.payload.email,
+        userProfilePicture: action.payload.profile_picture,
+        isValid: true,
       };
 
     case "CHECK_STATUS": {
@@ -168,8 +168,68 @@ function rootReducer(state = initialState, action) {
       };
     }
 
-    default:
-      return state;
-  }
-}
+    case 'CLEAN_DETAIL':
+      return {
+        ...state,
+        eventsDetail: {},
+      }
+
+    case "ADD_TO_CART":
+      console.log(action.payload)
+      if (state.cart.length === 0) {
+        console.log("ya estoy aqui")
+        let item = {
+          id: action.payload.id,
+          quantity: 1,
+          name: action.payload.description,
+          price: action.payload.price,
+          image: action.payload.image,
+        }
+        state.cart.push(item);
+      } else {
+        let check = false;
+        state.cart.map((item, key) => {
+          if (item.id === action.payload.id) {
+            state.cart[key].quantity++;
+            check = true;
+          }
+        });
+        if (!check) {
+          let items2 = {
+            id: action.payload.id,
+            quantity: 1,
+            name: action.payload.description,
+            price: action.payload.price,
+            image: action.payload.image,
+          }
+          state.cart.push(items2);
+        }
+      }
+      return {
+        ...state,
+      }
+
+    case 'DELETE_CART':
+      let deletes = state.cart.filter((item) => item.id != action.payload);
+      console.log(deletes)
+      return {
+        ...state,
+        cart: deletes,
+      }
+
+    case 'DECREASE_QUANTITY':
+      if (state.cart.quantity > 1) {
+        var dltOne = state.cart.quantity -= 1
+      }
+      return {
+        ...state,
+        cart: dltOne,
+      }
+
+
+    default: return state
+  };
+};
+
 export default rootReducer;
+

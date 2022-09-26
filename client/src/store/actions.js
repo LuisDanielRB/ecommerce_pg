@@ -49,6 +49,7 @@ export const getEventDetail = (id) => async (dispatch) => {
   }
 };
 
+
 export const getAllEventsCreated = () => async (dispatch) => {
   let eventsDB = await axios.get(`/eventsUsers`);
   return dispatch({
@@ -124,8 +125,6 @@ export function userSignOut() {
 }
 
 export function addGoogleUser(currentUser) {
-  //con esta action me creo un usuario en la db y me loggea al mismo tiempo (soy crack lo se)
-
   return async function (dispatch) {
     try {
       if (currentUser !== null && currentUser.hasOwnProperty("email")) {
@@ -145,3 +144,35 @@ export function addGoogleUser(currentUser) {
     }
   };
 }
+
+export function cleanDetail() {
+  return function (dispatch) {
+    return dispatch({
+      type: "CLEAN_DETAIL",
+    })
+  }
+}
+
+export function addCart(id) {
+  return function (dispatch) {
+    return dispatch({
+      type: "ADD_TO_CART",
+      payload: id,
+    })
+  }
+}
+
+export function DeleteCart(id) {
+  return {
+    type: "DELETE_CART",
+    payload: id,
+  }
+}
+
+export function decreaseQuantity(id) {
+  return {
+    type: "DECREASE_QUANTITY",
+    payload: id
+  }
+}
+

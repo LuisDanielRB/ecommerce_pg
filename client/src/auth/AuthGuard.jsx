@@ -9,4 +9,6 @@ const AuthGuard = () => {
   return user != null || auth ? <Outlet /> : <Navigate replace to={PublicRoute.LOGIN} />;
 };
 
+
 export default AuthGuard;
+
