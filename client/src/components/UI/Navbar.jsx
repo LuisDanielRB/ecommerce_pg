@@ -1,18 +1,38 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Menu, Popover, Transition } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
-import { Bars3Icon, BellIcon, XMarkIcon, ShoppingCartIcon } from "@heroicons/react/24/outline";
-import { useSelector } from "react-redux";
+import {
+  Bars3Icon,
+  BellIcon,
+  XMarkIcon,
+  ShoppingCartIcon,
+} from "@heroicons/react/24/outline";
+import { useDispatch, useSelector } from "react-redux";
+import { userSignOut, checkStates, cartStateSet } from "../../store/actions";
 import { Link } from "react-router-dom";
+import { UserAuth } from "../../firebase/context";
+import PopOverCart from "./PopOverCart";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-function Navbar({ searchLive }) {
+function Navbar({count}) {
+  const dispatch = useDispatch();
+  const { logOut } = UserAuth();
+  const {user} = useSelector((state) => state);
+  const {cartState} = useSelector((state) => state);
 
-  const usuario = useSelector((state) => state.userLogin)
-  const count = useSelector((state) => state.numberCart);
+
+  useEffect(() => {
+    dispatch(checkStates());
+  }, [dispatch, user, cartState]);
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    dispatch(userSignOut("user"));
+    logOut();
+  };
 
   const navigation = [
     { name: "Dashboard", href: "#", current: true },
@@ -20,14 +40,25 @@ function Navbar({ searchLive }) {
     { name: "Teams", href: "#", current: false },
     { name: "Directory", href: "#", current: false },
   ];
+
   const userNavigation = [
     { name: "Your Profile", href: "#" },
     { name: "Settings", href: "#" },
     { name: "Log out", href: "#" },
+    { name: "Dashboard", href: "/private/admindashboard" },
   ];
+
+  function handleCartClick() {
+    if (cartState === false) {
+      dispatch(cartStateSet(true));
+    } else {
+      dispatch(cartStateSet(false));
+    }
+  }
 
   return (
     <>
+      <PopOverCart />
       {/* When the mobile menu is open, add `overflow-hidden` to the `body` element to prevent double scrollbars */}
       <Popover
         as="header"
@@ -66,7 +97,8 @@ function Navbar({ searchLive }) {
                             aria-hidden="true"
                           />
                         </div>
-                        <input onChange={(e) => searchLive(e)}
+                        <input
+                          onChange={(e) => searchLive(e)}
                           id="search"
                           name="search"
                           className="block w-full rounded-md border border-gray-300 bg-white py-2 pl-10 pr-3 text-sm placeholder-gray-500 focus:border-indigo-500 focus:text-gray-900 focus:placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
@@ -91,30 +123,25 @@ function Navbar({ searchLive }) {
                 </div>
                 <div className="hidden lg:flex lg:items-center lg:justify-end xl:col-span-4">
                   <a
+                    onClick={handleCartClick}
                     href="#"
                     className="ml-5 flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                   >
                     <span className="sr-only">View notifications</span>
-                    <BellIcon className="h-6 w-6" aria-hidden="true" />
+                    <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
                   </a>
-                  <a
-                    href="/private/cart"
-                    className="ml-5"
-                  >
-                    <ShoppingCartIcon className="h-6 w-6" aria-hidden="true"/>{count}
-                  </a>
-
-                  {/* Profile dropdown */}
-                  {usuario ?
+                  {user ? (
                     <Menu as="div" className="relative ml-5 flex-shrink-0">
                       <div>
                         <Menu.Button className="flex rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                           <span className="sr-only">Open user menu</span>
-                          <img
-                            className="h-8 w-8 rounded-full"
-                            src={usuario.profile_picture}
-                            alt=""
-                          />
+                          {user ? (
+                            <img className="h-8 w-8 rounded-full" src={user.profile_picture} alt="" />
+                          ) : (
+                            <>
+                              <button>Login</button>
+                            </>
+                          )}
                         </Menu.Button>
                       </div>
                       <Transition
@@ -127,24 +154,21 @@ function Navbar({ searchLive }) {
                         leaveTo="transform opacity-0 scale-95"
                       >
                         <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                          <Menu.Item >
+                          <Menu.Item>
                             {({ active }) => (
-                              <a
-                                onClick={() => {
-                                  localStorage.removeItem('jwt')
-                                  localStorage.removeItem('user')
-                                }}
-                                href="/home"
+                              <button
+                                onClick={handleClick}
+                                href="#"
                                 className={classNames(
                                   active ? "bg-gray-100" : "",
                                   "block py-2 px-4 text-sm text-gray-700"
                                 )}
                               >
                                 Logout
-                              </a>
+                              </button>
                             )}
                           </Menu.Item>
-                          <Menu.Item >
+                          <Menu.Item>
                             {({ active }) => (
                               <a
                                 onClick={() => null}
@@ -158,32 +182,49 @@ function Navbar({ searchLive }) {
                               </a>
                             )}
                           </Menu.Item>
+                          <Menu.Item>
+                            {({ active }) => (
+                              <a
+                                onClick={() => null}
+                                href="/private/admindashboard"
+                                className={classNames(
+                                  active ? "bg-gray-100" : "",
+                                  "block py-2 px-4 text-sm text-gray-700"
+                                )}
+                              >
+                                Admin Dashboard
+                              </a>
+                            )}
+                          </Menu.Item>
                         </Menu.Items>
                       </Transition>
-                    </Menu> :
+                    </Menu>
+                  ) : (
                     <div className="flex justify-center">
                       <div>
-                        <Link to={'/login'}
+                        <Link
+                          to={"/login"}
                           className="ml-6 inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         >
                           Login
                         </Link>
                       </div>
                       <div>
-                        <Link to={'/register'}
+                        <Link
+                          to={"/register"}
                           className="ml-6 inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         >
                           Sig In
                         </Link>
                       </div>
-                    </div>}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
 
-
             <Popover.Panel as="nav" className="lg:hidden" aria-label="Global">
-              <div className="mx-auto max-w-3xl space-y-1 px-2 pt-2 pb-3 sm:px-4">
+              {/* <div className="mx-auto max-w-3xl space-y-1 px-2 pt-2 pb-3 sm:px-4">
                 {navigation.map((item) => (
                   <a
                     key={item.name}
@@ -199,15 +240,15 @@ function Navbar({ searchLive }) {
                     {item.name}
                   </a>
                 ))}
-              </div>
+              </div> */}
               <div className="border-t border-gray-200 pt-4 pb-3">
                 <div className="mx-auto flex max-w-3xl items-center px-4 sm:px-6">
                   <div className="flex-shrink-0">
-                    {/* <img
+                    <img
                       className="h-10 w-10 rounded-full"
-                      src={user.imageUrl}
+                      // src={usuario.profile_picture}
                       alt=""
-                    /> */}
+                    />
                   </div>
                   <div className="ml-3">
                     <div className="text-base font-medium text-gray-800">
@@ -222,7 +263,7 @@ function Navbar({ searchLive }) {
                     className="ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                   >
                     <span className="sr-only">View notifications</span>
-                    <BellIcon className="h-6 w-6" aria-hidden="true" />
+                    <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
                 </div>
                 <div className="mx-auto mt-3 max-w-3xl space-y-1 px-2 sm:px-4">

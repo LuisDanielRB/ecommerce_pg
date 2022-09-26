@@ -1,135 +1,167 @@
-import axios from 'axios';
+import axios from "axios";
 
+export const cartStateSet = (cartState) => (dispatch) => {
+  return dispatch({
+    type: "CART_STATE",
+    payload: cartState,
+  });
+};
 
-export const loginAuth = body => async (dispatch) => {
-    console.log(body);
-    try {
-        let login = await axios.post("http://localhost:3000/login", body)
-        return dispatch({
-            type: 'POST_LOGIN',
-            payload: login
-        })
-    } catch (error) {
-        console.log(error)
-    }
-}
+export const checkStates = () => (dispatch) => {
+  return dispatch({
+    type: "CHECK_STATUS",
+  });
+};
 
-export const registerAuth = body => async (dispatch) => {
-    try {
-        let registro = await axios.post('http://localhost:3000/register', body)
-        return dispatch({
-            type: 'POST_REGISTRO',
-            payload: registro
-        })
-    } catch (error) {
-        console.log(error)
-    }
-}
+export const loginAuth = (body) => async (dispatch) => {
+  try {
+    let login = await axios.post("/login", body);
+    return dispatch({
+      type: "POST_LOGIN",
+      payload: login.data,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const registerAuth = (body) => async (dispatch) => {
+  try {
+    let registro = await axios.post("/register", body);
+    return dispatch({
+      type: "POST_REGISTRO",
+      payload: registro,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const getEventDetail = (id) => async (dispatch) => {
-    try {
-        let eventsDB = await axios.get(`http://localhost:3000/eventsDB/${id}`)
-        console.log(eventsDB)
-        return dispatch({
-            type: 'GET_EVENT_DETAIL',
-            payload: eventsDB.data
-        })
+  try {
+    let eventsDB = await axios.get(`/eventsDB/${id}`);
+    return dispatch({
+      type: "GET_EVENT_DETAIL",
+      payload: eventsDB.data,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-    } catch (error) {
-        console.log(error)
+export const getAllEvents = () => async (dispatch) => {
+  function concat(array) {
+    let newArray = [];
+    for (let i = 0; i < array.length; i++) {
+      newArray = newArray.concat(array[i]);
     }
-}
+    let uniqueCategories = [...new Set(newArray)];
+    return uniqueCategories;
+  }
 
-export const getAllEvents = () => async dispatch => {
+  try {
+    let getAllEvents = await axios.get("/events");
+    let datos = getAllEvents.data;
 
-    function concat(array) {
-        let newArray = []
-        for (let i = 0; i < array.length; i++) {
-            newArray = newArray.concat(array[i])
-        }
-        let uniqueCategories = [...new Set(newArray)]
-        return uniqueCategories
-    }
+    let categories = datos.map((el) => el.category);
+    let uniqueCAtegories = concat(categories);
 
-    try {
-        let getAllEvents = await axios.get('http://localhost:3000/events')
-        let datos = getAllEvents.data
+    let artist = datos.map((el) => el.artist);
+    let uniqueArtist = concat(artist);
 
-        let categories = datos.map((el) => el.category)
-        let uniqueCAtegories = concat(categories)
+    let place = datos.map((el) => el.place);
+    let uniquePlace = concat(place);
 
-        let artist = datos.map((el) => el.artist)
-        let uniqueArtist = concat(artist)
+    let newObj = {
+      datos,
+      uniqueCAtegories,
+      uniqueArtist,
+      uniquePlace,
+    };
+    return dispatch({
+      type: "GET_ALL_EVENTS",
+      payload: newObj,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-
-        let place = datos.map((el) => el.place)
-        let uniquePlace = concat(place)
-
-
-        let newObj = {
-            datos,
-            uniqueCAtegories,
-            uniqueArtist,
-            uniquePlace
-        }
-        return dispatch({
-            type: 'GET_ALL_EVENTS',
-            payload: newObj
-        })
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-export const createEvent = (body) => async dispatch => {
-    try {
-        const data = await axios.post("http://localhost:3000/createEvent", body);
-        return dispatch({
-            type: 'POST_EVENT',
-            payload: data
-        })
-    } catch (error) {
-        console.log(error)
-    }
-}
+export const createEvent = (body) => async (dispatch) => {
+  try {
+    const data = await axios.post("/createEvent", body ,{
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + localStorage.getItem("token")
+      }
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export function searchLive(payload) {
-    return {
-        type: "SEARCH_LIVE",
-        payload
+  return {
+    type: "SEARCH_LIVE",
+    payload,
+  };
+}
+
+export function userSignOut(datos) {
+  return {
+    type: "LOG_OUT",
+    payload: datos
+};
+}
+
+export function addGoogleUser(currentUser) {
+  return async function (dispatch) {
+    try {
+      if (currentUser !== null && currentUser.hasOwnProperty("email")) {
+        var addToDb = await axios.post("/user/google", {
+          username: currentUser.displayName,
+          email: currentUser.email,
+          profile_picture: currentUser.photoURL,
+          password: currentUser.uid,
+        });
+        return dispatch({
+          type: "LOGIN_GOOGLE",
+          payload: addToDb.data,
+        });
+      }
+    } catch (error) {
+      console.log(error);
     }
+  };
 }
 
 export function cleanDetail() {
-    return function (dispatch) {
-        return dispatch({
-            type: "CLEAN_DETAIL",
-        })
-    }
+  return function (dispatch) {
+    return dispatch({
+      type: "CLEAN_DETAIL",
+    })
+  }
 }
 
 export function addCart(id) {
-    return {
-        type: "ADD_TO_CART",
-        payload: id
-    }
-};
+  return function (dispatch) {
+    return dispatch({
+      type: "ADD_TO_CART",
+      payload: id,
+    })
+  }
+}
 
-// export function deleteCart(){
-//     return{
-//         type: "DELETE_CART"
-//     }
-// }
+export function DeleteCart(id) {
+  return {
+    type: "DELETE_CART",
+    payload: id,
+  }
+}
 
-// export function IncreaseQuantity(payload){
-//     return{
-//         type:'INCREASE_QUANTITY',
-//         payload
-//     }
-// }
-// export function DecreaseQuantity(payload){
-//     return{
-//         type:'DECREASE_QUANTITY',
-//         payload
-//     }
-// }
+export function decreaseQuantity(id) {
+  return {
+    type: "DECREASE_QUANTITY",
+    payload: id
+  }
+}

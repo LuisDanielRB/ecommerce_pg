@@ -1,13 +1,19 @@
-const { Users , EventsCreated} = require('../db')
+const { Users , Event} = require('../db')
 const jwt = require('jsonwebtoken')
 const {compare , encrypt} = require('../helpers/handleByCrypt')
 const authConfig = require('../config/auth')
-const uploadImage = require('../helpers/cloudinary');
+const {uploadImage, deleteImage} = require('../helpers/cloudinary');
 const fsExtra = require('fs-extra');
+//EMAIL CONFIRMATION
+const { sendMailWelcome } = require('./email-controller');
+
+
+
+
+
 
 // Ruta Login
 const login = async (req, res , next) => {
-	console.log(req.body)
     const { email, password } = req.body;
 	try {
             let userCheck = await Users.findOne({
@@ -72,9 +78,20 @@ const upDateUser = async (req, res) => {
 
 
         if(req.files?.image){
-            result = await uploadImage(req.files.image.tempFilePath);
-            await Users.update({profile_picture: result.secure_url},{where:{id: id}});
-            await fsExtra.unlink(req.files.image.tempFilePath);
+            if(!user.imageId){
+				result = await uploadImage(req.files.image.tempFilePath);
+				await Users.update({profile_picture: result.secure_url,
+									profile_picture_id: result.public_id},
+									{where:{id: id}});
+				await fsExtra.unlink(req.files.image.tempFilePath);
+			}else{
+				await deleteImage(user.imageId);
+				result = await uploadImage(req.files.image.tempFilePath);
+				await Users.update({profile_picture: result.secure_url,
+									profile_picture_id: result.public_id},
+									{where:{id: id}});
+				await fsExtra.unlink(req.files.image.tempFilePath);
+			}
         }
 
         user = await Users.findOne({where:{id: id}});
@@ -120,7 +137,7 @@ const register = async (req, res , next) => {
 			profile_picture:
 				'https://media.istockphoto.com/vectors/man-reading-book-and-question-marks-vector-id1146072534?k=20&m=1146072534&s=612x612&w=0&h=sMqSGvSjf4rg1IjZD-6iHEJxHDHOw3ior1ZRmc-E1YQ=',
 		});
-        
+        sendMailWelcome(username, email)
 		res.json({
 			message: 'User created succesfully!',
 			id: newUser.id,
@@ -138,16 +155,87 @@ const getUsers = async (req, res) => {
     res.json(allUsers)
 }
 
+const googleSignIn = async (req, res, next) => {
+	const { username, email, profile_picture, password } = req.body;
+	try {
+		const alreadyExists = await Users.findOne({ where: { email: email } });
+		if (alreadyExists) {
+			const jwtToken = jwt.sign(
+				{
+					//token creation
+					id: alreadyExists.id,
+					email: alreadyExists.email,
+					status: 'User',
+				},
+				authConfig.secret,
+				{ expiresIn: '12h' }
+			);
 
-const logout = async (req, res) => {
-    res.cookie('jwt' , '' , {maxAge: 1})
-    res.redirect('/login')
+			res.status(200).json({
+				token: jwtToken,
+				status: 'User',
+				id: alreadyExists.id,
+				email: alreadyExists.email,
+				username: alreadyExists.username,
+				profile_picture: profile_picture,
+				favorites: alreadyExists.favorites,
+			});
+		}
+		if (!alreadyExists) {
+			const create = await Users.create({
+				email: email,
+				username: username,
+				profile_picture: profile_picture,
+				password
+			});
+			const jwtToken = jwt.sign(
+				{
+					//token creation
+					id: create.id,
+					email: create.email,
+					status: create.status,
+				},
+				authConfig.secret,
+				{ expiresIn: '12h' }
+			);
+			//AQUÍ EJECUTO LA FUNCIÓN DEL CORREO
+			sendMailWelcome(username, email)
+			res.status(200).json({
+				token: jwtToken,
+				status: create.status,
+				id: create.id,
+				email: create.email,
+				username: create.username,
+				profile_picture: create.profile_picture,
+			});
+			
+		}
+	} catch (e) {
+		console.log(e);
+		next(e);
+	}
+};
+
+
+const logout =  (req, res) => {
+
+	try {
+	   req.logOut();
+		res.clearCookie('session.sig', { path: '/' });
+		res.clearCookie('session', { path: '/' });
+		res.redirect('/');
+		
+	} catch (error) {
+		console.log(error);
+	}
 }
+
 
 module.exports = {
     register,
     login,
     getUsers,
     logout,
-	upDateUser
+	upDateUser,
+	googleSignIn
 }
