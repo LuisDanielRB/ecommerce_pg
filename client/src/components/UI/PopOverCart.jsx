@@ -55,7 +55,9 @@ export default function PopOverCart({ handleSubmit }) {
     try {
       let res = await axios.post('/payment' , {price})
       console.log(res);
-      window.location = res.data
+      let params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,
+      width=0,height=0,left=-1000,top=-1000`;
+      window.open(res.data , 'HENRYECCOMERCE' , params)
     } catch (error) {
       console.log(error);
     }
