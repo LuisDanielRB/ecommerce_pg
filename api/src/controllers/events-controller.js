@@ -124,7 +124,7 @@ const getEvents = async (req, res) => {
   } catch (error) {
     console.log(error)
   }
-  
+}
 
 const getEventDetail = async (req, res, next) => {
   const { id } = req.params;
@@ -221,6 +221,3 @@ module.exports = {
   deleteEvents,
   updateEvent,
 };
-
-
-
