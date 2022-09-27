@@ -12,17 +12,16 @@ import {userAddFavorite} from '../../store/actions'
 import { useDispatch, useSelector } from "react-redux";
 
 const EventCards = ({ eventos, id }) => {
-
     const dispatch = useDispatch();
-    const {user} = useSelector((state) => state)
+    const {user} = useSelector((state) => state);
 
     function handleSubmit(e) {
-        dispatch(addCart(e))
+            dispatch(addCart(e)) 
     }
 
     const addFavorite = (idEvent) => {
         dispatch(userAddFavorite(user.id , idEvent));
-    }
+    }    
 
     return (
         <ul

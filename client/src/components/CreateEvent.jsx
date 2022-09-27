@@ -11,6 +11,7 @@ function CreateEvent() {
   const artistInput = useRef(null);
   const [error, setError] = useState({});
   const [artists, setArtists] = useState([]);
+  const [file, setFile] = useState();
   const [input, setInput] = useState({
     description: "",
     price: 0,
@@ -19,8 +20,10 @@ function CreateEvent() {
     place: "",
     stock: 0,
     category: [],
+    image: " ",
     userId,
   });
+  console.log(input)
 
   function validation(input) {
     let errors = {};
@@ -51,6 +54,11 @@ function CreateEvent() {
     return errors;
   }
 
+  function handleChange(e) {
+    console.log(e.target.files);
+    setFile(URL.createObjectURL(e.target.files[0]));
+  }
+
   function handleArtistDelete(e) {
     e.preventDefault();
     const { value } = e.target;
@@ -67,13 +75,13 @@ function CreateEvent() {
   function handleArtist(e) {
     e.preventDefault();
     setArtists([...artists, artistInput.current.value]);
-    setInput({ ...input, artist: [] });
+    setInput({ ...input, artist: [...input.artist] });
   }
 
   function handleInputArtist(e) {
     setInput({
       ...input,
-      artist: artists,
+      artist: [...artists, e.target.value]
     });
     setError(
       validation({
@@ -165,6 +173,7 @@ function CreateEvent() {
       place: "",
       stock: 0,
       category: [],
+      image: " ",
       userId: userId,
     });
     navigate("/events");
@@ -225,19 +234,19 @@ function CreateEvent() {
                 {error.artist && <p> ❌{error.artist}</p>}
                 {artists.length
                   ? artists.map((artist) => {
-                      return (
-                        <div key={artist}>
-                          {artist}
-                          <button
-                            type="button"
-                            value={artist}
-                            onClick={(e) => handleArtistDelete(e)}
-                          >
-                            X
-                          </button>
-                        </div>
-                      );
-                    })
+                    return (
+                      <div key={artist}>
+                        {artist}
+                        <button
+                          type="button"
+                          value={artist}
+                          onClick={(e) => handleArtistDelete(e)}
+                        >
+                          X
+                        </button>
+                      </div>
+                    );
+                  })
                   : null}
               </div>
               <div>
@@ -335,6 +344,23 @@ function CreateEvent() {
                 </div>
                 {error.date && <p> ❌{error.date}</p>}
               </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Image
+                </label>
+                <div className="mt-1">
+                  <input
+                    onChange={handleChange}
+                    id="image"
+                    type="file"
+                    name="image"
+                    required
+                    className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                  /><img src={file} />
+                </div>
+                {error.date && <p> ❌{error.date}</p>}
+              </div>
+
               <button
                 type="submit"
                 className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm bg-indigo-400"
