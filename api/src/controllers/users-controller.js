@@ -216,6 +216,34 @@ const googleSignIn = async (req, res, next) => {
 	}
 };
 
+const bannedUser = async (req, res)=>{
+	const {id} = req.params;
+
+	try {
+		if(!id)	res.status(404).json({message: 'id is require..'});
+		else{
+			let userBanned = await Users.findByPk(id);
+			
+			if(!userBanned) res.status(404).json({message: 'user not found..'});
+			else{
+				await Users.update({status: 'Banned'},{where: {id}});
+				res.status(200).json({message: 'successfully banned user..'});
+			}
+		}
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+const getBannedUsers = async (req, res)=>{
+	try {
+		let bannedUsers = await Users.findAll({where: {status: 'Banned'}});
+		if(!bannedUsers) res.status(400).json({message: 'no banned users'});
+		else res.status(200).json(bannedUser);
+	} catch (error) {
+		console.log(error);
+	}
+}
 
 const logout =  (req, res) => {
 
@@ -237,5 +265,7 @@ module.exports = {
     getUsers,
     logout,
 	upDateUser,
-	googleSignIn
+	googleSignIn,
+	bannedUser,
+	getBannedUsers
 }
