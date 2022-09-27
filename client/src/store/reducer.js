@@ -4,6 +4,7 @@ import { persisLocalStorage, removeLocalStorage } from '../utils/index'
 const initialState = {
   // eventos
   events: [],
+  eventsCopy: [],
   // existen?
   eventsDetail: {},
   // eventos con filtrado
@@ -17,6 +18,8 @@ const initialState = {
   // estados del carrito
   cartState: false,
   cart: [],
+  //favorites
+  allFavourites: localStorage.getItem('favorites') ? JSON.parse(localStorage.getItem('favorites')) : null,
 };
 
 function rootReducer(state = initialState, action) {
@@ -43,6 +46,7 @@ function rootReducer(state = initialState, action) {
     case "GET_ALL_EVENTS":
       return {
         ...state,
+        eventsCopy: action.payload.datos,
         events: action.payload.datos,
         categories: action.payload.uniqueCAtegories,
         artists: action.payload.uniqueArtist,
@@ -148,6 +152,21 @@ function rootReducer(state = initialState, action) {
           cart: deletes
         }
       }
+
+      case "USER_GET_FAVORITES":
+        let favoriteEvents = [];
+        let eventId = action.payload;
+  
+        favoriteEvents = state.eventsCopy.filter((e) =>
+          eventId.includes(e.id)
+        );
+        console.log(favoriteEvents)
+        persisLocalStorage('favorites' , favoriteEvents)
+        return {
+          ...state,
+          allFavourites: favoriteEvents
+        };
+
     default: return state
   };
 };

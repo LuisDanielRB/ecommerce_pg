@@ -38,7 +38,11 @@ module.exports = (sequelize) => {
     },
     profile_picture_id: {
       type: DataTypes.TEXT
-    }
+    },
+    favorites: {
+      type: DataTypes.JSON,
+      defaultValue: [],
+    },
     },
   {
     timestamps: false,
