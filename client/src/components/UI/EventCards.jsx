@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { addCart } from "../../store/actions";
+import { addToCart } from "../../store/actions";
 import {
     EnvelopeIcon,
     PhoneIcon,
@@ -11,13 +11,13 @@ import {
 import {userAddFavorite} from '../../store/actions'
 import { useDispatch, useSelector } from "react-redux";
 
-const EventCards = ({ eventos, id }) => {
+const EventCards = ({ eventos}) => {
 
     const dispatch = useDispatch();
     const {user} = useSelector((state) => state)
 
     function handleSubmit(e) {
-        dispatch(addCart(e))
+        dispatch(addToCart(e , user.id))
     }
 
     const addFavorite = (idEvent) => {
@@ -71,15 +71,16 @@ const EventCards = ({ eventos, id }) => {
                         </div>
                         <div className="-ml-px flex w-0 flex-1">
                             <button
-                                onClick={(e) => handleSubmit(evento)} value={id}
+                                onClick={(e) => handleSubmit(evento.id)} 
                                 className="relative inline-flex w-0 flex-1 items-center justify-center rounded-br-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500"
                             >Add to cart</button>
                         </div>
-                        <div className="-ml-px flex max-w-xs flex-1">
-                            <button
+                        <div className="-ml-px flex max-w-xs">
+                            {user ?  (<button
                                 onClick={() => addFavorite(evento.id)} 
-                                className=" relative inline-flex  flex-1 items-center justify-center text-gray-700 hover:text-red-500"
-                            ><HeartIcon /></button>
+                                className=" relative inline-flex  w-8 flex-1 items-center justify-center text-gray-700 hover:text-red-500"
+                            ><HeartIcon /></button>) : null}
+                           
                         </div>
                     </div>
                 </li>

@@ -3,9 +3,8 @@ import { Dialog, Transition } from "@headlessui/react";
 import { PlusCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addCart, cartStateSet, decreaseQuantity, DeleteCart } from "../../store/actions";
+import { addToCart, cartStateSet , delCart , getCart , removeOneEventFromCart} from "../../store/actions";
 import { MinusCircleIcon} from "@heroicons/react/20/solid";
-import { useNavigate , Navigate} from 'react-router-dom' 
 import axios from "axios";
 
 // TODO: Remplazar products por el estado global del carrito
@@ -13,48 +12,29 @@ import axios from "axios";
 export default function PopOverCart({ handleSubmit }) {
   const dispatch = useDispatch();
   const cartState = useSelector((state) => state.cartState);
-  const carts = useSelector((state) => state.cart);
+  const { user, cart ,summary } = useSelector((state) => state);
   const [open, setOpen] = useState(cartState);
   const [price, setPrice] = useState(0)
-  const user = {
-    // name: "Dog",
-  };
 
-  const navigate = useNavigate();
+    useEffect(() => {
+      dispatch(getCart(user.id))
+    },[dispatch])
+
 
   function handleClick() {
     if (open === true) {
       dispatch(cartStateSet(false));
     }
   }
-  //con esto borramos los eventos del carrito
+
   function handleDelete(id) {
-    dispatch(DeleteCart(id))
+    dispatch(delCart(id))
+    dispatch(removeOneEventFromCart(id, user.id))
   }
 
-  //con esto sumamos mas cantidad en el Carrito
-  function handleSubmit(e) {
-    dispatch(addCart(e))
-  }
-
-  //con esto quitamos elementos individualmente del Carrito
-
-  function handleDeleteOne(e) {
-    dispatch(decreaseQuantity(e))
-  }
-
-  //averiguamos el totalPrice
-  function total() {
-    let price = 0;
-    carts.map((item) => {
-      price = (item.price + price) * item.quantity
-    });
-    setPrice(price);
-  }
-
-  const sendCart  = async () => {
+  const sendCart  = async (summary) => {
     try {
-      let res = await axios.post('/payment' , {price})
+      let res = await axios.post('/payment' , {summary})
       let params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,
       width=0,height=0,left=-1000,top=-1000`;
       window.open(res.data , 'HENRYECCOMERCE' , params)
@@ -65,8 +45,8 @@ export default function PopOverCart({ handleSubmit }) {
 
   useEffect(() => {
     setOpen(cartState);
-    total()
-  }, [cartState, total]);
+ 
+  }, [cartState]);
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -120,7 +100,7 @@ export default function PopOverCart({ handleSubmit }) {
                             role="list"
                             className="-my-6 divide-y divide-gray-200"
                           >
-                            {carts.length === 0 ? <p className="mt-8 text-center text-xl">Cart is empty</p> : carts.map((item, key) => (
+                            {cart.length === 0 ? <p className="mt-8 text-center text-xl">Cart is empty</p> : cart.map((item, key) => (
                               <li key={item.id} className="flex py-6">
                                 <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                   <img
@@ -134,19 +114,14 @@ export default function PopOverCart({ handleSubmit }) {
                                   <div>
                                     <div className="flex justify-between text-base font-medium text-gray-900">
                                       <h3>
-                                        <a href={item.href}>
+                                        <a href="#">
                                           {item.description}
                                         </a>
                                       </h3>
-                                      <p className="ml-4">${(item.price * item.quantity)}.00</p>
+                                      <p className="ml-4">${(item.price)}.00</p>
                                     </div>
                                   </div>
                                   <div className="flex  items-center justify-between ">
-                                      <p className="text-gray-500">
-                                        <MinusCircleIcon onClick={() => handleDeleteOne(item)}  />
-                                      Qty: {item.quantity}
-                                        <PlusCircleIcon onClick={() => handleSubmit(item)} />
-                                      </p>
                                     <div>
                                       <button
                                         onClick={() => handleDelete(item.id)}
@@ -169,14 +144,14 @@ export default function PopOverCart({ handleSubmit }) {
                     <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
                       <div className="flex justify-between text-base font-medium text-gray-900">
                         <p>Subtotal</p>
-                        <p>${price}.00</p>
+                        <p>${summary}</p>
                       </div>
                       <p className="mt-0.5 text-sm text-gray-500">
                         Shipping and taxes calculated at checkout.
                       </p>
                       <div className="mt-6">
                         <button
-                          onClick={() => sendCart(price)}
+                          onClick={() => sendCart(summary)}
                           className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                         >
                           Checkout

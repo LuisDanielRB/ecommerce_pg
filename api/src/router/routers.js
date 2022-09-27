@@ -3,6 +3,7 @@ const router = express.Router();
 const {mercadopagoPayment} = require('../controllers/payments-controller')
 const {register, login, getUsers , addFavorite, upDateUser, googleSignIn  , deleteFavorite , getFavorite, bannedUser} = require('../controllers/users-controller')
 const {createEvent, getEvents, getEventDetail , getEventsDetailDb, deleteEvents , updateEvent} = require('../controllers/events-controller')
+const {getCart,getAllCarts,addEventToCart,removeOneEventFromCart,clearCart,checkoutCart} = require('../controllers/cart-controller')
 const {fileUpload} = require('../helpers/fileUpload')
 const passport = require("passport");
 
@@ -24,6 +25,13 @@ router.put('/favorites', addFavorite);
 router.delete('/favorites', deleteFavorite);
 router.get('/favorites/:idUser', getFavorite);
 
+//Cart 
+router.get('/cart', getCart);
+router.get('/allcart', getAllCarts);
+router.post('/addcart', addEventToCart);
+router.put('/deleteeventcart', removeOneEventFromCart);
+router.put('/clearcart', clearCart);
+router.put('/checkout',checkoutCart);
 
 module.exports = router;
 
