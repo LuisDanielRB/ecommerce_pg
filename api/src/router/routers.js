@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const {mercadopagoPayment} = require('../controllers/payments-controller')
-const {register, login, getUsers , addFavorite, upDateUser, googleSignIn  , deleteFavorite , getFavorite} = require('../controllers/users-controller')
+const {register, login, getUsers , addFavorite, upDateUser, googleSignIn  , deleteFavorite , getFavorite, bannedUser} = require('../controllers/users-controller')
 const {createEvent, getEvents, getEventDetail , getEventsDetailDb, deleteEvents , updateEvent} = require('../controllers/events-controller')
 const {fileUpload} = require('../helpers/fileUpload')
 const passport = require("passport");
@@ -11,6 +11,7 @@ router.post("/user/google", googleSignIn);
 router.post("/login", login);
 router.post("/register", register);
 router.put("/user/:id/profile", fileUpload, upDateUser);
+router.put("/user/:id/banned", bannedUser);
 router.post("/createEvent", fileUpload, createEvent);
 router.post("/event/:id/update", fileUpload, updateEvent);
 router.get("/users", getUsers);
