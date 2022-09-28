@@ -7,6 +7,7 @@ const {getCart,getAllCarts,addEventToCart,removeOneEventFromCart,clearCart,check
 const {fileUpload} = require('../helpers/fileUpload')
 const passport = require("passport");
 const {getReviewScore, postReviewScore, putReviewScore, deleteReviewScore} = require('../controllers/reviewScore-controller')
+const {adminDelete, adminPut} = require('../controllers/admin-controller')
 
 
 router.post("/user/google", googleSignIn);
@@ -28,7 +29,9 @@ router.get('/favorites/:idUser', getFavorite);
 router.get('/reviewScore/:eventId', getReviewScore);
 router.post('/reviewScore/:eventId', postReviewScore);
 router.put('/reviewScore/:eventId', putReviewScore);
-router.delete('/reviewScore/:eventId', deleteReviewScore)
+router.delete('/reviewScore/:eventId', deleteReviewScore);
+router.put('/admin', adminPut);
+router.put('/admin', adminDelete)
 
 //Cart 
 router.get('/cart', getCart);
