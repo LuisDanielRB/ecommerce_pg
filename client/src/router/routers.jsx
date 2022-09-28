@@ -4,6 +4,7 @@ export const PublicRoute = {
   HOME: "home",
   EVENTS: "events",
   LOGINSUCCESS: "login/success",
+  PASSWORDRECOVERY: 'passwordRecovery'
 };
 
 export const PrivateRoute = {
