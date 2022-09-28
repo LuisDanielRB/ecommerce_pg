@@ -221,6 +221,3 @@ module.exports = {
   deleteEvents,
   updateEvent,
 };
-
-
-
