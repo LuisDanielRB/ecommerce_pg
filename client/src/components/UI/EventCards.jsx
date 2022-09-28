@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { addCart } from "../../store/actions";
+import { addToCart } from "../../store/actions";
 import {
     EnvelopeIcon,
     PhoneIcon,
@@ -8,20 +8,20 @@ import {
     DocumentIcon,
     HeartIcon,
 } from "@heroicons/react/20/solid";
-import {userAddFavorite} from '../../store/actions'
+import { userAddFavorite } from '../../store/actions'
 import { useDispatch, useSelector } from "react-redux";
 
-const EventCards = ({ eventos, id }) => {
+const EventCards = ({ eventos }) => {
     const dispatch = useDispatch();
-    const {user} = useSelector((state) => state);
+    const { user } = useSelector((state) => state);
 
     function handleSubmit(e) {
-            dispatch(addCart(e)) 
+        dispatch(addToCart(e, user.id))
     }
 
     const addFavorite = (idEvent) => {
-        dispatch(userAddFavorite(user.id , idEvent));
-    }    
+        dispatch(userAddFavorite(user.id, idEvent));
+    }
 
     return (
         <ul
@@ -60,25 +60,27 @@ const EventCards = ({ eventos, id }) => {
                         />
                     </div>
                     <div className="-mt-px flex divide-x divide-gray-200">
-                        <div className="flex w-0 flex-1">
+                        <div className="-ml-px flex ">
                             <Link
                                 to={`/private/events/${evento.id}`}
-                                className="relative -mr-px inline-flex w-0 flex-1 items-center justify-center rounded-bl-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500"
+                                className="relative inline-flex w-32 flex-1 items-center justify-center rounded-bl-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500"
                             >
                                 <button>Detail</button>
                             </Link>
                         </div>
-                        <div className="-ml-px flex w-0 flex-1">
+                        <div className="-ml-px flex ">
                             <button
-                                onClick={(e) => handleSubmit(evento)} value={id}
-                                className="relative inline-flex w-0 flex-1 items-center justify-center rounded-br-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500"
+                                onClick={(e) => handleSubmit(evento.id)}
+                                className="relative inline-flex w-32 flex-1 items-center justify-center rounded-br-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500"
                             >Add to cart</button>
                         </div>
-                        <div className="-ml-px flex max-w-xs flex-1">
-                            <button
-                                onClick={() => addFavorite(evento.id)} 
-                                className=" relative inline-flex  flex-1 items-center justify-center text-gray-700 hover:text-red-500"
-                            ><HeartIcon /></button>
+                        <div className="-ml-px  flex">
+                            {user ? (<button
+                                onClick={() => addFavorite(evento.id)}
+                                className="w-10 flex-1 
+                                place-items-center text-gray-700 hover:text-red-500"
+                            ><HeartIcon /></button>) : null}
+
                         </div>
                     </div>
                 </li>

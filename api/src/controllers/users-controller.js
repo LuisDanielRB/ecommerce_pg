@@ -1,4 +1,4 @@
-const { Users , Event} = require('../db')
+const { Users , Event , Cart} = require('../db')
 const jwt = require('jsonwebtoken')
 const {compare , encrypt} = require('../helpers/handleByCrypt')
 const authConfig = require('../config/auth')
@@ -139,6 +139,8 @@ const register = async (req, res , next) => {
 				'https://media.istockphoto.com/vectors/man-reading-book-and-question-marks-vector-id1146072534?k=20&m=1146072534&s=612x612&w=0&h=sMqSGvSjf4rg1IjZD-6iHEJxHDHOw3ior1ZRmc-E1YQ=',
 		});
         sendMailWelcome(username, email)
+		let cartToAssociate = await Cart.create();
+		await cartToAssociate.setUser(newUser);
 		res.json({
 			message: 'User created succesfully!',
 			id: newUser.id,
@@ -201,6 +203,8 @@ const googleSignIn = async (req, res, next) => {
 			);
 			//AQUÍ EJECUTO LA FUNCIÓN DEL CORREO
 			sendMailWelcome(username, email)
+			let cartToAssociate = await Cart.create();
+			await cartToAssociate.setUser(create);
 			res.status(200).json({
 				token: jwtToken,
 				status: create.status,
@@ -217,7 +221,24 @@ const googleSignIn = async (req, res, next) => {
 		next(e);
 	}
 };
+const bannedUser = async (req, res)=>{
+	const {id} = req.params;
 
+	try {
+		if(!id)	res.status(404).json({message: 'id is require..'});
+		else{
+			let userBanned = await Users.findOne({where: {id}});
+			
+			if(!userBanned) res.status(404).json({message: 'user not found..'});
+			else{
+				await Users.update({status: 'Banned'},{where: {id}});
+				res.status(200).json({message: 'successfully banned user..'});
+			}
+		}
+	} catch (error) {
+		console.log(error);
+	}
+}
 
 // LOGICA PARA FAVORITOS
 const addFavorite = async (req, res) => {
@@ -313,5 +334,6 @@ module.exports = {
 	googleSignIn,
 	addFavorite,
 	deleteFavorite,
-	getFavorite
+	getFavorite,
+	bannedUser
 }

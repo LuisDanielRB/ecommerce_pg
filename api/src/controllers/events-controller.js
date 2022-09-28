@@ -123,7 +123,7 @@ const getEvents = async (req, res) => {
     console.log(error)
   }
 }
-  
+
 const getEventDetail = async (req, res, next) => {
   const { id } = req.params;
   let detail;

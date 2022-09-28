@@ -18,6 +18,8 @@ const initialState = {
   // estados del carrito
   cartState: false,
   cart: [],
+  summary: 0,
+  purchasedCart: [],
   //favorites
   allFavourites: localStorage.getItem('favorites') ? JSON.parse(localStorage.getItem('favorites')) : null,
 };
@@ -92,47 +94,6 @@ function rootReducer(state = initialState, action) {
         eventsDetail: {},
       }
 
-    case "ADD_TO_CART":
-      if (state.cart.length === 0) {
-        let item = {
-          id: action.payload.id,
-          quantity: 1,
-          name: action.payload.description,
-          price: action.payload.price,
-          image: action.payload.image,
-        }
-        state.cart.push(item);
-      } else {
-        let check = false;
-        state.cart.map((item, key) => {
-          if (item.id === action.payload.id) {
-            state.cart[key].quantity++;
-            check = true;
-          }
-        });
-        if (!check) {
-          let items2 = {
-            id: action.payload.id,
-            quantity: 1,
-            name: action.payload.description,
-            price: action.payload.price,
-            image: action.payload.image,
-          }
-          state.cart.push(items2);
-        }
-      }
-      return {
-        ...state,
-      }
-
-    case 'DELETE_CART':
-      let deletes = state.cart.filter((item) => item.id != action.payload);
-      console.log(deletes)
-      return {
-        ...state,
-        cart: deletes,
-      }
-
     case 'DECREASE_QUANTITY':
       let item = action.payload;
       console.log(item)
@@ -166,6 +127,79 @@ function rootReducer(state = initialState, action) {
           ...state,
           allFavourites: favoriteEvents
         };
+
+      ////////////CART///////////////////////
+      case "ADD_CART":
+			let exist = state.cart.filter((el) => el.id === action.payload);
+			if (exist.length === 1) return state;
+			let newItem = state.eventsCopy.find((p) => p.id == action.payload);
+			let sum = newItem.price;
+			return {
+				...state,
+				cart: [...state.cart, { ...newItem }],
+				summary: state.summary + sum,
+			};
+
+		case "DEL_CART":
+			let itemToDelete = state.cart.find((p) => p.id === action.payload);
+			let substr = itemToDelete.price;
+			return {
+				...state,
+				cart: state.cart.filter((p) => p.id !== action.payload),
+				summary: state.summary - substr,
+			};
+
+		case "DEL_ALL_CART":
+			return {
+				...state,
+				cart: [],
+				summary: 0,
+			};
+
+		case "GET_CART": {
+			var arrayEvents = action.payload.events;
+			var arrayNuevo = arrayEvents.map((b) => b.price);
+			var suma = 0;
+			for (let i = 0; i < arrayNuevo.length; i++) {
+				suma += arrayNuevo[i];
+			}
+  
+			var events = JSON.parse(localStorage.getItem('cart'));
+			let nuevo = arrayEvents.concat(events);
+			console.log(nuevo, 'events');
+
+			return {
+				...state,
+				cart: arrayEvents, // TODOS LOS EVENTOS DEL CARRITO EN LA DB
+				summary: suma, //ACA ESTA EL TOTAL DEL CARRITO DEL USUARIO
+			};
+		}
+
+		case "CHECKOUT_CART": {
+			return {
+				...state,
+				purchasedCart: {
+					Events: state.cart,
+					Total: state.summary,
+					CartId: action.payload,
+				},
+				summary: 0,
+				cart: [],
+			};
+		}
+
+		case "REMOVE_EVENT_CART_DB": {
+			return {
+				...state,
+			};
+		}
+		case "CLEAR_CART": {
+			return {
+				...state,
+				cart: [],
+				summary: 0,
+			};
+		}  
 
     default: return state
   };

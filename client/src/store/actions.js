@@ -143,14 +143,6 @@ export function cleanDetail() {
   }
 }
 
-export function addCart(id) {
-  return function (dispatch) {
-    return dispatch({
-      type: "ADD_TO_CART",
-      payload: id,
-    })
-  }
-}
 
 export function DeleteCart(id) {
   return {
@@ -191,5 +183,101 @@ export function userGetFavorite(userId) {
 	return async function (dispatch) {
 		let favorites = await axios.get(`/favorites/${userId}`);
 		return dispatch({ type: "USER_GET_FAVORITES", payload: favorites.data });
+	};
+}
+
+
+///////////////////////////CART///////////////////////////////////
+
+export function addToCart(id, idUser) {
+  console.log(id , idUser);
+	return async function (dispatch) {
+		try {
+			const adding = axios.post(`/addcart`, {
+				idUser: idUser, 
+				eventId: id, 
+			});
+			dispatch({
+				type: "ADD_CART",
+				payload: id,
+			});
+		} catch (err) {
+			console.log(err);
+		}
+	};
+}
+
+export function delCart(id) {
+	return async function (dispatch) {
+		try {
+			return dispatch({
+				type: "DEL_CART",
+				payload: id,
+			});
+		} catch (err) {
+			console.log(err);
+		}
+	};
+}
+
+export function delAllCart() {
+	return async function (dispatch) {
+		try {
+			return dispatch({
+				type: "DEL_ALL_CART",
+			});
+		} catch (err) {
+			console.log(err);
+		}
+	};
+}
+
+export function getCart(userId) {
+	return async function (dispatch) {
+		let cart = await axios.get(`/cart?userId=${userId}`);
+		return dispatch({ type: "GET_CART", payload: cart.data });
+	};
+}
+
+export function removeOneEventFromCart(eventId, userId) {
+	return async function (dispatch) {
+		let deleteEvent = await axios.put(
+			`/deleteeventcart?eventId=${eventId}&userId=${userId}`
+		); //double query
+		console.log("delete" , deleteEvent); //quiero q me traiga libro a eliminar
+		return dispatch({
+			type: "REMOVE_EVENT_CART_DB",
+			payload: deleteEvent,
+		});
+	};
+}
+
+export function clearCart(userId) {
+	return async function (dispatch) {
+		let clearAll = await axios.put(`/clearcart?userId=${userId}`);
+		return dispatch({
+			type: "CLEAR_CART",
+		});
+	};
+}
+
+
+export function checkoutCart(userId, token) {
+	const config = {
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${token}`,
+		},
+	};
+	return async function (dispatch) {
+		let checkoutCartId = await axios.put(
+			`/checkout`,
+			{ userId },
+			config
+		);
+		return dispatch({
+			type: "CHECKOUT_CART",
+			payload: checkoutCartId.data,
+		});
 	};
 }

@@ -13,9 +13,11 @@ const Dashboard = () => {
     
     const dispatch = useDispatch()
     const eventos = useSelector((state) => state.events)
+    const idUser = useSelector((state) => state.user.id)
     
     useEffect(() => {
       dispatch(getAllEvents())
+      dispatch(userGetFavorite(idUser))
   },[dispatch])
 
 
