@@ -11,7 +11,6 @@ const Events = () => {
   const searchLive = useSelector((state) => state.searchLive);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const idUser = useSelector((state) => state.user.id)
   const eventos = useSelector((state) => state.events);
   const categories = useSelector((state) => state.categories);
   const artists = useSelector((state) => state.artists);
@@ -27,7 +26,6 @@ const Events = () => {
   useEffect(() => {
     dispatch(getAllEvents());
     getFiltered();
-    dispatch(userGetFavorite(idUser))
   }, [dispatch, filters]);
 
   function filterArr(array, value) {
