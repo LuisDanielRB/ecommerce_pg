@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getAllEvents , userGetFavorite } from "../store/actions";
 import { useNavigate } from "react-router-dom";
 
-const Events = () => {
+const Events = ({id}) => {
   const searchLive = useSelector((state) => state.searchLive);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -229,4 +229,3 @@ const Events = () => {
 };
 
 export default Events;
-

@@ -25,7 +25,6 @@ function Navbar() {
   const {user} = useSelector((state) => state);
   const {cartState} = useSelector((state) => state);
 
-
   useEffect(() => {
     dispatch(checkStates());
   }, [dispatch, user, cartState]);
@@ -129,8 +128,7 @@ function Navbar() {
                     href="#"
                     className="ml-5 flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                   >
-                    <span className="sr-only">View notifications</span>
-                    <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
+                    <ShoppingCartIcon className="h-6 w-6" aria-hidden="true"/>
                   </a>
                   {user ? (
                     <Menu as="div" className="relative ml-5 flex-shrink-0">
@@ -138,7 +136,7 @@ function Navbar() {
                         <Menu.Button className="flex rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                           <span className="sr-only">Open user menu</span>
                           {user ? (
-                            <img className="h-8 w-8 rounded-full" src={user.profile_picture} alt="" />
+                            <img className="h-8 w-8 rounded-full" src={user.profile_picture} alt="profile_picture" />
                           ) : (
                             <>
                               <button>Login</button>
@@ -160,7 +158,6 @@ function Navbar() {
                             {({ active }) => (
                               <button
                                 onClick={handleClick}
-                                href="#"
                                 className={classNames(
                                   active ? "bg-gray-100" : "",
                                   "block py-2 px-4 text-sm text-gray-700"
@@ -264,7 +261,6 @@ function Navbar() {
                     type="button"
                     className="ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                   >
-                    <span className="sr-only">View notifications</span>
                     <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
                 </div>

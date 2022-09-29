@@ -108,11 +108,9 @@ const deleteEvents = async (req, res) => {
 };
 
 const getEvents = async (req, res) => {
-
   const eventsDB = await Event.findAll();
   const eventsCreated = await EventsCreated.findAll();
-  
-  
+
   const data = JSON.parse(fs.readFileSync("dataBase.json", "utf8"));
   try {
     if (eventsDB.length === 0) {
@@ -124,8 +122,8 @@ const getEvents = async (req, res) => {
   } catch (error) {
     console.log(error)
   }
+}
   
-
 const getEventDetail = async (req, res, next) => {
   const { id } = req.params;
   let detail;
@@ -213,14 +211,12 @@ const getEventsDetailDb = async (req, res) => {
   }
 };
 
+
 module.exports = {
   createEvent,
   getEvents,
-  getEventDetail,
   getEventsDetailDb,
+  getEventDetail,
   deleteEvents,
   updateEvent,
 };
-
-
-
