@@ -1,11 +1,6 @@
 import axios from "axios";
 
-export const cartStateSet = (cartState) => (dispatch) => {
-  return dispatch({
-    type: "CART_STATE",
-    payload: cartState,
-  });
-};
+
 
 export const checkStates = () => (dispatch) => {
   return dispatch({
@@ -13,29 +8,7 @@ export const checkStates = () => (dispatch) => {
   });
 };
 
-export const loginAuth = (body) => async (dispatch) => {
-  try {
-    let login = await axios.post("/login", body);
-    return dispatch({
-      type: "POST_LOGIN",
-      payload: login.data,
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
 
-export const registerAuth = (body) => async (dispatch) => {
-  try {
-    let registro = await axios.post("/register", body);
-    return dispatch({
-      type: "POST_REGISTRO",
-      payload: registro,
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
 
 export const getEventDetail = (id) => async (dispatch) => {
   try {
@@ -107,6 +80,32 @@ export function searchLive(payload) {
   };
 }
 
+///////////////////////USER_ACTIONS///////////////////////////////////
+
+export const loginAuth = (body) => async (dispatch) => {
+  try {
+    let login = await axios.post("/login", body);
+    return dispatch({
+      type: "POST_LOGIN",
+      payload: login.data,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const registerAuth = (body) => async (dispatch) => {
+  try {
+    let registro = await axios.post("/register", body);
+    return dispatch({
+      type: "POST_REGISTRO",
+      payload: registro,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export function userSignOut(datos) {
   return {
     type: "LOG_OUT",
@@ -174,7 +173,6 @@ export function userGetFavorite(userId) {
 ///////////////////////////CART///////////////////////////////////
 
 export function addToCart(id, idUser) {
-  console.log(id , idUser);
 	return async function (dispatch) {
 		try {
 			const adding = axios.post(`/addcart`, {
@@ -199,6 +197,7 @@ export function addToCartGuest (id) {
     })
   }
 }
+
 export function delCartUser(id) {
   return async function (dispatch) {
 		try {
@@ -266,9 +265,15 @@ export function clearCart(userId) {
 	};
 }
 
+export const getCartUser = (cart) => (dispatch) => {
+  return dispatch({
+    type: "CART_STATE_USER",
+    payload: cart,
+  });
+};
+
 
 export function checkoutCart(userId, token) {
-  console.log(userId, token);
 	const config = {
 		headers: {
 			'Content-Type': 'application/json',
@@ -276,16 +281,13 @@ export function checkoutCart(userId, token) {
 		},
 	};
 	return async function (dispatch) {
-		let checkoutCartId = await axios.put('/checkout',{ userId },config);
+		let checkoutCartId = await axios.put('/checkout', {userId}, config);
 		return dispatch({
 			type: "CHECKOUT_CART",
 			payload: checkoutCartId.data,
 		});
 	};
 }
-
-
-
 
 export async function sendEmailPassword (payload) {
   console.log("Este es el payload", payload)
@@ -294,5 +296,12 @@ export async function sendEmailPassword (payload) {
   } catch (error) {
     console.log("Este es el error", error.message)
   }
-
 }
+
+export const cartStateSet = (cartState) => (dispatch) => {
+  return dispatch({
+    type: "CART_STATE",
+    payload: cartState,
+  });
+};
+
