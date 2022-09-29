@@ -150,13 +150,21 @@ function Register() {
                 </div>
                 {error.password && (<p> ❌{error.password}</p>)}
               </div>
-              <div className="flex items-center justify-center">
+              <div className="flex flex-col items-center justify-center">
                 <div className="text-sm">
                   <a
                     href="/login"
                     className="font-medium text-indigo-600 hover:text-indigo-500"
                   >
                     Already have an account?
+                  </a>
+                </div>
+                <div className="text-sm">
+                  <a
+                    href="/passwordRecovery"
+                    className="font-medium text-indigo-600 hover:text-indigo-500"
+                  >
+                    Forgot Password?
                   </a>
                 </div>
               </div>
