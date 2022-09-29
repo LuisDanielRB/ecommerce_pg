@@ -12,19 +12,18 @@ import { userSignOut, checkStates, cartStateSet } from "../../store/actions";
 import { Link } from "react-router-dom";
 import { UserAuth } from "../../firebase/context";
 import PopOverCart from "./PopOverCart";
+import SearchInput from "./SearchInput";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-
 function Navbar() {
-
   const dispatch = useDispatch();
   const { logOut } = UserAuth();
-  const {user} = useSelector((state) => state);
-  const {cartState} = useSelector((state) => state);
-
+  const { user } = useSelector((state) => state);
+  const { cartState } = useSelector((state) => state);
+  const [search, setSearch] = useState(false);
 
   useEffect(() => {
     dispatch(checkStates());
@@ -56,6 +55,11 @@ function Navbar() {
     } else {
       dispatch(cartStateSet(false));
     }
+  }
+
+  function handleSearchClick(e) {
+    e.preventDefault();
+    search === false ? setSearch(true) : setSearch(false)
   }
 
   return (
@@ -92,22 +96,21 @@ function Navbar() {
                       <label htmlFor="search" className="sr-only">
                         Search
                       </label>
-                      <div className="relative">
-                        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                          <MagnifyingGlassIcon
-                            className="h-5 w-5 text-gray-400"
-                            aria-hidden="true"
-                          />
-                        </div>
-                        <input
-                          onChange={(e) => searchLive(e)}
-                          id="search"
-                          name="search"
-                          className="block w-full rounded-md border border-gray-300 bg-white py-2 pl-10 pr-3 text-sm placeholder-gray-500 focus:border-indigo-500 focus:text-gray-900 focus:placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
-                          placeholder="Search"
-                          type="search"
-                        />
-                      </div>
+
+                      <button
+                        onClick={(e) => handleSearchClick(e)}
+                        type="button"
+                        className="inline-flex items-center rounded border border-transparent bg-indigo-600 px-2.5 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                      >
+                        Buscar...
+                      </button>
+
+                      {
+                        search === true ? <SearchInput /> : null
+                      }
+
+
+
                     </div>
                   </div>
                 </div>
@@ -138,7 +141,11 @@ function Navbar() {
                         <Menu.Button className="flex rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                           <span className="sr-only">Open user menu</span>
                           {user ? (
-                            <img className="h-8 w-8 rounded-full" src={user.profile_picture} alt="" />
+                            <img
+                              className="h-8 w-8 rounded-full"
+                              src={user.profile_picture}
+                              alt=""
+                            />
                           ) : (
                             <>
                               <button>Login</button>

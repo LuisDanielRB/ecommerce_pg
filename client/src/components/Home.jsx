@@ -20,6 +20,7 @@ function Home() {
     <>
       <Navbar />
       <CTA sp1={sp1} sp2={sp2} p={p} a={a} cta={cta} />
+      
       <Stats />
       <GridCards eventos={eventos} />
       <Footer />
