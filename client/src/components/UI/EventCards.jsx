@@ -1,24 +1,26 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { addToCart } from "../../store/actions";
-import {
-    EnvelopeIcon,
-    PhoneIcon,
-    PlusIcon,
-    DocumentIcon,
-    HeartIcon,
-} from "@heroicons/react/20/solid";
-import { userAddFavorite } from '../../store/actions'
+import { HeartIcon } from "@heroicons/react/20/solid";
+import { userAddFavorite, addToCartGuest, addToCart } from '../../store/actions'
 import { useDispatch, useSelector } from "react-redux";
 
 const EventCards = ({ eventos }) => {
-    const dispatch = useDispatch();
-    const { user } = useSelector((state) => state);
 
+    const dispatch = useDispatch();
+    const { user } = useSelector((state) => state)
+
+
+    //Envio producto a la DB y al Carrito
     function handleSubmit(e) {
-        dispatch(addToCart(e, user.id))
+
+        if (user) {
+            return dispatch(addToCart(e.id, user.id))
+        } else {
+            return dispatch(addToCartGuest(e))
+        }
     }
 
+    //Agrego a favoritos el evento
     const addFavorite = (idEvent) => {
         dispatch(userAddFavorite(user.id, idEvent));
     }
@@ -31,83 +33,62 @@ const EventCards = ({ eventos }) => {
             {eventos.map((evento) => (
                 <li
                     key={evento.id}
-                    className="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow"
+                    className="col-span-1 divide-y divide-gray-200 rounded bg-white shadow"
                 >
-                    <div className="flex w-full items-center justify-between space-x-6 p-6">
+                    <div className="flex  items-center justify-between space-x-6 p-6">
                         <div className="flex-1 truncate">
-                            <div className="flex items-center space-x-3">
-                                <h3 className="truncate text-sm font-medium text-gray-900">
-                                    {evento.artist}
+                            <div className="grid justify-items-center">
+                               <div className="justify-center">
+                                <img
+                                    className="h-50 w-80 flex-shrink-0 rounded bg-gray-300"
+                                    src={evento.image}
+                                    alt=""
+                                />
+                                </div>
+                                <h3 className="mt-3 truncate text-xs font-medium text-gray-900">
+                                    {evento.artist.join(" - ")}
                                 </h3>
-                                <span className="inline-block flex-shrink-0 rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">
-                                    {evento.stock}
+                                <span className=" text-center rounded-full bg-green-300 px-1.5 py-1.5 text font-medium text-green-800 mt-2">
+                                 STOCK:       {evento.stock}
                                 </span>
-                                <span className="inline-block flex-shrink-0 rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">
-                                    ${evento.price}
+                                <span className=" text-center rounded-full bg-green-300 px-1.5 py-1.5 text font-medium text-green-800 mt-2">
+                                PRICE:        ${evento.price}
                                 </span>
                             </div>
-                            <p className="mt-1 truncate text-sm text-gray-500">
+                            <p className="mt-1 text-center truncate text-sm text-gray-500">
                                 {evento.description}
                             </p>
-                            <p className="mt-1 truncate text-sm text-gray-500">
+                            <p className="mt-1 text-center truncate text-sm text-gray-500">
                                 {evento.category}
                             </p>
                         </div>
-                        <img
-                            className="h-10 w-10 flex-shrink-0 rounded-full bg-gray-300"
-                            src={evento.image}
-                            alt=""
-                        />
                     </div>
                     <div className="-mt-px flex divide-x divide-gray-200">
-                        <div className="-ml-px flex ">
+                        <div className="flex w-0 flex-1">
                             <Link
                                 to={`/private/events/${evento.id}`}
-                                className="relative inline-flex w-32 flex-1 items-center justify-center rounded-bl-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500"
+                                className="relative -mr-px inline-flex w-0 flex-1 items-center justify-center rounded-bl-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500"
                             >
                                 <button>Detail</button>
                             </Link>
                         </div>
-                        <div className="-ml-px flex ">
+                        <div className="-ml-px flex w-0 flex-1">
                             <button
-                                onClick={(e) => handleSubmit(evento.id)}
-                                className="relative inline-flex w-32 flex-1 items-center justify-center rounded-br-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500"
+                                onClick={() => handleSubmit(evento)}
+                                className="relative inline-flex w-0 flex-1 items-center justify-center rounded-br-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500"
                             >Add to cart</button>
                         </div>
-                        <div className="-ml-px  flex">
+                        <div className="-ml-px flex inline-flex relative">
                             {user ? (<button
                                 onClick={() => addFavorite(evento.id)}
-                                className="w-10 flex-1 
-                                place-items-center text-gray-700 hover:text-red-500"
+                                className="w-8 flex-1 text-gray-700 hover:text-red-500"
                             ><HeartIcon /></button>) : null}
-
                         </div>
                     </div>
                 </li>
             ))}
         </ul>
-        // <div className='w-auto h-75 ml-1 mr-1 rounded-lg flex flex-col pt-3 pb-3'>
-        //     <div className='w-full h-1/4'>
-        //         <div className='flex place-content-between pl-7 pr-7'>
-        //             <div className='w-full  h-1/4 pl-7'>
-        //                 <p className=' block text-sm font-medium text-gray-400'>{artist}</p>
-        //             </div>
-        //             <p className='bg-green-200 rounded-lg w-10 text-center '>{stock}</p>
-        //         </div>
-        //     </div>
-        //     <div className='w-full  h-1/4 pl-7'><p className='block text-sm font-medium text-gray-400'>{date}</p></div>
-        //     <div className='w-full  h-1/4 pl-7'><p className='block text-sm font-medium text-gray-400'>{description}</p></div>
-        //     <div className=' w-full h-1/4 pl-7'><p className='block text-sm font-medium text-gray-400'>${price}.00</p></div>
-        //     <div className=' w-full h-1/4 pl-7'><img src={image} alt="" width={"100px"}/></div>
-        //     <div className='mt-2 pl-7'>
-        //         <Link to="/private/cart">
-        //             <button className=' pl-7 pr-7 appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm bg-green-400 '>Buy</button>
-        //         </Link>
-        // <Link to={`/private/events/${id}`}>
-        //     <button className='ml-3 pl-7 pr-7 appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm bg-indigo-400'>Detail</button>
-        // </Link>
-        //     </div>
-        // </div>
+
     );
 };
 

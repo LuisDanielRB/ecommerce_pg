@@ -1,5 +1,4 @@
 import React, { useRef, useState } from "react";
-import Axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { PlusCircleIcon } from "@heroicons/react/20/solid";
 import { createEvent } from "../store/actions";
@@ -22,6 +21,7 @@ function CreateEvent() {
     stock: 0,
     category: [],
     image: "",
+    imageId: "",
     userId: null,
   });
   console.log(input)
@@ -52,30 +52,8 @@ function CreateEvent() {
     if (!input.category.length) {
       errors.category = "Select at least a one or five genres ";
     }
+    if (!/^(https:\/\/)([^\s(["<,>/]*)(\/)[^\s[",><]*(.png|.jpg|.jpeg)(\?[^\s[",><]*)?/gi.test(input.image)) { errors.image = "The url is not valid"; }
     return errors;
-  }
-
-  function handleChange(e) {
-    let formData = new FormData();
-    if (e.target && e.target.files[0]) {
-      formData.append('file', e.target.files[0])
-    }
-    const res = Axios.post('https://v2.convertapi.com/upload', { formData })
-      .then(res => {
-        console.log(res.data.url)
-      }).catch(error => {
-        console.log(error)
-      })
-const info = res.data
-console.log(info)
-const info2 = info.url
-console.log(info2)
-    setInput({
-      ...input,
-      image: [res.data]
-    })
-    setFile(URL.createObjectURL(e.target.files[0]));
-
   }
 
   function handleArtistDelete(e) {
@@ -182,7 +160,7 @@ console.log(info2)
       ...input,
       artist: [...input.artist, artists],
     });
-    dispatch(createEvent(input));
+    dispatch(createEvent(file));
     setError(validation(input));
     setInput({
       description: "",
@@ -192,7 +170,8 @@ console.log(info2)
       place: "",
       stock: 0,
       category: [],
-      image: " ",
+      image: "",
+      imageId: "",
       userId: null,
     });
     navigate("/events");
@@ -321,7 +300,7 @@ console.log(info2)
                     onChange={(e) => handleInputPrice(e)}
                     id="price"
                     name="price"
-                    type="price"
+                    type="text"
                     placeholder="$..."
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   />
@@ -337,7 +316,7 @@ console.log(info2)
                     onChange={(e) => handleInputStock(e)}
                     id="stock"
                     name="stock"
-                    type="stock"
+                    type="text"
                     placeholder="Stock..."
                     autoComplete="current-Stock"
                     required
@@ -369,11 +348,12 @@ console.log(info2)
                 </label>
                 <div className="mt-1">
                   <input
-                    onChange={(e) => handleChange(e)}
-                    id="image"
-                    type="file"
-                    name="file"
-                    accept="image/*"
+                    type="text"
+                    placeholder="The url of your image"
+                    value={input.image}
+                    name="image"
+                    onChange={(e) => handleInputChange(e)}
+                    autoComplete="off"
                     required
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   /><img src={file} />

@@ -52,7 +52,7 @@ console.log(allEvents)
 
     return (
         <div ref={slideRef} className="w-full select-none relative">
-            <div className="max-w-lg">
+            <div className="max-w-lg ">
                     <img src={image[currentIndex]} />
             </div>
             <div className="absolute w-full top-1/2 transform -translate-y-1/2 px-3 flex justify-between items-center">

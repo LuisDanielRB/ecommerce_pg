@@ -7,6 +7,7 @@ const {getCart,getAllCarts,addEventToCart,removeOneEventFromCart,clearCart,check
 const {fileUpload} = require('../helpers/fileUpload')
 const passport = require("passport");
 const {getReviewScore, postReviewScore, putReviewScore, deleteReviewScore} = require('../controllers/reviewScore-controller')
+const {adminDelete, adminPut} = require('../controllers/admin-controller')
 
 
 router.post("/user/google", googleSignIn);
@@ -19,7 +20,6 @@ router.post("/event/:id/update", fileUpload, updateEvent);
 router.get("/users", getUsers);
 router.get("/events", getEvents);
 router.get("/eventsCreate/:id", getEventDetail);
-router.post("/payment", mercadopagoPayment);
 router.delete("/events/:id", deleteEvents);
 router.get("/eventsDB/:id", getEventsDetailDb);
 router.put('/favorites', addFavorite);
@@ -28,7 +28,9 @@ router.get('/favorites/:idUser', getFavorite);
 router.get('/reviewScore/:eventId', getReviewScore);
 router.post('/reviewScore/:eventId', postReviewScore);
 router.put('/reviewScore/:eventId', putReviewScore);
-router.delete('/reviewScore/:eventId', deleteReviewScore)
+router.delete('/reviewScore/:eventId', deleteReviewScore);
+router.put('/admin', adminPut);
+router.put('/admin', adminDelete)
 
 //Cart 
 router.get('/cart', getCart);
@@ -36,11 +38,6 @@ router.get('/allcart', getAllCarts);
 router.post('/addcart', addEventToCart);
 router.put('/deleteeventcart', removeOneEventFromCart);
 router.put('/clearcart', clearCart);
-router.put('/checkout',checkoutCart);
+router.put("/payment", checkoutCart , mercadopagoPayment);
 
 module.exports = router;
-
-
-
-
-

@@ -6,7 +6,7 @@ const fsExtra = require("fs-extra");
 const createEvent = async (req, res) => {
   const { description, price, date, artist, place, stock, category, userId } =
     req.body;
-
+  console.log(req.body)
   var result;
   try {
     if (req.files?.image) {
@@ -30,6 +30,7 @@ const createEvent = async (req, res) => {
     console.log(error);
   }
 };
+
 const updateEvent = async (req, res) => {
   const { description, price, date, artist, place, stock, category } = req.body;
   const { id } = req.params;

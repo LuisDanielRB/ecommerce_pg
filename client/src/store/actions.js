@@ -89,7 +89,7 @@ export const getAllEvents = () => async (dispatch) => {
 
 export const createEvent = (body) => async (dispatch) => {
   try {
-    const data = await axios.post("/createEvent", body ,{
+    const data = await axios.post("/createEvent", body, {
       headers: {
         "Content-Type": "application/json",
         "Authorization": "Bearer " + localStorage.getItem("token")
@@ -111,7 +111,7 @@ export function userSignOut(datos) {
   return {
     type: "LOG_OUT",
     payload: datos
-};
+  };
 }
 
 export function addGoogleUser(currentUser) {
@@ -143,141 +143,143 @@ export function cleanDetail() {
   }
 }
 
-
-export function DeleteCart(id) {
-  return {
-    type: "DELETE_CART",
-    payload: id,
-  }
-}
-
-export function decreaseQuantity(id) {
-  return {
-    type: "DECREASE_QUANTITY",
-    payload: id
-  }
-}
-
-
 export function userAddFavorite(userId, idEvent) {
-	return async function () {
-		return await axios.put('/favorites', {
-			idUser: userId,
-			idEvent: idEvent,
-		});
-	};
+  return async function () {
+    return await axios.put('/favorites', {
+      idUser: userId,
+      idEvent: idEvent,
+    });
+  };
 }
 
 export function userDeleteFavorite(userId, idEvent) {
-	return async function () {
-		return await axios.delete('/favorites', {
-			data: {
-				idUser: userId,
-				idEvent: idEvent,
-			},
-		});
-	};
+  return async function () {
+    return await axios.delete('/favorites', {
+      data: {
+        idUser: userId,
+        idEvent: idEvent,
+      },
+    });
+  };
 }
 
 export function userGetFavorite(userId) {
-	return async function (dispatch) {
-		let favorites = await axios.get(`/favorites/${userId}`);
-		return dispatch({ type: "USER_GET_FAVORITES", payload: favorites.data });
-	};
+  return async function (dispatch) {
+    let favorites = await axios.get(`/favorites/${userId}`);
+    return dispatch({ type: "USER_GET_FAVORITES", payload: favorites.data });
+  };
 }
 
 
 ///////////////////////////CART///////////////////////////////////
 
 export function addToCart(id, idUser) {
-  console.log(id , idUser);
-	return async function (dispatch) {
-		try {
-			const adding = axios.post(`/addcart`, {
-				idUser: idUser, 
-				eventId: id, 
-			});
-			dispatch({
-				type: "ADD_CART",
-				payload: id,
-			});
-		} catch (err) {
-			console.log(err);
-		}
-	};
+  console.log(id, idUser);
+  return async function (dispatch) {
+    try {
+      const adding = axios.post(`/addcart`, {
+        idUser: idUser,
+        eventId: id,
+      });
+      dispatch({
+        type: "ADD_CART",
+        payload: id,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+}
+
+export function addToCartGuest(id) {
+  return async function (dispatch) {
+    dispatch({
+      type: 'ADD_CART_GUEST',
+      payload: id,
+    })
+  }
+}
+export function delCartUser(id) {
+  return async function (dispatch) {
+    try {
+      return dispatch({
+        type: "DEL_CART_USER",
+        payload: id,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 }
 
 export function delCart(id) {
-	return async function (dispatch) {
-		try {
-			return dispatch({
-				type: "DEL_CART",
-				payload: id,
-			});
-		} catch (err) {
-			console.log(err);
-		}
-	};
+  return async function (dispatch) {
+    try {
+      return dispatch({
+        type: "DEL_CART_GUEST",
+        payload: id,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 }
 
 export function delAllCart() {
-	return async function (dispatch) {
-		try {
-			return dispatch({
-				type: "DEL_ALL_CART",
-			});
-		} catch (err) {
-			console.log(err);
-		}
-	};
+  return async function (dispatch) {
+    try {
+      return dispatch({
+        type: "DEL_ALL_CART",
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 }
 
 export function getCart(userId) {
-	return async function (dispatch) {
-		let cart = await axios.get(`/cart?userId=${userId}`);
-		return dispatch({ type: "GET_CART", payload: cart.data });
-	};
+  return async function (dispatch) {
+    let cart = await axios.get(`/cart?userId=${userId}`);
+    return dispatch({ type: "GET_CART", payload: cart.data });
+  };
 }
 
 export function removeOneEventFromCart(eventId, userId) {
-	return async function (dispatch) {
-		let deleteEvent = await axios.put(
-			`/deleteeventcart?eventId=${eventId}&userId=${userId}`
-		); //double query
-		console.log("delete" , deleteEvent); //quiero q me traiga libro a eliminar
-		return dispatch({
-			type: "REMOVE_EVENT_CART_DB",
-			payload: deleteEvent,
-		});
-	};
+  return async function (dispatch) {
+    let deleteEvent = await axios.put(
+      `/deleteeventcart?eventId=${eventId}&userId=${userId}`
+    ); //double query
+    console.log("delete", deleteEvent); //quiero q me traiga libro a eliminar
+    return dispatch({
+      type: "REMOVE_EVENT_CART_DB",
+      payload: deleteEvent,
+    });
+  };
 }
 
 export function clearCart(userId) {
-	return async function (dispatch) {
-		let clearAll = await axios.put(`/clearcart?userId=${userId}`);
-		return dispatch({
-			type: "CLEAR_CART",
-		});
-	};
+  return async function (dispatch) {
+    let clearAll = await axios.put(`/clearcart?userId=${userId}`);
+    return dispatch({
+      type: "CLEAR_CART",
+    });
+  };
 }
 
 
 export function checkoutCart(userId, token) {
-	const config = {
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${token}`,
-		},
-	};
-	return async function (dispatch) {
-		let checkoutCartId = await axios.put(
-			`/checkout`,
-			{ userId },
-			config
-		);
-		return dispatch({
-			type: "CHECKOUT_CART",
-			payload: checkoutCartId.data,
-		});
-	};
+  console.log(userId, token);
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  return async function (dispatch) {
+    let checkoutCartId = await axios.put('/checkout', { userId }, config);
+    return dispatch({
+      type: "CHECKOUT_CART",
+      payload: checkoutCartId.data,
+    });
+  };
 }
