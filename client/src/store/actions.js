@@ -143,22 +143,6 @@ export function cleanDetail() {
   }
 }
 
-
-export function DeleteCart(id) {
-  return {
-    type: "DELETE_CART",
-    payload: id,
-  }
-}
-
-export function decreaseQuantity(id) {
-  return {
-    type: "DECREASE_QUANTITY",
-    payload: id
-  }
-}
-
-
 export function userAddFavorite(userId, idEvent) {
 	return async function () {
 		return await axios.put('/favorites', {
@@ -207,11 +191,32 @@ export function addToCart(id, idUser) {
 	};
 }
 
+export function addToCartGuest (id) {
+  return async function (dispatch) {
+    dispatch({
+      type: 'ADD_CART_GUEST',
+      payload: id,
+    })
+  }
+}
+export function delCartUser(id) {
+  return async function (dispatch) {
+		try {
+			return dispatch({
+				type: "DEL_CART_USER",
+				payload: id,
+			});
+		} catch (err) {
+			console.log(err);
+		}
+	};
+}
+
 export function delCart(id) {
 	return async function (dispatch) {
 		try {
 			return dispatch({
-				type: "DEL_CART",
+				type: "DEL_CART_GUEST",
 				payload: id,
 			});
 		} catch (err) {
@@ -263,6 +268,7 @@ export function clearCart(userId) {
 
 
 export function checkoutCart(userId, token) {
+  console.log(userId, token);
 	const config = {
 		headers: {
 			'Content-Type': 'application/json',
@@ -270,11 +276,7 @@ export function checkoutCart(userId, token) {
 		},
 	};
 	return async function (dispatch) {
-		let checkoutCartId = await axios.put(
-			`/checkout`,
-			{ userId },
-			config
-		);
+		let checkoutCartId = await axios.put('/checkout',{ userId },config);
 		return dispatch({
 			type: "CHECKOUT_CART",
 			payload: checkoutCartId.data,

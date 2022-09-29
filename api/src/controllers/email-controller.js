@@ -17,9 +17,6 @@ const transporter = createTransport({
 })
 
 
-
-
-
 const sendMailWelcome = async (us, mail) => {
     
 
