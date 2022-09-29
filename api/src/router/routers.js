@@ -48,7 +48,8 @@ router.get('/allcart', getAllCarts);
 router.post('/addcart', addEventToCart);
 router.put('/deleteeventcart', removeOneEventFromCart);
 router.put('/clearcart', clearCart);
-router.put("/payment", checkoutCart , mercadopagoPayment);
+router.put('/payment' , mercadopagoPayment )
+router.put("/checkout", checkoutCart);
 
 module.exports = router;
 

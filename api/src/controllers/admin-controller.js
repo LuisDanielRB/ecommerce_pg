@@ -56,9 +56,47 @@ const bannedUser = async (req, res)=>{
 	}
 }
 
+const hideEvent = async (req, res, next) => {
+	let { eventId } = req.body;
+	try {
+		let eventToHide = await Event.findOne({
+			where: {
+				id: eventId,
+			},
+		});
+		if (bookToHide) {
+			await eventToHide.update({
+				stock: 0,
+			});
+			res.status(200).send(`${eventToHide.title} has been hidden!`);
+		} else {
+			res.status(400).send('No book was found with that id');
+		}
+	} catch (e) {
+		next(e);
+	}
+};
 
-
-
+const showEvent = async (req, res, next) => {
+	let { eventId , stock } = req.body;
+	try {
+		let eventToShow = await Event.findOne({
+			where: {
+				id: eventId,
+			},
+		});
+		if (eventToShow) {
+			await eventToShow.update({
+				stock: stock,
+			});
+			res.status(200).send(`${eventToShow.title} is now shown!`);
+		} else {
+			res.status(400).send('No book was found with that id');
+		}
+	} catch (err) {
+		next(err);
+	}
+};
 // Update to joaco , hay que revisar  si anda bien
 const getAllOrders = async (req, res, next) => {
 	try {
