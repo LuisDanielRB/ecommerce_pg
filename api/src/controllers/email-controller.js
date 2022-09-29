@@ -66,12 +66,12 @@ const passwordRecovery = async ( req, res, next ) => {
   
 	  await transporter.sendMail(
 		{
-		  from: '"Bookovich"<bookovich.book.store@gmail.com>',
+		  from: 'Test',
 		  to: user.email,
 		  subject: `Password recovery email`,
 		  html: `<h4>You are receiving this mail because a password reset was requested</h4>
-			  <p>Click the following link to start reseting your password: <a href="https://ecommerce-pg-nine.vercel.app/recovery/${ user.id }">Click aqui</a>.
-			  <br>Or copy & paste this URL in your browser: https://ecommerce-pg-nine.vercel.app/recovery/${ user.id }</p>
+			  <p>Click the following link to start reseting your password: <a href="http://localhost:5173/recovery/${ user.id }">Click here</a>.
+			  <br>Or copy & paste this URL in your browser: http://localhost:5173/recovery/${ user.id }</p>
 			  <p>This mail was sent by a bot, do not respond! Thank you!</p>`
 		}, ( err, info ) => {
 		  if ( err )
