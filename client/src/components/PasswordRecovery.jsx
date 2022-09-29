@@ -1,11 +1,34 @@
-import React from 'react'
-import Footer from './UI/Footer'
+import React, { useState } from 'react'
 import Navbar from './UI/Navbar'
 
 import { LockClosedIcon } from '@heroicons/react/20/solid'
+import { sendEmailPassword } from '../store/actions'
+import { useDispatch } from 'react-redux'
 
 
 const PasswordRecovery = () => {
+  const dispatch = useDispatch()
+
+  const [email, setEmail] = useState("")
+
+  function onChange(e) {
+    e.preventDefault()
+    setEmail(e.target.value)
+  }
+
+
+  function handleSubmit(e) {
+    e.preventDefault()
+    console.log("este es el email", email)
+    dispatch(sendEmailPassword({email: email}))
+  }
+
+  
+console.log(email)
+
+
+
+
   return (
     <div>
     <Navbar />
@@ -31,6 +54,7 @@ const PasswordRecovery = () => {
                   Email address
                 </label>
                 <input
+                  onChange={(e) => onChange(e)}
                   id="email-address"
                   name="email"
                   type="email"
@@ -40,25 +64,12 @@ const PasswordRecovery = () => {
                   placeholder="Correo registrado"
                 />
               </div>
-              <div>
-                <label htmlFor="password" className="sr-only">
-                  Password
-                </label>
-                <input
-                  id="email-address2"
-                  name="email2"
-                  type="email2"
-                  autoComplete="current-password"
-                  required
-                  className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                  placeholder="Confirma tu correo "
-                />
-              </div>
+             
             </div>
 
            
             <div>
-              <button
+              <button onClick={(e) => handleSubmit(e)}
                 type="submit"
                 className="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
               >

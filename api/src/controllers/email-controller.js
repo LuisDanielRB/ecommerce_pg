@@ -18,7 +18,7 @@ const transporter = createTransport({
 })
 
 
-const sendMailWelcome = async (us, mail) => {
+const sendMailWelcome = async (id, mail) => {
     /* */
     const handlebarOptions = {
         viewEngine: {
@@ -53,39 +53,74 @@ const sendMailWelcome = async (us, mail) => {
     }
 }
 
+
+
+const emailReset = async (email, id) => {
+  const handlebarOptions = {
+    viewEngine: {
+        extName: '.handlebars',
+        partialsDir: path.resolve('./views'),
+        defaultLayout: false,
+    },
+    viewPath: path.join(__dirname, '../views'),
+    extName: '.handlebars'
+}
+
+
+transporter.use('compile', hbs(handlebarOptions))
+
+
+const mailOptions = {
+  from: 'Prueba desde el servidor de NodeJS',
+  to: email,
+  subject: 'Reestablecimiento de contraseña',
+  template: 'ressetPass',
+  context: {
+       user: id,
+      
+  }
+}
+
+try {
+    const info = await transporter.sendMail(mailOptions)
+    console.log("correo enviado correctamente")
+} catch (error) {
+    console.log(error.message)
+}
+
+}
+
+
+
+
+
+
 const passwordRecovery = async ( req, res, next ) => {
 	let { email } = req.body;
-	try
-	{
-	  let user = await Users.findOne( {
-		where: {
-		  email: email,
-		},
-	  } );
-	  if ( !user ) return res.status( 400 ).send( 'User not found' );
-  
-	  await transporter.sendMail(
-		{
-		  from: 'Test',
-		  to: user.email,
-		  subject: `Password recovery email`,
-		  html: `<h4>You are receiving this mail because a password reset was requested</h4>
-			  <p>Click the following link to start reseting your password: <a href="http://localhost:5173/recovery/${ user.id }">Click here</a>.
-			  <br>Or copy & paste this URL in your browser: http://localhost:5173/recovery/${ user.id }</p>
-			  <p>This mail was sent by a bot, do not respond! Thank you!</p>`
-		}, ( err, info ) => {
-		  if ( err )
-		  {
-			res.status( 400 ).send( err.message );
-		  } else
-		  {
-			res.status( 200 ).json( info );
-		  }
-		} );
-	} catch ( err )
-	{
-	  next( err );
-	}
+  console.log("Esto es lo que llega al back", email)
+
+  try {
+    let user = await Users.findOne( {
+      where: {
+        email: email,
+      },
+      } );
+      if ( !user ) return res.status( 400 ).send( 'User not found' );
+      const {id} = user.dataValues
+      emailReset(email, id)
+      console.log("Este es el id", id)
+      console.log("correo enviado")
+      return res.status(200).send('Correo de reestablecimiento enviado correctamente')
+
+  } catch (error) {
+    console.log("Este es el error en el back", error.message)
+    res.status(500).send("El usuario no existe")
+  }
+
+
+
+	
+
   };
 
 

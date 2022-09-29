@@ -289,12 +289,19 @@ export function checkoutCart(userId, token) {
 	};
 }
 
+export async function sendEmailPassword (payload) {
+  console.log("Este es el payload", payload)
+  try {
+    let sending = await axios.put('/password', payload)
+  } catch (error) {
+    console.log("Este es el error", error.message)
+  }
+}
+
 export const cartStateSet = (cartState) => (dispatch) => {
   return dispatch({
     type: "CART_STATE",
     payload: cartState,
   });
 };
-
-
 
