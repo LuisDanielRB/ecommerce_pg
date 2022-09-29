@@ -348,6 +348,6 @@ module.exports = {
 	addFavorite,
 	deleteFavorite,
 	getFavorite,
-	bannedUser,
+	// bannedUser,
 	resetPassword
 }

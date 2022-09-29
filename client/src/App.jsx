@@ -4,6 +4,7 @@ import { PrivateRoute, PublicRoute } from "./router/index";
 import { AuthGuard } from "../src/auth/index";
 import { RoutesWithNotFound } from "./utils/index";
 import PasswordRecovery from "./components/PasswordRecovery";
+import UpdatePassword from "./components/UpdatePassword";
 const Login = lazy(() => import("./components/Login"));
 const Register = lazy(() => import("./components/Register"));
 const Private = lazy(() => import("./components/Private/Private"));
@@ -28,6 +29,7 @@ function App() {
             <Route path={`${PrivateRoute.PRIVATE}/*`} element={<Private />} />
           </Route>
           <Route path={PublicRoute.PASSWORDRECOVERY} element={<PasswordRecovery />} />
+          <Route path={PublicRoute.RESETPASSWORD} element={<UpdatePassword />} />
         </RoutesWithNotFound>
       </BrowserRouter>
     </div>
