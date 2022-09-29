@@ -2,7 +2,7 @@ const { mercadopago } = require('../helpers/mercadopago')
 
 const mercadopagoPayment = async (req, res) => {
     const { summary } = req.body
-    console.log(summary);
+    
 
     try {
         let preference = {

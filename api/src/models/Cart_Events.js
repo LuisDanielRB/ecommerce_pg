@@ -7,5 +7,9 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             defaultValue: 1,
     },
+    subtotal: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
+      }
     }, {timestamps: false})
 }

@@ -7,11 +7,6 @@ const fsExtra = require('fs-extra');
 //EMAIL CONFIRMATION
 const { sendMailWelcome } = require('./email-controller');
 
-
-
-
-
-
 // Ruta Login
 const login = async (req, res , next) => {
     const { email, password } = req.body;

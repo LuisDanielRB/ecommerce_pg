@@ -20,7 +20,6 @@ router.post("/event/:id/update", fileUpload, updateEvent);
 router.get("/users", getUsers);
 router.get("/events", getEvents);
 router.get("/eventsCreate/:id", getEventDetail);
-router.post("/payment", mercadopagoPayment);
 router.delete("/events/:id", deleteEvents);
 router.get("/eventsDB/:id", getEventsDetailDb);
 router.put('/favorites', addFavorite);
@@ -39,7 +38,7 @@ router.get('/allcart', getAllCarts);
 router.post('/addcart', addEventToCart);
 router.put('/deleteeventcart', removeOneEventFromCart);
 router.put('/clearcart', clearCart);
-router.put('/checkout',checkoutCart);
+router.put("/payment", checkoutCart , mercadopagoPayment);
 
 module.exports = router;
 

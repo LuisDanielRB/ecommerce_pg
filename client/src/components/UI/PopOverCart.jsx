@@ -3,24 +3,26 @@ import { Dialog, Transition } from "@headlessui/react";
 import { PlusCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addToCart, cartStateSet , delCart , getCart , removeOneEventFromCart} from "../../store/actions";
+import { cartStateSet , delCart , getCart , removeOneEventFromCart, delCartUser , checkoutCart} from "../../store/actions";
 import { MinusCircleIcon} from "@heroicons/react/20/solid";
 import axios from "axios";
 
 // TODO: Remplazar products por el estado global del carrito
 
-export default function PopOverCart({ handleSubmit }) {
+export default function PopOverCart() {
   const dispatch = useDispatch();
   const cartState = useSelector((state) => state.cartState);
   const { user, cart ,summary } = useSelector((state) => state);
   const [open, setOpen] = useState(cartState);
-  const [price, setPrice] = useState(0)
+  
 
     useEffect(() => {
-      dispatch(getCart(user.id))
-    },[dispatch])
+      user ? dispatch(getCart(user.id)) : null
+      setOpen(cartState);
+    },[dispatch, cartState , summary]);
 
 
+    //Abro modal de carrito
   function handleClick() {
     if (open === true) {
       dispatch(cartStateSet(false));
@@ -28,13 +30,20 @@ export default function PopOverCart({ handleSubmit }) {
   }
 
   function handleDelete(id) {
-    dispatch(delCart(id))
-    dispatch(removeOneEventFromCart(id, user.id))
+    if(user) {
+      dispatch(delCartUser(id)) 
+      dispatch(removeOneEventFromCart(id, user.id))
+      return
+    } else {
+      dispatch(delCart(id))
+    }
+
   }
 
   const sendCart  = async (summary) => {
     try {
-      let res = await axios.post('/payment' , {summary})
+      dispatch(checkoutCart(user.id , user.token))
+      let res = await axios.put('/checkout' , {summary})
       let params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,
       width=0,height=0,left=-1000,top=-1000`;
       window.open(res.data , 'HENRYECCOMERCE' , params)
@@ -43,10 +52,7 @@ export default function PopOverCart({ handleSubmit }) {
     }
   }
 
-  useEffect(() => {
-    setOpen(cartState);
- 
-  }, [cartState]);
+
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -150,12 +156,19 @@ export default function PopOverCart({ handleSubmit }) {
                         Shipping and taxes calculated at checkout.
                       </p>
                       <div className="mt-6">
-                        <button
+                        {summary === 0 || summary < 0 ? (<button
+                         disabled={true}
                           onClick={() => sendCart(summary)}
                           className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                         >
                           Checkout
-                        </button>
+                        </button>) : (<button
+                          onClick={() => sendCart(summary)}
+                          className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                        >
+                          Checkout
+                        </button>) }
+                       
                       </div>
                       <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                         <p>

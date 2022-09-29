@@ -1,14 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { addToCart } from "../../store/actions";
-import {
-    EnvelopeIcon,
-    PhoneIcon,
-    PlusIcon,
-    DocumentIcon,
-    HeartIcon,
-} from "@heroicons/react/20/solid";
-import {userAddFavorite} from '../../store/actions'
+import {HeartIcon} from "@heroicons/react/20/solid";
+import {userAddFavorite , addToCartGuest , addToCart } from '../../store/actions'
 import { useDispatch, useSelector } from "react-redux";
 
 const EventCards = ({ eventos}) => {
@@ -16,10 +9,18 @@ const EventCards = ({ eventos}) => {
     const dispatch = useDispatch();
     const {user} = useSelector((state) => state)
 
+
+    //Envio producto a la DB y al Carrito
     function handleSubmit(e) {
-        dispatch(addToCart(e , user.id))
+
+        if(user) {
+            return dispatch(addToCart(e.id , user.id))
+        } else {
+            return dispatch(addToCartGuest(e))
+        }
     }
 
+    //Agrego a favoritos el evento
     const addFavorite = (idEvent) => {
         dispatch(userAddFavorite(user.id , idEvent));
     }
@@ -71,7 +72,7 @@ const EventCards = ({ eventos}) => {
                         </div>
                         <div className="-ml-px flex w-0 flex-1">
                             <button
-                                onClick={(e) => handleSubmit(evento.id)} 
+                                onClick={() => handleSubmit(evento)} 
                                 className="relative inline-flex w-0 flex-1 items-center justify-center rounded-br-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500"
                             >Add to cart</button>
                         </div>

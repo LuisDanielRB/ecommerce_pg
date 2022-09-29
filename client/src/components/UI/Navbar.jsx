@@ -9,7 +9,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
 import { userSignOut, checkStates, cartStateSet } from "../../store/actions";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UserAuth } from "../../firebase/context";
 import PopOverCart from "./PopOverCart";
 import SearchInput from "./SearchInput";
@@ -19,11 +19,13 @@ function classNames(...classes) {
 }
 
 function Navbar() {
+
   const dispatch = useDispatch();
   const { logOut } = UserAuth();
   const { user } = useSelector((state) => state);
   const { cartState } = useSelector((state) => state);
   const [search, setSearch] = useState(false);
+  const navigate = useNavigate()
 
   useEffect(() => {
     dispatch(checkStates());
@@ -33,6 +35,7 @@ function Navbar() {
     e.preventDefault();
     dispatch(userSignOut("user"));
     logOut();
+    navigate('/login')
   };
 
   const navigation = [
