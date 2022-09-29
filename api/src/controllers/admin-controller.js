@@ -37,6 +37,27 @@ const adminPut = async (req, res) => {
     }
 }
 
+const bannedUser = async (req, res)=>{
+	const {id} = req.params;
+
+	try {
+		if(!id)	res.status(404).json({message: 'id is require..'});
+		else{
+			let userBanned = await Users.findOne({where: {id}});
+			
+			if(!userBanned) res.status(404).json({message: 'user not found..'});
+			else{
+				await Users.update({status: 'Banned'},{where: {id}});
+				res.status(200).json({message: 'successfully banned user..'});
+			}
+		}
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+
+
 
 // Update to joaco , hay que revisar  si anda bien
 const getAllOrders = async (req, res, next) => {
@@ -54,32 +75,6 @@ const getAllOrders = async (req, res, next) => {
 		res.json(allOrders);
 	} catch (err) {
 		next(err);
-	}
-};
-
-const banUser = async (req, res, next) => {
-	let { userId } = req.body;
-	try {
-		let userToBan = await Users.findOne({
-			where: {
-				id: userId,
-			},
-		});
-		if (userToBan) {
-			await userToBan.update({
-				status: 'Banned',
-			});
-			ReviewScore.destroy({
-				where: {
-					userId,
-				},
-			});
-			res.status(200).send(`User ${userToBan.username} has been banned!`);
-		} else {
-			res.status(400).send('No user was found with that id');
-		}
-	} catch (e) {
-		next(e);
 	}
 };
 
@@ -144,5 +139,6 @@ const deleteCommentToAdmin = async (req, res, next) => {
 
 module.exports = {
     adminDelete,
-    adminPut
+    adminPut,
+	bannedUser
 };

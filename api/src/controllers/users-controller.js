@@ -216,24 +216,8 @@ const googleSignIn = async (req, res, next) => {
 		next(e);
 	}
 };
-const bannedUser = async (req, res)=>{
-	const {id} = req.params;
 
-	try {
-		if(!id)	res.status(404).json({message: 'id is require..'});
-		else{
-			let userBanned = await Users.findOne({where: {id}});
-			
-			if(!userBanned) res.status(404).json({message: 'user not found..'});
-			else{
-				await Users.update({status: 'Banned'},{where: {id}});
-				res.status(200).json({message: 'successfully banned user..'});
-			}
-		}
-	} catch (error) {
-		console.log(error);
-	}
-}
+
 
 // LOGICA PARA FAVORITOS
 const addFavorite = async (req, res) => {
@@ -319,6 +303,40 @@ const getFavorite = async (req, res) => {
 	}
 };
 
+const resetPassword = async (req, res, next) => {
+	let { userId, password } = req.body;
+	try {
+		let user = await Users.findOne({
+			where: {
+				id: userId,
+			},
+		});
+
+		if (!user)
+			return res.status(400).send('User has not been found with that ID');
+
+
+			const checkPassword = await compare(password, user.password)
+
+		if (!checkPassword) return res.status(400).send('Password does not match!');
+
+		await Users.update(
+			{
+				password: checkPassword,
+			},
+			{
+				where: {
+					id: userId,
+				},
+			}
+		);
+
+		res.send(`User ${user.username} has updated their password`);
+	} catch (err) {
+		next(err);
+	}
+};
+
 
 
 module.exports = {
@@ -330,5 +348,6 @@ module.exports = {
 	addFavorite,
 	deleteFavorite,
 	getFavorite,
-	bannedUser
+	bannedUser,
+	resetPassword
 }
