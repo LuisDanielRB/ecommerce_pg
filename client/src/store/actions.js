@@ -1,3 +1,4 @@
+import { async } from "@firebase/util";
 import axios from "axios";
 
 
@@ -304,4 +305,15 @@ export const cartStateSet = (cartState) => (dispatch) => {
     payload: cartState,
   });
 };
+
+
+
+
+export function updatePassword(payload) {
+  console.log(payload)
+  let {id, password} = payload
+  return async function(){
+    let update = await axios.put(`resetpassword/${id}`, payload)
+  }
+}
 

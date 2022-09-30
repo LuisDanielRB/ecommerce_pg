@@ -18,7 +18,7 @@ const transporter = createTransport({
 })
 
 
-const sendMailWelcome = async (id, mail) => {
+const sendMailWelcome = async (us, mail) => {
     /* */
     const handlebarOptions = {
         viewEngine: {
