@@ -166,7 +166,6 @@ export function userDeleteFavorite(userId, idEvent) {
 export function userGetFavorite(userId) {
 	return async function (dispatch) {
 		let favorites = await axios.get(`/favorites/${userId}`);
-    console.log(favorites.data);
 		return dispatch({ type: "USER_GET_FAVORITES", payload: favorites.data });
 	};
 }
@@ -181,9 +180,10 @@ export function addToCart(id, idUser) {
 				idUser: idUser, 
 				eventId: id, 
 			});
+     const result  = await adding
 			dispatch({
 				type: "ADD_CART",
-				payload: id,
+				payload: result.data.events,
 			});
 		} catch (err) {
 			console.log(err);

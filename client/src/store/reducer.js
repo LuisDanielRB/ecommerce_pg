@@ -143,14 +143,11 @@ function rootReducer(state = initialState, action) {
       }
 
     case "ADD_CART":
-			let exist = state.cart.filter((el) => el.id === action.payload);
-			if (exist.length === 1) return state;
-			let newItem = state.eventsCopy.find((p) => p.id == action.payload);
-			let sum = newItem.price;
+			let newPrice = action.payload.reduce((acc, item) => item.price + state.summary , 0)
 			return {
 				...state,
-				cart: [...state.cart, { ...newItem }],
-				summary: state.summary + sum,
+				cart: action.payload,
+				summary: newPrice
 			};
 
 		case "DEL_CART_GUEST":

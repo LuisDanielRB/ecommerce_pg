@@ -12,7 +12,7 @@ const EventCards = ({ eventos}) => {
     const {user} = useSelector((state) => state)
 
     useEffect(()=> {
-        dispatch(userGetFavorite(user.id))
+        user ? dispatch(userGetFavorite(user.id)) : null
     },[dispatch , user])
 
 

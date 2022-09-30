@@ -5,9 +5,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { GoogleButton } from 'react-google-button';
 import { UserAuth } from '../firebase/context';
 import { useEffect } from "react";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import GithubButton from 'react-github-login-button'
 
 function Login() {
+
+  const toastOptions = {
+		position: "bottom-center",
+		autoClose: 1000,
+		hideProgressBar: false,
+		closeOnClick: true,
+		pauseOnHover: true,
+		draggable: true,
+		progress: undefined,
+		theme: "dark"
+		};
+
   const { googleSignIn , user , gitHubSignIn } = UserAuth();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -59,7 +73,8 @@ function Login() {
       password: "",
     });
 
-    return navigate("/");
+    user ? navigate("/") : toast.error('password or email not valid' , toastOptions);
+
   }
 
   return (
@@ -171,6 +186,7 @@ function Login() {
           </div>
         </div>
       </div>
+      <ToastContainer/>
     </>
   );
 }
