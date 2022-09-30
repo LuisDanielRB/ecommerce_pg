@@ -304,32 +304,32 @@ const getFavorite = async (req, res) => {
 };
 
 const resetPassword = async (req, res, next) => {
-	let { userId, password } = req.body;
+
+	let {id} = req.params
+	let {password} = req.body
+
 	try {
 		let user = await Users.findOne({
 			where: {
-				id: userId,
+				id: id,
 			},
 		});
 
 		if (!user)
 			return res.status(400).send('User has not been found with that ID');
-
-
-			const checkPassword = await compare(password, user.password)
-
-		if (!checkPassword) return res.status(400).send('Password does not match!');
+		if (!password) return res.status(400).send('Password does not match!');
 
 		await Users.update(
 			{
-				password: checkPassword,
+				password: password,
 			},
 			{
 				where: {
-					id: userId,
+					id: id,
 				},
 			}
 		);
+		console.log(user)
 
 		res.send(`User ${user.username} has updated their password`);
 	} catch (err) {

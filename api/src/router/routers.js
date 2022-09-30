@@ -16,7 +16,7 @@ router.post("/user/google", googleSignIn);
 router.post("/login", login);
 router.post("/register", register);
 router.put("/password", passwordRecovery);
-router.put('/resetpassword', resetPassword ) 
+router.put('/resetpassword/:id', resetPassword ) 
 router.put("/user/:id/profile", fileUpload, upDateUser);
 router.get("/users", getUsers);
 
