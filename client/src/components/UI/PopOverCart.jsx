@@ -3,8 +3,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { PlusCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { cartStateSet , delCart , getCart , removeOneEventFromCart, delCartUser , checkoutCart} from "../../store/actions";
-import { MinusCircleIcon} from "@heroicons/react/20/solid";
+import { cartStateSet , delCart , getCart , removeOneEventFromCart, delCartUser , checkoutCart , getCartUser} from "../../store/actions";
 import axios from "axios";
 
 // TODO: Remplazar products por el estado global del carrito
@@ -17,9 +16,9 @@ export default function PopOverCart() {
   
 
     useEffect(() => {
-      user ? dispatch(getCart(user.id)) : null
+      user ? dispatch(getCart(user.id)) : dispatch(getCartUser(cart))
       setOpen(cartState);
-    },[dispatch, cartState , summary]);
+    },[dispatch, cartState , summary, user]);
 
 
     //Abro modal de carrito
@@ -33,7 +32,6 @@ export default function PopOverCart() {
     if(user) {
       dispatch(delCartUser(id)) 
       dispatch(removeOneEventFromCart(id, user.id))
-      return
     } else {
       dispatch(delCart(id))
     }
@@ -42,11 +40,12 @@ export default function PopOverCart() {
 
   const sendCart  = async (summary) => {
     try {
-      dispatch(checkoutCart(user.id , user.token))
-      let res = await axios.put('/checkout' , {summary})
+      // dispatch(checkoutCart(user.id , user.token))
+      let res = await axios.put('/payment' , {summary})
       let params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,
       width=0,height=0,left=-1000,top=-1000`;
       window.open(res.data , 'HENRYECCOMERCE' , params)
+      console.log(res);
     } catch (error) {
       console.log(error);
     }

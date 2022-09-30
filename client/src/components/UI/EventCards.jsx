@@ -1,23 +1,38 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { HeartIcon } from "@heroicons/react/20/solid";
-import { userAddFavorite, addToCartGuest, addToCart } from '../../store/actions'
+import { userAddFavorite, addToCartGuest, addToCart, cartStateSet } from '../../store/actions'
 import { useDispatch, useSelector } from "react-redux";
+import { ToastContainer, toast } from 'react-toastify';
 
 const EventCards = ({ eventos }) => {
-
     const dispatch = useDispatch();
-    const { user } = useSelector((state) => state)
+    const { user } = useSelector((state) => state);
+
+    const toastOptions = {
+        position: "bottom-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark"
+    };
 
 
     //Envio producto a la DB y al Carrito
     function handleSubmit(e) {
-
         if (user) {
-            return dispatch(addToCart(e.id, user.id))
+            dispatch(addToCart(e.id, user.id))
         } else {
-            return dispatch(addToCartGuest(e))
+            dispatch(addToCartGuest(e))
         }
+        setTimeout(() => {
+            dispatch(cartStateSet(false));
+        }, 2000);
+        dispatch(cartStateSet(true));
+        toast.success("Evento added", toastOptions);
     }
 
     //Agrego a favoritos el evento
@@ -33,26 +48,26 @@ const EventCards = ({ eventos }) => {
             {eventos.map((evento) => (
                 <li
                     key={evento.id}
-                    className="col-span-1 divide-y divide-gray-200 rounded bg-white shadow"
+                    className="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow"
                 >
                     <div className="flex  items-center justify-between space-x-6 p-6">
                         <div className="flex-1 truncate">
                             <div className="grid justify-items-center">
-                               <div className="justify-center">
-                                <img
-                                    className="h-50 w-80 flex-shrink-0 rounded bg-gray-300"
-                                    src={evento.image}
-                                    alt=""
-                                />
+                                <div className="justify-center">
+                                    <img
+                                        className="h-50 w-80 flex-shrink-0 rounded bg-gray-300"
+                                        src={evento.image}
+                                        alt=""
+                                    />
                                 </div>
                                 <h3 className="mt-3 truncate text-xs font-medium text-gray-900">
                                     {evento.artist.join(" - ")}
                                 </h3>
                                 <span className=" text-center rounded-full bg-green-300 px-1.5 py-1.5 text font-medium text-green-800 mt-2">
-                                 STOCK:       {evento.stock}
+                                    STOCK:       {evento.stock}
                                 </span>
                                 <span className=" text-center rounded-full bg-green-300 px-1.5 py-1.5 text font-medium text-green-800 mt-2">
-                                PRICE:        ${evento.price}
+                                    PRICE:        ${evento.price}
                                 </span>
                             </div>
                             <p className="mt-1 text-center truncate text-sm text-gray-500">
@@ -87,9 +102,8 @@ const EventCards = ({ eventos }) => {
                     </div>
                 </li>
             ))}
-        </ul>
-
-    );
+            <ToastContainer />
+        </ul>);
 };
 
 export default EventCards;

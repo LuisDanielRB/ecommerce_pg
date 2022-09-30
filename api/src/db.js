@@ -65,6 +65,11 @@ EventsCreated.belongsTo(Users, {
 	targetKey: 'id',
 })
 
+Event.hasMany(ReviewScore, { timestamps: false });
+ReviewScore.belongsTo(Event, { timestamps: false });
+Users.hasMany(ReviewScore, { timestamps: false });
+ReviewScore.belongsTo(Users, { timestamps: false });
+
 Cart.belongsToMany(Event, { through: Cart_Events });
 Event.belongsToMany(Cart, { through: Cart_Events });
 Users.hasMany(Cart);

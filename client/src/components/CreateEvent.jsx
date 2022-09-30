@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { PlusCircleIcon } from "@heroicons/react/20/solid";
 import { createEvent } from "../store/actions";
 import { useSelector, useDispatch } from "react-redux";
+import Logo from "../logo/logo.png";
 
 function CreateEvent() {
   const navigate = useNavigate();
@@ -11,7 +12,6 @@ function CreateEvent() {
   const artistInput = useRef(null);
   const [error, setError] = useState({});
   const [artists, setArtists] = useState([]);
-  const [file, setFile] = useState();
   const [input, setInput] = useState({
     description: "",
     price: 0,
@@ -52,8 +52,25 @@ function CreateEvent() {
     if (!input.category.length) {
       errors.category = "Select at least a one or five genres ";
     }
-    if (!/^(https:\/\/)([^\s(["<,>/]*)(\/)[^\s[",><]*(.png|.jpg|.jpeg)(\?[^\s[",><]*)?/gi.test(input.image)) { errors.image = "The url is not valid"; }
     return errors;
+  }
+
+  async function handleFile(e) {
+    e.preventDefault();
+    let image = e.target.files[0];
+    let data = new FormData();
+    data.append("file",image);
+    data.append("upload_preset","pkokipva");
+    fetch("https://api.cloudinary.com/v1_1/dzjonhhps/image/upload",{
+        method: 'POST',
+        body: data
+    }).then(res=>res.json()).then(res=>{
+        setInput({
+            ...input,
+            image: res.secure_url,
+            imageId: res.public_id
+        })
+    })
   }
 
   function handleArtistDelete(e) {
@@ -160,7 +177,7 @@ function CreateEvent() {
       ...input,
       artist: [...input.artist, artists],
     });
-    dispatch(createEvent(file));
+    dispatch(createEvent(input));
     setError(validation(input));
     setInput({
       description: "",
@@ -181,11 +198,13 @@ function CreateEvent() {
     <>
       <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <img
-            className="mx-auto h-12 w-auto"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-            alt="Your Company"
-          />
+        <a href="/">
+            <img
+              className="mx-auto h-24 w-auto"
+              src={Logo}
+              alt="Your Company"
+            />
+          </a>
           <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
             Create your Event
           </h2>
@@ -348,19 +367,16 @@ function CreateEvent() {
                 </label>
                 <div className="mt-1">
                   <input
-                    type="text"
+                  onChange={handleFile}
+                    type="file"
                     placeholder="The url of your image"
-                    value={input.image}
                     name="image"
-                    onChange={(e) => handleInputChange(e)}
                     autoComplete="off"
                     required
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                  /><img src={file} />
+                  />
                 </div>
-                {error.date && <p> ❌{error.date}</p>}
               </div>
-
               <button
                 type="submit"
                 className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm bg-indigo-400"
@@ -383,6 +399,4 @@ function CreateEvent() {
   );
 }
 
-
 export default CreateEvent;
-

@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getAllEvents , userGetFavorite } from "../store/actions";
 import { useNavigate } from "react-router-dom";
+import 'react-toastify/dist/ReactToastify.css';
 
 const Events = () => {
   const searchLive = useSelector((state) => state.searchLive);
@@ -222,6 +223,7 @@ const Events = () => {
         </div>
       )}
       <Footer />
+      
     </>
   );
 };
