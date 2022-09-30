@@ -48,6 +48,7 @@ const bannedUser = async (req, res)=>{
 			if(!userBanned) res.status(404).json({message: 'user not found..'});
 			else{
 				await Users.update({status: 'Banned'},{where: {id}});
+				await ReviewScore.destroy({where:{userId:id}})
 				res.status(200).json({message: 'successfully banned user..'});
 			}
 		}
