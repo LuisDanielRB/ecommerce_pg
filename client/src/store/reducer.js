@@ -102,18 +102,47 @@ function rootReducer(state = initialState, action) {
         };
 
       ////////////CART///////////////////////
-      case 'ADD_CART_GUEST': 
-      localStorage.setItem('cart' , JSON.stringify([...state.cart , action.payload]))
-      const eventosDelLocal = JSON.parse(localStorage.getItem('cart'))
-      const price = eventosDelLocal.map((e) => e.price).reduce((acc, e) => acc + e, 0)
-      localStorage.setItem('summary' , JSON.stringify(price))
-      return {
-        ...state,
-        cart: [...state.cart , action.payload],
-        summary: price
+    case 'ADD_CART_GUEST': 
+      const newEvent = {
+        artist:   action.payload.artist,
+        category: action.payload.category,
+        date:  action.payload.date,
+        description:  action.payload.description,
+        id:  action.payload.id,
+        image:  action.payload.image,
+        imageId:  action.payload.imageId,
+        isActive:  action.payload.isActive,
+        place:  action.payload.place,
+        price:  action.payload.price,
+        stock:  action.payload.stock,
+        cantidad:  1,
+      }
+      let cantidad = 1
+      let duplicado = state.cart.find(producto => producto.id === newEvent.id)
+      if (duplicado === undefined ) {
+         localStorage.setItem('cart' , JSON.stringify([...state.cart , newEvent])) 
+      } else {
+        duplicado.cantidad += cantidad
+        let event = JSON.parse(localStorage.getItem('cart')) 
+        const idx = event.findIndex(producto => producto.id === newEvent.id)
+        event.splice(idx, 1)
+        localStorage.setItem('cart', JSON.stringify([...state.cart]))
       }
 
-      case "ADD_CART":
+      const eventosDelLocal = JSON.parse(localStorage.getItem('cart')) // ARRAY DE EVENTOS DEL LOCALSTORGA
+      var suma = 0
+      for (let i = 0; i < eventosDelLocal.length; i++) {
+        suma += eventosDelLocal[i].price * eventosDelLocal[i].cantidad
+      }
+      localStorage.setItem('summary' , JSON.stringify(suma))
+      console.log(eventosDelLocal)
+      return {
+        ...state,
+        cart: eventosDelLocal,
+        summary: suma
+      }
+
+    case "ADD_CART":
 			let exist = state.cart.filter((el) => el.id === action.payload);
 			if (exist.length === 1) return state;
 			let newItem = state.eventsCopy.find((p) => p.id == action.payload);
@@ -126,19 +155,17 @@ function rootReducer(state = initialState, action) {
 
 		case "DEL_CART_GUEST":
         const cartFromLocalStorage = JSON.parse(localStorage.getItem('cart'));
-        const idx = cartFromLocalStorage.indexOf((idx) => idx === action.payload);
-        cartFromLocalStorage.splice(idx , 1)
-        let stringify = JSON.stringify(cartFromLocalStorage)
-        localStorage.setItem('cart', stringify)
-        let total = cartFromLocalStorage.map(e => e.price).reduce((acc , item) => acc + item, 0)
+        const idx = cartFromLocalStorage.filter((idx) => idx.id !== action.payload);
+        localStorage.setItem('cart', JSON.stringify(idx))
+        let total = idx.map(e => e.price).reduce((acc , item) => acc + item, 0)
         localStorage.setItem('summary' , JSON.stringify(total))
 			return {
 				...state,
-				cart: state.cart.filter((p) => p.id !== action.payload),
+				cart: idx,
 				summary: total
 			};
     
-      case "DEL_CART_USER":
+    case "DEL_CART_USER":
 			let itemToDelet = state.cart.find((p) => p.id === action.payload);
 			let substr = itemToDelet.price;
 			return {
@@ -164,6 +191,13 @@ function rootReducer(state = initialState, action) {
 				summary: action.payload.totalPrice, //ACA ESTA EL TOTAL DEL CARRITO DEL USUARIO
 			};
 		}
+
+    case 'CART_STATE_USER': {
+      return {
+        ...state,
+        cart: action.payload
+      }
+    }
 
 		case "CHECKOUT_CART": {
 			return {

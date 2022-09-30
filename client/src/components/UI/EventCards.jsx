@@ -1,23 +1,42 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import {HeartIcon} from "@heroicons/react/20/solid";
-import {userAddFavorite , addToCartGuest , addToCart } from '../../store/actions'
+import {userAddFavorite , addToCartGuest , addToCart , cartStateSet } from '../../store/actions'
 import { useDispatch, useSelector } from "react-redux";
+import { ToastContainer, toast } from 'react-toastify';
+
 
 const EventCards = ({ eventos}) => {
 
     const dispatch = useDispatch();
     const {user} = useSelector((state) => state)
 
+    const toastOptions = {
+		position: "bottom-center",
+		autoClose: 1000,
+		hideProgressBar: false,
+		closeOnClick: true,
+		pauseOnHover: true,
+		draggable: true,
+		progress: undefined,
+		theme: "dark"
+		};
+
 
     //Envio producto a la DB y al Carrito
     function handleSubmit(e) {
 
         if(user) {
-            return dispatch(addToCart(e.id , user.id))
+            dispatch(addToCart(e.id , user.id))
         } else {
-            return dispatch(addToCartGuest(e))
+            dispatch(addToCartGuest(e))
         }
+
+        setTimeout(() => {
+            dispatch(cartStateSet(false));
+        }, 2000);
+        dispatch(cartStateSet(true));
+        toast.success("Evento added" , toastOptions);
     }
 
     //Agrego a favoritos el evento
@@ -86,6 +105,7 @@ const EventCards = ({ eventos}) => {
                     </div>
                 </li>
             ))}
+            <ToastContainer />
         </ul>
         // <div className='w-auto h-75 ml-1 mr-1 rounded-lg flex flex-col pt-3 pb-3'>
         //     <div className='w-full h-1/4'>
