@@ -219,10 +219,10 @@ const googleSignIn = async (req, res, next) => {
 // LOGICA PARA FAVORITOS
 const addFavorite = async (req, res) => {
 	let { idUser, idEvent } = req.body;
-	console.log(req.body);
+
 	try {
 		let user = await Users.findByPk(idUser)
-		console.log(user);
+
 		if (user) {
 			let newArray = user.favorites;
 			if (!newArray.includes(idEvent)) {
@@ -315,10 +315,11 @@ const resetPassword = async (req, res, next) => {
 		if (!user)
 			return res.status(400).send('User has not been found with that ID');
 		if (!password) return res.status(400).send('Password does not match!');
-
+		let newPassword = await encrypt(password)
+		console.log(newPassword);
 		await Users.update(
 			{
-				password: password,
+				password: newPassword,
 			},
 			{
 				where: {
@@ -326,8 +327,6 @@ const resetPassword = async (req, res, next) => {
 				},
 			}
 		);
-		console.log(user)
-
 		res.send(`User ${user.username} has updated their password`);
 	} catch (err) {
 		next(err);

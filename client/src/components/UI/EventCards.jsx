@@ -1,15 +1,20 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import {HeartIcon} from "@heroicons/react/20/solid";
-import {userAddFavorite , addToCartGuest , addToCart , cartStateSet } from '../../store/actions'
+import {userAddFavorite , addToCartGuest , addToCart , cartStateSet, userGetFavorite } from '../../store/actions'
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
+import { useEffect } from "react";
 
 
 const EventCards = ({ eventos}) => {
-
     const dispatch = useDispatch();
     const {user} = useSelector((state) => state)
+
+    useEffect(()=> {
+        user ? dispatch(userGetFavorite(user.id)) : null
+    },[dispatch , user])
+
 
     const toastOptions = {
 		position: "bottom-center",

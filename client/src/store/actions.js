@@ -180,9 +180,10 @@ export function addToCart(id, idUser) {
 				idUser: idUser, 
 				eventId: id, 
 			});
+     const result  = await adding
 			dispatch({
 				type: "ADD_CART",
-				payload: id,
+				payload: result.data.events,
 			});
 		} catch (err) {
 			console.log(err);
