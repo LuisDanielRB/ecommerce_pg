@@ -8,6 +8,7 @@ import { getAllEvents , userGetFavorite } from "../store/actions";
 import { useNavigate } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
 
+
 const Events = () => {
   const searchLive = useSelector((state) => state.searchLive);
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const Events = () => {
   const categories = useSelector((state) => state.categories);
   const artists = useSelector((state) => state.artists);
   const place = useSelector((state) => state.places);
+  const {user} = useSelector((state) => state)
   const [filtered, setFiltered] = useState();
   const [filters, setFilters] = useState({
     category: "-",
@@ -27,7 +29,7 @@ const Events = () => {
   useEffect(() => {
     dispatch(getAllEvents());
     getFiltered();
-  }, [dispatch, filters]);
+  }, [dispatch, filters , user ]);
 
   function filterArr(array, value) {
     for (let i = 0; i < array.length; i++) {

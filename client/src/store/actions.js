@@ -166,6 +166,7 @@ export function userDeleteFavorite(userId, idEvent) {
 export function userGetFavorite(userId) {
 	return async function (dispatch) {
 		let favorites = await axios.get(`/favorites/${userId}`);
+    console.log(favorites.data);
 		return dispatch({ type: "USER_GET_FAVORITES", payload: favorites.data });
 	};
 }

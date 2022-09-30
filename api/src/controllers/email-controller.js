@@ -53,8 +53,6 @@ const sendMailWelcome = async (us, mail) => {
     }
 }
 
-
-
 const emailReset = async (email, id) => {
   const handlebarOptions = {
     viewEngine: {
@@ -90,11 +88,6 @@ try {
 
 }
 
-
-
-
-
-
 const passwordRecovery = async ( req, res, next ) => {
 	let { email } = req.body;
   console.log("Esto es lo que llega al back", email)
@@ -117,9 +110,6 @@ const passwordRecovery = async ( req, res, next ) => {
     res.status(500).send("El usuario no existe")
   }
 
-
-
-	
 
   };
 
