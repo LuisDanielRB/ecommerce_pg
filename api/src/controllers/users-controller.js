@@ -58,7 +58,7 @@ const login = async (req, res , next) => {
 
 const upDateUser = async (req, res) => {
     const {id} = req.params;
-    const {username , email, password , status} = req.body;
+    const {username , email, password , status, profile_picture, profile_picture_id} = req.body;
     var result;
 
     try {
@@ -69,24 +69,21 @@ const upDateUser = async (req, res) => {
         
 		if(username) await Users.update({username},{where:{id: id}});
 		if(email) await Users.update({email},{where:{id: id}});
-		if(password) await Users.update({password},{where:{id: id}});
+		if(password) {
+			let newPassword = await encrypt(password)
+			await Users.update({password: newPassword},{where:{id: id}});
+		}
 		if(status) await Users.update({status},{where:{id: id}});
-
-
-        if(req.files?.image){
-            if(!user.imageId){
-				result = await uploadImage(req.files.image.tempFilePath);
+        if(profile_picture){
+			if(user.profile_picture_id){
+				await deleteImage(user.profile_picture_id);
 				await Users.update({profile_picture: result.secure_url,
 									profile_picture_id: result.public_id},
 									{where:{id: id}});
-				await fsExtra.unlink(req.files.image.tempFilePath);
 			}else{
-				await deleteImage(user.imageId);
-				result = await uploadImage(req.files.image.tempFilePath);
 				await Users.update({profile_picture: result.secure_url,
-									profile_picture_id: result.public_id},
-									{where:{id: id}});
-				await fsExtra.unlink(req.files.image.tempFilePath);
+					profile_picture_id: result.public_id},
+					{where:{id: id}});
 			}
         }
 
