@@ -5,27 +5,28 @@ import { useDispatch, useSelector } from "react-redux";
 import { GoogleButton } from 'react-google-button';
 import { UserAuth } from '../firebase/context';
 import { useEffect } from "react";
-import GithubButton from 'react-github-login-button'
+import GithubButton from 'react-github-login-button';
+import Logo from "../logo/logo.png";
 
 function Login() {
-  const { googleSignIn , user , gitHubSignIn } = UserAuth();
+  const { googleSignIn, user, gitHubSignIn } = UserAuth();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const token = useSelector((state) => state.user)
-  
+
 
   const [input, setInput] = useState({
     email: "",
     password: "",
   });
 
-  useEffect(()=> {
+  useEffect(() => {
     dispatch(checkStates())
-    if(user != null || token != null)  {
+    if (user != null || token != null) {
       navigate('/')
-    } 
-   
-  },[user , token]); 
+    }
+
+  }, [user, token]);
 
   function handleInputChange(e) {
     const { name, value } = e.target;
@@ -36,12 +37,12 @@ function Login() {
   }
 
   const handleGoogleSignIn = async () => {
-		try {
-			await googleSignIn();
-		} catch (error) {
-			console.log(error);
-		}
-	};
+    try {
+      await googleSignIn();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleGithubSignIn = async () => {
     try {
@@ -66,11 +67,13 @@ function Login() {
     <>
       <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <img
-            className="mx-auto h-12 w-auto"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-            alt="Your Company"
-          />
+          <a href="/">
+            <img
+              className="mx-auto h-24 w-auto"
+              src={Logo}
+              alt="Your Company"
+            />
+          </a>
           <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
             Sign in to your account
           </h2>
@@ -161,10 +164,10 @@ function Login() {
 
               <div className="flex justify-around w-96">
                 <div>
-                <GoogleButton onClick={handleGoogleSignIn}/>
+                  <GoogleButton onClick={handleGoogleSignIn} />
                 </div>
                 <div className="mx-5">
-                  <GithubButton onClick={handleGithubSignIn}/>
+                  <GithubButton onClick={handleGithubSignIn} />
                 </div>
               </div>
             </div>

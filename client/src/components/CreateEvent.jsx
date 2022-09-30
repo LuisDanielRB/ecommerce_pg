@@ -11,7 +11,6 @@ function CreateEvent() {
   const artistInput = useRef(null);
   const [error, setError] = useState({});
   const [artists, setArtists] = useState([]);
-  const [file, setFile] = useState();
   const [input, setInput] = useState({
     description: "",
     price: 0,
@@ -20,8 +19,9 @@ function CreateEvent() {
     place: "",
     stock: 0,
     category: [],
-    image: " ",
-    userId,
+    image: "",
+    imageId: "",
+    userId: null,
   });
   console.log(input)
 
@@ -52,11 +52,6 @@ function CreateEvent() {
       errors.category = "Select at least a one or five genres ";
     }
     return errors;
-  }
-
-  function handleChange(e) {
-    console.log(e.target.files);
-    setFile(URL.createObjectURL(e.target.files[0]));
   }
 
   function handleArtistDelete(e) {
@@ -107,7 +102,7 @@ function CreateEvent() {
   function handleInputPrice(e) {
     setInput({
       ...input,
-      price: Number(e.target.value)
+      price: Number(e.target.value),
     });
     setError(
       validation({
@@ -163,7 +158,7 @@ function CreateEvent() {
       ...input,
       artist: [...input.artist, artists],
     });
-    dispatch(createEvent(input));
+    dispatch(createEvent(file));
     setError(validation(input));
     setInput({
       description: "",
@@ -173,8 +168,9 @@ function CreateEvent() {
       place: "",
       stock: 0,
       category: [],
-      image: " ",
-      userId: userId,
+      image: "",
+      imageId: "",
+      userId: null,
     });
     navigate("/events");
   }
@@ -302,7 +298,7 @@ function CreateEvent() {
                     onChange={(e) => handleInputPrice(e)}
                     id="price"
                     name="price"
-                    type="price"
+                    type="text"
                     placeholder="$..."
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   />
@@ -318,7 +314,7 @@ function CreateEvent() {
                     onChange={(e) => handleInputStock(e)}
                     id="stock"
                     name="stock"
-                    type="stock"
+                    type="text"
                     placeholder="Stock..."
                     autoComplete="current-Stock"
                     required
@@ -350,15 +346,15 @@ function CreateEvent() {
                 </label>
                 <div className="mt-1">
                   <input
-                    onChange={handleChange}
-                    id="image"
                     type="file"
+                    placeholder="The url of your image"
                     name="image"
+                    autoComplete="off"
                     required
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   /><img src={file} />
                 </div>
-                {error.date && <p> ❌{error.date}</p>}
+                {error.image && <p> ❌{error.image}</p>}
               </div>
 
               <button

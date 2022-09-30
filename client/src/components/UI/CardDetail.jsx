@@ -1,7 +1,7 @@
 import React from "react";
 import Footer from "./Footer";
 import { useSelector, useDispatch } from "react-redux";
-import { addCart, getEventDetail } from "../../store/actions";
+import { getEventDetail } from "../../store/actions";
 import { Link, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import Navbar from "./Navbar";
@@ -11,14 +11,10 @@ const CardDetail = () => {
   const dispatch = useDispatch();
   const eventDetail = useSelector((state) => state.eventsDetail);
 
-  function handleSubmit(e) {
-    dispatch(addCart(e))
-  }
-
   useEffect(() => {
     dispatch(getEventDetail(id));
-  }, [dispatch, id]);
-
+  }, [dispatch, id]);  
+  
   return (
     <>
       <Navbar />

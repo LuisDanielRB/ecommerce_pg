@@ -3,11 +3,10 @@ const { DataTypes } = require('sequelize');
 module.exports = (sequelize) => {
     sequelize.define('reviewScore', {
         id: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            autoIncrement: true,
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4,
             primaryKey: true,
-        },
+            },
         description: {
             type: DataTypes.STRING,
             allowNull: false
@@ -15,6 +14,12 @@ module.exports = (sequelize) => {
         score: {
             type: DataTypes.INTEGER,
             allowNull: false
+        },
+        userId: {
+            type: DataTypes.INTEGER,
+        },
+        eventId: {
+            type: DataTypes.UUID,
         }
     })
 }

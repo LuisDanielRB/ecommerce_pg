@@ -6,12 +6,12 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getAllEvents , userGetFavorite } from "../store/actions";
 import { useNavigate } from "react-router-dom";
+import 'react-toastify/dist/ReactToastify.css';
 
 const Events = ({id}) => {
   const searchLive = useSelector((state) => state.searchLive);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const idUser = useSelector((state) => state.user.id)
   const eventos = useSelector((state) => state.events);
   const categories = useSelector((state) => state.categories);
   const artists = useSelector((state) => state.artists);
@@ -27,7 +27,6 @@ const Events = ({id}) => {
   useEffect(() => {
     dispatch(getAllEvents());
     getFiltered();
-    dispatch(userGetFavorite(idUser))
   }, [dispatch, filters]);
 
   function filterArr(array, value) {
@@ -224,6 +223,7 @@ const Events = ({id}) => {
         </div>
       )}
       <Footer />
+      
     </>
   );
 };

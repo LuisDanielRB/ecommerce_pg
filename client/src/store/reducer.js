@@ -17,7 +17,9 @@ const initialState = {
   user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null,
   // estados del carrito
   cartState: false,
-  cart: [],
+  cart: localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [],
+  summary: localStorage.getItem('summary') ? JSON.parse(localStorage.getItem('summary')) : 0,
+  purchasedCart: [],
   //favorites
   allFavourites: localStorage.getItem('favorites') ? JSON.parse(localStorage.getItem('favorites')) : null,
 };
@@ -61,6 +63,7 @@ function rootReducer(state = initialState, action) {
 
     case "LOG_OUT":
       removeLocalStorage(action.payload)
+      localStorage.clear()
       return {
         ...state,
         user: null
@@ -79,78 +82,10 @@ function rootReducer(state = initialState, action) {
       };
     }
 
-    case "CART_STATE": {
-      return {
-        ...state,
-        cartState: action.payload,
-      };
-    }
-
     case 'CLEAN_DETAIL':
       return {
         ...state,
         eventsDetail: {},
-      }
-
-    case "ADD_TO_CART":
-      if (state.cart.length === 0) {
-        let item = {
-          id: action.payload.id,
-          quantity: 1,
-          name: action.payload.description,
-          price: action.payload.price,
-          image: action.payload.image,
-        }
-        state.cart.push(item);
-      } else {
-        let check = false;
-        state.cart.map((item, key) => {
-          if (item.id === action.payload.id) {
-            state.cart[key].quantity++;
-            check = true;
-          }
-        });
-        if (!check) {
-          let items2 = {
-            id: action.payload.id,
-            quantity: 1,
-            name: action.payload.description,
-            price: action.payload.price,
-            image: action.payload.image,
-          }
-          state.cart.push(items2);
-        }
-      }
-      return {
-        ...state,
-      }
-
-    case 'DELETE_CART':
-      let deletes = state.cart.filter((item) => item.id != action.payload);
-      console.log(deletes)
-      return {
-        ...state,
-        cart: deletes,
-      }
-
-    case 'DECREASE_QUANTITY':
-      let item = action.payload;
-      console.log(item)
-      if (item.quantity > 1) {
-        state.cart.map((item, key) => {
-          if (item.id === action.payload.id) {
-            state.cart[key].quantity--;
-          }
-        })
-        return {
-          ...state
-        }
-      } else {
-        let deletes = state.cart.filter((item) => item.id != action.payload);
-        return {
-          ...state,
-          cart: deletes
-        }
       }
 
       case "USER_GET_FAVORITES":
@@ -160,12 +95,150 @@ function rootReducer(state = initialState, action) {
         favoriteEvents = state.eventsCopy.filter((e) =>
           eventId.includes(e.id)
         );
-        console.log(favoriteEvents)
         persisLocalStorage('favorites' , favoriteEvents)
         return {
           ...state,
           allFavourites: favoriteEvents
         };
+
+      ////////////CART///////////////////////
+    case 'ADD_CART_GUEST': 
+      const newEvent = {
+        artist:   action.payload.artist,
+        category: action.payload.category,
+        date:  action.payload.date,
+        description:  action.payload.description,
+        id:  action.payload.id,
+        image:  action.payload.image,
+        imageId:  action.payload.imageId,
+        isActive:  action.payload.isActive,
+        place:  action.payload.place,
+        price:  action.payload.price,
+        stock:  action.payload.stock,
+        cantidad:  1,
+      }
+      let cantidad = 1
+      let duplicado = state.cart.find(producto => producto.id === newEvent.id)
+      if (duplicado === undefined ) {
+         localStorage.setItem('cart' , JSON.stringify([...state.cart , newEvent])) 
+      } else {
+        duplicado.cantidad += cantidad
+        let event = JSON.parse(localStorage.getItem('cart')) 
+        const idx = event.findIndex(producto => producto.id === newEvent.id)
+        event.splice(idx, 1)
+        localStorage.setItem('cart', JSON.stringify([...state.cart]))
+      }
+
+      const eventosDelLocal = JSON.parse(localStorage.getItem('cart')) // ARRAY DE EVENTOS DEL LOCALSTORGA
+      var suma = 0
+      for (let i = 0; i < eventosDelLocal.length; i++) {
+        suma += eventosDelLocal[i].price * eventosDelLocal[i].cantidad
+      }
+      localStorage.setItem('summary' , JSON.stringify(suma))
+      console.log(eventosDelLocal)
+      return {
+        ...state,
+        cart: eventosDelLocal,
+        summary: suma
+      }
+
+    case "ADD_CART":
+			let exist = state.cart.filter((el) => el.id === action.payload);
+			if (exist.length === 1) return state;
+			let newItem = state.eventsCopy.find((p) => p.id == action.payload);
+			let sum = newItem.price;
+			return {
+				...state,
+				cart: [...state.cart, { ...newItem }],
+				summary: state.summary + sum,
+			};
+
+		case "DEL_CART_GUEST":
+        const cartFromLocalStorage = JSON.parse(localStorage.getItem('cart'));
+        const idx = cartFromLocalStorage.filter((idx) => idx.id !== action.payload);
+        localStorage.setItem('cart', JSON.stringify(idx))
+        let total = idx.map(e => e.price).reduce((acc , item) => acc + item, 0)
+        localStorage.setItem('summary' , JSON.stringify(total))
+			return {
+				...state,
+				cart: idx,
+				summary: total
+			};
+    
+    case "DEL_CART_USER":
+			let itemToDelet = state.cart.find((p) => p.id === action.payload);
+			let substr = itemToDelet.price;
+			return {
+				...state,
+				cart: state.cart.filter((p) => p.id !== action.payload),
+				summary: state.summary - substr,
+			};
+
+		case "DEL_ALL_CART":
+			return {
+				...state,
+				cart: [],
+				summary: 0,
+			};
+
+		case "GET_CART": {
+      var arrayEvents = action.payload.events;
+      localStorage.setItem('cart', JSON.stringify(arrayEvents));
+			
+			return {
+				...state,
+				cart: arrayEvents, // TODOS LOS EVENTOS DEL CARRITO EN LA DB
+				summary: action.payload.totalPrice, //ACA ESTA EL TOTAL DEL CARRITO DEL USUARIO
+			};
+		}
+
+    case 'CART_STATE_USER': {
+      return {
+        ...state,
+        cart: action.payload
+      }
+    }
+
+		case "CHECKOUT_CART": {
+			return {
+				...state,
+				purchasedCart: {
+					Events: state.cart,
+					Total: state.summary,
+					CartId: action.payload,
+				},
+				summary: 0,
+				cart: [],
+			};
+		}
+
+    case "EMPTY_PURCHASED_CART": {
+			return {
+				...state,
+				purchasedCart: { Events: [], Total: 0, CartId: '' },
+			};
+		}
+
+		case "REMOVE_EVENT_CART_DB": {
+			return {
+				...state,
+			};
+		}
+
+		case "CLEAR_CART": {
+			return {
+				...state,
+				cart: [],
+				summary: 0,
+			};
+		}  
+
+    case "CART_STATE": {
+      return {
+        ...state,
+        cartState: action.payload,
+      };
+    }
 
     default: return state
   };

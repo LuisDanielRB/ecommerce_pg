@@ -4,6 +4,8 @@ export const PublicRoute = {
   HOME: "home",
   EVENTS: "events",
   LOGINSUCCESS: "login/success",
+  PASSWORDRECOVERY: 'passwordRecovery',
+  RESETPASSWORD: 'ressetPassword/:id'
 };
 
 export const PrivateRoute = {
@@ -12,5 +14,6 @@ export const PrivateRoute = {
   EVENTDETAIL: "events/:id",
   CART: "cart",
   ADMIN_DASHBOARD: "admindashboard",
+  CHECKOUT: 'payment/success'
 };
 
