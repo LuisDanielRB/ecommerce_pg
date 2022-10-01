@@ -16,7 +16,7 @@ const mercadopagoPayment = async (req, res) => {
                 }
             ],
             back_urls: {
-                failure: "/failure",
+                failure: "http://localhost:5173/private/payment/success",
                 pending: "/pending",
                 success: "http://localhost:5173/private/payment/success",
             },
