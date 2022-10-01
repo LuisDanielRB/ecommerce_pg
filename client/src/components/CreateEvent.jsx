@@ -71,20 +71,19 @@ function CreateEvent() {
         imageId: res.public_id
       })
     })
-  }
+  };
 
-  function handleArtistDelete(e, el) {
+  function handleArtistDelete(e) {
     e.preventDefault();
-    setInput({
-      ...input,
-      artist: input.artist.filter((e) => e !== el)
-    })
-    setError(
-      validation({
-        ...input,
-        artist: input.artist.filter((e) => e !== el)
-      })
-    )
+    const { value } = e.target;
+    const artistId = artists.filter((artist) => artist === value);
+    if (value && artists.includes(value)) {
+      const newArtists = artists.filter((artist) => artist !== value);
+      const newArtistInput = input.artist.filter(
+        (artist) => artist !== artistId[0].name
+      );
+      setArtists(newArtists);
+    }
   }
 
   function handleArtist(e) {
@@ -105,7 +104,6 @@ function CreateEvent() {
       })
     );
   }
-
   function handleInputChange(e) {
     setInput({
       ...input,
@@ -250,18 +248,22 @@ function CreateEvent() {
                   </button>
                 </div>
                 {error.artist && <p> ❌{error.artist}</p>}
-                {input.artist.map((artists) => {
+                {artists.length
+                  ? artists.map((artist) => {
                     return (
-                      <div key={artists}>
-                        {artists}
+                      <div key={artist}>
+                        {artist}
                         <button
-                          onClick={(e) => handleArtistDelete(e, artists)}
+                          type="button"
+                          value={artist}
+                          onClick={(e) => handleArtistDelete(e)}
                         >
                           X
                         </button>
                       </div>
                     );
-                  })}
+                  })
+                  : null}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">
