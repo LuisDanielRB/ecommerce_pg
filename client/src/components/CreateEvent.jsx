@@ -3,11 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { PlusCircleIcon } from "@heroicons/react/20/solid";
 import { createEvent } from "../store/actions";
 import { useSelector, useDispatch } from "react-redux";
+import data from "../utils/place.json";
+import Logo from "../logo/logo.png";
 
 function CreateEvent() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { userId } = useSelector((state) => state);
   const artistInput = useRef(null);
   const [error, setError] = useState({});
   const [artists, setArtists] = useState([]);
@@ -54,17 +55,36 @@ function CreateEvent() {
     return errors;
   }
 
-  function handleArtistDelete(e) {
+  async function handleFile(e) {
     e.preventDefault();
-    const { value } = e.target;
-    const artistId = artists.filter((artist) => artist === value);
-    if (value && artists.includes(value)) {
-      const newArtists = artists.filter((artist) => artist !== value);
-      const newArtistInput = input.artist.filter(
-        (artist) => artist !== artistId[0].name
-      );
-      setArtists(newArtists);
-    }
+    let image = e.target.files[0];
+    let data = new FormData();
+    data.append("file", image);
+    data.append("upload_preset", "pkokipva");
+    fetch("https://api.cloudinary.com/v1_1/dzjonhhps/image/upload", {
+      method: 'POST',
+      body: data
+    }).then(res => res.json()).then(res => {
+      setInput({
+        ...input,
+        image: res.secure_url,
+        imageId: res.public_id
+      })
+    })
+  }
+
+  function handleArtistDelete(e, el) {
+    e.preventDefault();
+    setInput({
+      ...input,
+      artist: input.artist.filter((e) => e !== el)
+    })
+    setError(
+      validation({
+        ...input,
+        artist: input.artist.filter((e) => e !== el)
+      })
+    )
   }
 
   function handleArtist(e) {
@@ -158,7 +178,7 @@ function CreateEvent() {
       ...input,
       artist: [...input.artist, artists],
     });
-    dispatch(createEvent(file));
+    dispatch(createEvent(input));
     setError(validation(input));
     setInput({
       description: "",
@@ -179,11 +199,13 @@ function CreateEvent() {
     <>
       <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <img
-            className="mx-auto h-12 w-auto"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-            alt="Your Company"
-          />
+          <a href="/">
+            <img
+              className="mx-auto h-24 w-auto"
+              src={Logo}
+              alt="Your Company"
+            />
+          </a>
           <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
             Create your Event
           </h2>
@@ -228,22 +250,18 @@ function CreateEvent() {
                   </button>
                 </div>
                 {error.artist && <p> ❌{error.artist}</p>}
-                {artists.length
-                  ? artists.map((artist) => {
+                {input.artist.map((artists) => {
                     return (
-                      <div key={artist}>
-                        {artist}
+                      <div key={artists}>
+                        {artists}
                         <button
-                          type="button"
-                          value={artist}
-                          onClick={(e) => handleArtistDelete(e)}
+                          onClick={(e) => handleArtistDelete(e, artists)}
                         >
                           X
                         </button>
                       </div>
                     );
-                  })
-                  : null}
+                  })}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -254,14 +272,12 @@ function CreateEvent() {
                     onChange={(e) => handleSelectPlace(e)}
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   >
-                    <option default value="">
+                    <option hidden>
                       Please select a place
                     </option>
-                    <option value="Estados Unidos">Estados Unidos</option>
-                    <option value="Argentina">Argentina</option>
-                    <option value="Mexico">Mexico</option>
-                    <option value="Colombia">Colombia</option>
-                    <option value="Venezuela">Venezuela</option>
+                    {data?.map((place, id) => {
+                      return <option key={id}>{place.name_es}</option>
+                    })}
                   </select>
                 </div>
                 {error.place && <p> ❌{error.place}</p>}
@@ -275,7 +291,7 @@ function CreateEvent() {
                     onChange={(e) => handleSelectCategory(e)}
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   >
-                    <option default value="">
+                    <option hidden>
                       Please select a category
                     </option>
                     <option value="Musica">Musica</option>
@@ -300,6 +316,7 @@ function CreateEvent() {
                     name="price"
                     type="text"
                     placeholder="$..."
+                    required
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   />
                 </div>
@@ -346,15 +363,15 @@ function CreateEvent() {
                 </label>
                 <div className="mt-1">
                   <input
+                    onChange={handleFile}
                     type="file"
                     placeholder="The url of your image"
                     name="image"
                     autoComplete="off"
                     required
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                  /><img src={file} />
+                  /><img src={input.image} />
                 </div>
-                {error.image && <p> ❌{error.image}</p>}
               </div>
 
               <button
