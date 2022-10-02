@@ -84,7 +84,7 @@ function CreateEvent() {
       );
       setArtists(newArtists);
     }
-  }
+  };
 
   function handleArtist(e) {
     e.preventDefault();
@@ -100,10 +100,11 @@ function CreateEvent() {
     setError(
       validation({
         ...input,
-        artist: artists,
+        artist: artists
       })
     );
-  }
+  };
+
   function handleInputChange(e) {
     setInput({
       ...input,
@@ -172,10 +173,10 @@ function CreateEvent() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    setInput({
-      ...input,
-      artist: [...input.artist, artists],
-    });
+    // setInput({
+    //   ...input,
+    //   artist: [...input.artist],
+    // });
     dispatch(createEvent(input));
     setError(validation(input));
     setInput({
@@ -248,22 +249,22 @@ function CreateEvent() {
                   </button>
                 </div>
                 {error.artist && <p> ❌{error.artist}</p>}
-                {artists.length
-                  ? artists.map((artist) => {
-                    return (
-                      <div key={artist}>
+                {input.artist ? input.artist.map((artist, id) => {
+                  return (
+                    <div key={id}>
+                      <p>
                         {artist}
                         <button
                           type="button"
                           value={artist}
-                          onClick={(e) => handleArtistDelete(e)}
+                          onClick={(e) => handleArtistDelete(e, artist)}
                         >
                           X
                         </button>
-                      </div>
-                    );
-                  })
-                  : null}
+                      </p>
+                    </div>
+                  );
+                }): input.artist}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -393,7 +394,7 @@ function CreateEvent() {
             </div>
           </div>
         </div>
-      </div>
+      </div >
     </>
   );
 }

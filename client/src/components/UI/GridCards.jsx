@@ -8,6 +8,10 @@ import {
   ShieldCheckIcon,
   StarIcon,
 } from "@heroicons/react/24/outline";
+import Img1 from "../../assets/carousel/Img1.jpg"
+import Img2 from "../../assets/carousel/Img2.jpg"
+import Img3 from "../../assets/carousel/Img3.jpg"
+import { Carousel } from 'react-bootstrap';
 
 const features = [
   {
@@ -81,11 +85,29 @@ function GridCards({ eventos }) {
                     <p className="mt-5 text-base text-gray-500">
                       {feature.description}
                     </p>
-                    <img
-                      className="mx-auto rounded-md mt-4"
-                      src="https://via.placeholder.com/300"
-                      alt=""
-                    />
+                    <Carousel>
+                      <Carousel.Item className="h-48" >
+                        <img
+                          className="mx-auto rounded-md mt-4 h-full w-full"
+                          src={Img1}
+                          alt=""
+                        />
+                      </Carousel.Item>
+                      <Carousel.Item className="h-48" >
+                        <img
+                          className="mx-auto rounded-md mt-4 h-full w-full"
+                          src={Img2}
+                          alt=""
+                        />
+                      </Carousel.Item>
+                      <Carousel.Item className="h-48" >
+                        <img
+                          className="mx-auto rounded-md mt-4 h-full w-full"
+                          src={Img3}
+                          alt=""
+                        />
+                      </Carousel.Item>
+                    </Carousel>
                   </div>
                 </div>
               </div>
