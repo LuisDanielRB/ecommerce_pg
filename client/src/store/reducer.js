@@ -1,5 +1,4 @@
-import { persisLocalStorage, removeLocalStorage } from '../utils/index'
-
+import { persisLocalStorage, removeLocalStorage } from "../utils/index";
 
 const initialState = {
   // eventos
@@ -7,6 +6,8 @@ const initialState = {
   eventsCopy: [],
   // existen?
   eventsDetail: {},
+  // eventos por userid
+  eventsById: [],
   // eventos con filtrado
   categories: [],
   artists: [],
@@ -14,20 +15,28 @@ const initialState = {
   // --------------------
   searchLive: [],
   // Datos usuarios
-  user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null,
+  user: localStorage.getItem("user")
+    ? JSON.parse(localStorage.getItem("user"))
+    : null,
   // estados del carrito
   cartState: false,
-  cart: localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [],
-  summary: localStorage.getItem('summary') ? JSON.parse(localStorage.getItem('summary')) : 0,
+  cart: localStorage.getItem("cart")
+    ? JSON.parse(localStorage.getItem("cart"))
+    : [],
+  summary: localStorage.getItem("summary")
+    ? JSON.parse(localStorage.getItem("summary"))
+    : 0,
   purchasedCart: [],
   //favorites
-  allFavourites: localStorage.getItem('favorites') ? JSON.parse(localStorage.getItem('favorites')) : null,
+  allFavourites: localStorage.getItem("favorites")
+    ? JSON.parse(localStorage.getItem("favorites"))
+    : [],
 };
 
 function rootReducer(state = initialState, action) {
   switch (action.type) {
     case "POST_LOGIN":
-      persisLocalStorage('user' , action.payload)
+      persisLocalStorage("user", action.payload);
       return {
         ...state,
         user: action.payload,
@@ -62,18 +71,18 @@ function rootReducer(state = initialState, action) {
       };
 
     case "LOG_OUT":
-      removeLocalStorage(action.payload)
-      localStorage.clear()
+      removeLocalStorage(action.payload);
+      localStorage.clear();
       return {
         ...state,
-        user: null
+        user: null,
       };
 
     case "LOGIN_GOOGLE":
-      persisLocalStorage('user', action.payload)
+      persisLocalStorage("user", action.payload);
       return {
         ...state,
-        user: action.payload
+        user: action.payload,
       };
 
     case "CHECK_STATUS": {
@@ -82,156 +91,158 @@ function rootReducer(state = initialState, action) {
       };
     }
 
-    case 'CLEAN_DETAIL':
+    case "CLEAN_DETAIL":
       return {
         ...state,
         eventsDetail: {},
-      }
+      };
 
-      case "USER_GET_FAVORITES":
-        let favoriteEvents = [];
-        let eventId = action.payload;
-  
-        favoriteEvents = state.eventsCopy.filter((e) =>
-          eventId.includes(e.id)
-        );
-        persisLocalStorage('favorites' , favoriteEvents)
-        return {
-          ...state,
-          allFavourites: favoriteEvents
-        };
+    case "USER_GET_FAVORITES":
+      let favoriteEvents = [];
+      let eventId = action.payload;
 
-      ////////////CART///////////////////////
-    case 'ADD_CART_GUEST': 
+      favoriteEvents = state.eventsCopy.filter((e) => eventId.includes(e.id));
+      persisLocalStorage("favorites", favoriteEvents);
+      return {
+        ...state,
+        allFavourites: favoriteEvents,
+      };
+
+    ////////////CART///////////////////////
+    case "ADD_CART_GUEST":
       const newEvent = {
-        artist:   action.payload.artist,
+        artist: action.payload.artist,
         category: action.payload.category,
-        date:  action.payload.date,
-        description:  action.payload.description,
-        id:  action.payload.id,
-        image:  action.payload.image,
-        imageId:  action.payload.imageId,
-        isActive:  action.payload.isActive,
-        place:  action.payload.place,
-        price:  action.payload.price,
-        stock:  action.payload.stock,
-        cantidad:  1,
-      }
-      let cantidad = 1
-      let duplicado = state.cart.find(producto => producto.id === newEvent.id)
-      if (duplicado === undefined ) {
-         localStorage.setItem('cart' , JSON.stringify([...state.cart , newEvent])) 
+        date: action.payload.date,
+        description: action.payload.description,
+        id: action.payload.id,
+        image: action.payload.image,
+        imageId: action.payload.imageId,
+        isActive: action.payload.isActive,
+        place: action.payload.place,
+        price: action.payload.price,
+        stock: action.payload.stock,
+        cantidad: 1,
+      };
+      let cantidad = 1;
+      let duplicado = state.cart.find(
+        (producto) => producto.id === newEvent.id
+      );
+      if (duplicado === undefined) {
+        localStorage.setItem("cart", JSON.stringify([...state.cart, newEvent]));
       } else {
-        duplicado.cantidad += cantidad
-        let event = JSON.parse(localStorage.getItem('cart')) 
-        const idx = event.findIndex(producto => producto.id === newEvent.id)
-        event.splice(idx, 1)
-        localStorage.setItem('cart', JSON.stringify([...state.cart]))
+        duplicado.cantidad += cantidad;
+        let event = JSON.parse(localStorage.getItem("cart"));
+        const idx = event.findIndex((producto) => producto.id === newEvent.id);
+        event.splice(idx, 1);
+        localStorage.setItem("cart", JSON.stringify([...state.cart]));
       }
 
-      const eventosDelLocal = JSON.parse(localStorage.getItem('cart')) // ARRAY DE EVENTOS DEL LOCALSTORGA
-      var suma = 0
+      const eventosDelLocal = JSON.parse(localStorage.getItem("cart")); // ARRAY DE EVENTOS DEL LOCALSTORGA
+      var suma = 0;
       for (let i = 0; i < eventosDelLocal.length; i++) {
-        suma += eventosDelLocal[i].price * eventosDelLocal[i].cantidad
+        suma += eventosDelLocal[i].price * eventosDelLocal[i].cantidad;
       }
-      localStorage.setItem('summary' , JSON.stringify(suma))
-      console.log(eventosDelLocal)
+      localStorage.setItem("summary", JSON.stringify(suma));
+      console.log(eventosDelLocal);
       return {
         ...state,
         cart: eventosDelLocal,
-        summary: suma
-      }
+        summary: suma,
+      };
 
     case "ADD_CART":
-			let exist = state.cart.filter((el) => el.id === action.payload);
-			if (exist.length === 1) return state;
-			let newItem = state.eventsCopy.find((p) => p.id == action.payload);
-			let sum = newItem.price;
-			return {
-				...state,
-				cart: [...state.cart, { ...newItem }],
-				summary: state.summary + sum,
-			};
-
-		case "DEL_CART_GUEST":
-        const cartFromLocalStorage = JSON.parse(localStorage.getItem('cart'));
-        const idx = cartFromLocalStorage.filter((idx) => idx.id !== action.payload);
-        localStorage.setItem('cart', JSON.stringify(idx))
-        let total = idx.map(e => e.price).reduce((acc , item) => acc + item, 0)
-        localStorage.setItem('summary' , JSON.stringify(total))
-			return {
-				...state,
-				cart: idx,
-				summary: total
-			};
-    
-    case "DEL_CART_USER":
-			let itemToDelet = state.cart.find((p) => p.id === action.payload);
-			let substr = itemToDelet.price;
-			return {
-				...state,
-				cart: state.cart.filter((p) => p.id !== action.payload),
-				summary: state.summary - substr,
-			};
-
-		case "DEL_ALL_CART":
-			return {
-				...state,
-				cart: [],
-				summary: 0,
-			};
-
-		case "GET_CART": {
-      var arrayEvents = action.payload.events;
-      localStorage.setItem('cart', JSON.stringify(arrayEvents));
-			
-			return {
-				...state,
-				cart: arrayEvents, // TODOS LOS EVENTOS DEL CARRITO EN LA DB
-				summary: action.payload.totalPrice, //ACA ESTA EL TOTAL DEL CARRITO DEL USUARIO
-			};
-		}
-
-    case 'CART_STATE_USER': {
+      let newPrice = action.payload.reduce(
+        (acc, item) => item.price + state.summary,
+        0
+      );
       return {
         ...state,
-        cart: action.payload
-      }
+        cart: action.payload,
+        summary: newPrice,
+      };
+
+    case "DEL_CART_GUEST":
+      const cartFromLocalStorage = JSON.parse(localStorage.getItem("cart"));
+      const idx = cartFromLocalStorage.filter(
+        (idx) => idx.id !== action.payload
+      );
+      localStorage.setItem("cart", JSON.stringify(idx));
+      let total = idx.map((e) => e.price).reduce((acc, item) => acc + item, 0);
+      localStorage.setItem("summary", JSON.stringify(total));
+      return {
+        ...state,
+        cart: idx,
+        summary: total,
+      };
+
+    case "DEL_CART_USER":
+      let itemToDelet = state.cart.find((p) => p.id === action.payload);
+      let substr = itemToDelet.price;
+      return {
+        ...state,
+        cart: state.cart.filter((p) => p.id !== action.payload),
+        summary: state.summary - substr,
+      };
+
+    case "DEL_ALL_CART":
+      return {
+        ...state,
+        cart: [],
+        summary: 0,
+      };
+
+    case "GET_CART": {
+      var arrayEvents = action.payload.events;
+      localStorage.setItem("cart", JSON.stringify(arrayEvents));
+
+      return {
+        ...state,
+        cart: arrayEvents, // TODOS LOS EVENTOS DEL CARRITO EN LA DB
+        summary: action.payload.totalPrice, //ACA ESTA EL TOTAL DEL CARRITO DEL USUARIO
+      };
     }
 
-		case "CHECKOUT_CART": {
-			return {
-				...state,
-				purchasedCart: {
-					Events: state.cart,
-					Total: state.summary,
-					CartId: action.payload,
-				},
-				summary: 0,
-				cart: [],
-			};
-		}
+    case "CART_STATE_USER": {
+      return {
+        ...state,
+        cart: action.payload,
+      };
+    }
+
+    case "CHECKOUT_CART": {
+      return {
+        ...state,
+        purchasedCart: {
+          Events: state.cart,
+          Total: state.summary,
+          CartId: action.payload,
+        },
+        summary: 0,
+        cart: [],
+      };
+    }
 
     case "EMPTY_PURCHASED_CART": {
-			return {
-				...state,
-				purchasedCart: { Events: [], Total: 0, CartId: '' },
-			};
-		}
+      return {
+        ...state,
+        purchasedCart: { Events: [], Total: 0, CartId: "" },
+      };
+    }
 
-		case "REMOVE_EVENT_CART_DB": {
-			return {
-				...state,
-			};
-		}
+    case "REMOVE_EVENT_CART_DB": {
+      return {
+        ...state,
+      };
+    }
 
-		case "CLEAR_CART": {
-			return {
-				...state,
-				cart: [],
-				summary: 0,
-			};
-		}  
+    case "CLEAR_CART": {
+      return {
+        ...state,
+        cart: [],
+        summary: 0,
+      };
+    }
 
     case "CART_STATE": {
       return {
@@ -240,8 +251,21 @@ function rootReducer(state = initialState, action) {
       };
     }
 
-    default: return state
-  };
-};
+    case "GET_EVENTS_BY_ID":
+      return {
+        ...state,
+        eventsById: action.payload,
+      };
+
+    case "DELETE_EVENT_BY_ID":
+      return {
+        ...state,
+        eventsById: state.eventsById.splice(""),
+      };
+
+    default:
+      return state;
+  }
+}
 
 export default rootReducer;

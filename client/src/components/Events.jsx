@@ -3,10 +3,12 @@ import EventCards from "./UI/EventCards";
 import Footer from "./UI/Footer";
 import Navbar from "./UI/Navbar";
 import { useState } from "react";
+import './css/input.css'
 import { useSelector, useDispatch } from "react-redux";
 import { getAllEvents , userGetFavorite } from "../store/actions";
 import { useNavigate } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
+
 
 const Events = () => {
   const searchLive = useSelector((state) => state.searchLive);
@@ -16,6 +18,7 @@ const Events = () => {
   const categories = useSelector((state) => state.categories);
   const artists = useSelector((state) => state.artists);
   const place = useSelector((state) => state.places);
+  const {user} = useSelector((state) => state)
   const [filtered, setFiltered] = useState();
   const [filters, setFilters] = useState({
     category: "-",
@@ -24,10 +27,30 @@ const Events = () => {
   });
   const [searchFilter, setSearchFilter] = useState();
 
+  //PAGINANDO
+  const [currentPage, setCurrentPage] = useState(1);
+  const [EventsXPage, setEventsXPage] = useState(30);
+  const [totalPages, setTotalPages] = useState(0);
+  const lastEvent = currentPage * EventsXPage;
+  const firstEvent = lastEvent - EventsXPage;
+  const currentEvent = eventos.slice(firstEvent, lastEvent);
+
+  const pages = (page) => {
+    setCurrentPage(page);
+  };
+  useEffect(() => {
+    if (eventos) {
+      const calcTotalPages = Math.ceil(eventos.length / EventsXPage)
+      setTotalPages(calcTotalPages);
+      if (currentPage > calcTotalPages) setCurrentPage(1);
+    }
+  }, [eventos, EventsXPage, currentPage])
+
   useEffect(() => {
     dispatch(getAllEvents());
     getFiltered();
-  }, [dispatch, filters]);
+    pages(currentPage);
+  }, [dispatch, filters , user , currentPage ]);
 
   function filterArr(array, value) {
     for (let i = 0; i < array.length; i++) {
@@ -127,6 +150,7 @@ const Events = () => {
   return (
     <>
       <Navbar />
+      
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* We've used 3xl here, but feel free to try other max-widths based on your needs */}
         <div className="mx-auto max-w-3xl">
@@ -162,7 +186,10 @@ const Events = () => {
               })}
             </select>
           </div>
-
+          <div >
+            <span id="rangeValue">Eventos: {EventsXPage}</span>
+            <input className="range" type="range"  value={EventsXPage} min="0" max={eventos.length} onChange={(e) => setEventsXPage(e.target.value)} onMouseMove={(e) => setEventsXPage(e.target.value)}></input>
+          </div>
           <div>
             <label
               htmlFor="artists"
@@ -219,7 +246,7 @@ const Events = () => {
         </div>
       ) : (
         <div className="mx-8">
-          <EventCards eventos={eventos} />
+          <EventCards eventos={currentEvent} />
         </div>
       )}
       <Footer />

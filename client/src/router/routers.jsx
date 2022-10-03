@@ -14,6 +14,6 @@ export const PrivateRoute = {
   EVENTDETAIL: "events/:id",
   CART: "cart",
   ADMIN_DASHBOARD: "admindashboard",
-  CHECKOUT: 'payment/success'
+  CHECKOUT: 'payment/success',
 };
 

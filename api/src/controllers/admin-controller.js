@@ -2,9 +2,7 @@ const { Users , Cart , ReviewScore} = require("../db");
 const { Op } = require('sequelize');
 
 
-const adminDelete = async (req, res) => {
 
-}
 
 const adminPut = async (req, res) => {
     const { idUser, idAdmin } = req.query
@@ -48,6 +46,7 @@ const bannedUser = async (req, res)=>{
 			if(!userBanned) res.status(404).json({message: 'user not found..'});
 			else{
 				await Users.update({status: 'Banned'},{where: {id}});
+				await ReviewScore.destroy({where:{userId:id}})
 				res.status(200).json({message: 'successfully banned user..'});
 			}
 		}
@@ -176,7 +175,12 @@ const deleteCommentToAdmin = async (req, res, next) => {
 };
 
 module.exports = {
-    adminDelete,
     adminPut,
-	bannedUser
+	bannedUser,
+	deleteCommentToAdmin,
+	upgradeToAdmin,
+	unbanUser,
+	getAllOrders,
+	showEvent,
+	hideEvent
 };

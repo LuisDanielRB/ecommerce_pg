@@ -58,7 +58,7 @@ const login = async (req, res , next) => {
 
 const upDateUser = async (req, res) => {
     const {id} = req.params;
-    const {username , email, password , status} = req.body;
+    const {username , email, password , status, profile_picture, profile_picture_id} = req.body;
     var result;
 
     try {
@@ -69,24 +69,21 @@ const upDateUser = async (req, res) => {
         
 		if(username) await Users.update({username},{where:{id: id}});
 		if(email) await Users.update({email},{where:{id: id}});
-		if(password) await Users.update({password},{where:{id: id}});
+		if(password) {
+			let newPassword = await encrypt(password)
+			await Users.update({password: newPassword},{where:{id: id}});
+		}
 		if(status) await Users.update({status},{where:{id: id}});
-
-
-        if(req.files?.image){
-            if(!user.imageId){
-				result = await uploadImage(req.files.image.tempFilePath);
+        if(profile_picture){
+			if(user.profile_picture_id){
+				await deleteImage(user.profile_picture_id);
 				await Users.update({profile_picture: result.secure_url,
 									profile_picture_id: result.public_id},
 									{where:{id: id}});
-				await fsExtra.unlink(req.files.image.tempFilePath);
 			}else{
-				await deleteImage(user.imageId);
-				result = await uploadImage(req.files.image.tempFilePath);
 				await Users.update({profile_picture: result.secure_url,
-									profile_picture_id: result.public_id},
-									{where:{id: id}});
-				await fsExtra.unlink(req.files.image.tempFilePath);
+					profile_picture_id: result.public_id},
+					{where:{id: id}});
 			}
         }
 
@@ -222,10 +219,10 @@ const googleSignIn = async (req, res, next) => {
 // LOGICA PARA FAVORITOS
 const addFavorite = async (req, res) => {
 	let { idUser, idEvent } = req.body;
-	console.log(req.body);
+
 	try {
 		let user = await Users.findByPk(idUser)
-		console.log(user);
+
 		if (user) {
 			let newArray = user.favorites;
 			if (!newArray.includes(idEvent)) {
@@ -294,7 +291,7 @@ const getFavorite = async (req, res) => {
 
 		if (user) {
 			let response = user.favorites;
-			res.send(response);
+			res.json(response);
 		} else {
 			throw new Error('Invalid user');
 		}
@@ -318,10 +315,11 @@ const resetPassword = async (req, res, next) => {
 		if (!user)
 			return res.status(400).send('User has not been found with that ID');
 		if (!password) return res.status(400).send('Password does not match!');
-
+		let newPassword = await encrypt(password)
+		console.log(newPassword);
 		await Users.update(
 			{
-				password: password,
+				password: newPassword,
 			},
 			{
 				where: {
@@ -329,8 +327,6 @@ const resetPassword = async (req, res, next) => {
 				},
 			}
 		);
-		console.log(user)
-
 		res.send(`User ${user.username} has updated their password`);
 	} catch (err) {
 		next(err);

@@ -4,15 +4,9 @@ const uploadImage = require("../helpers/cloudinary");
 const fsExtra = require("fs-extra");
 
 const createEvent = async (req, res) => {
-  const { description, price, date, artist, place, stock, category, userId } =
-    req.body;
-  console.log(req.body)
-  var result;
+  const { description, price, date, artist, place, stock, category, image, imageId, userId } = req.body;
+
   try {
-    if (req.files?.image) {
-      result = await uploadImage(req.files.image.tempFilePath);
-      await fsExtra.unlink(req.files.image.tempFilePath);
-    }
     const newEvent = await EventsCreated.create({
       description,
       price,
@@ -21,8 +15,8 @@ const createEvent = async (req, res) => {
       place,
       stock,
       category,
-      image: result ? result.secure_url : "undefined",
-      imageId: result ? result.public_id : "undefined",
+      image,
+      imageId,
     });
     newEvent.setUser(userId);
     res.json(newEvent);
@@ -32,7 +26,17 @@ const createEvent = async (req, res) => {
 };
 
 const updateEvent = async (req, res) => {
-  const { description, price, date, artist, place, stock, category } = req.body;
+  const {
+    description,
+    price,
+    date,
+    artist,
+    place,
+    stock,
+    category,
+    image,
+    imageId,
+  } = req.body;
   const { id } = req.params;
   try {
     if (!id) res.status(404).json({ message: "id is require..." });
@@ -47,14 +51,9 @@ const updateEvent = async (req, res) => {
     if (place) await EventsCreated.update({ place }, { where: { id } });
     if (stock) await EventsCreated.update({ stock }, { where: { id } });
     if (category) await EventsCreated.update({ category }, { where: { id } });
-    if (req.files?.image) {
+    if (image) {
       await deleteImage(eventUpdate.imageId);
-      const result = await uploadImage(req.files.image.tempFilePath);
-      await EventsCreated.update(
-        { image: result.secure_url, imageId: result.public_id },
-        { where: { id } }
-      );
-      await fsExtra.unlink(req.files.image.tempFilePath);
+      await EventsCreated.update({ image, imageId }, { where: { id } });
     }
     eventUpdate = await EventsCreated.findOne({ where: { id } });
     res.status(200).json(eventUpdate);
@@ -105,12 +104,17 @@ const deleteEvents = async (req, res) => {
       console.log(error);
       res.status(404).send("Event not found");
     }
+    
   }
 };
 
 const getEvents = async (req, res) => {
   const eventsDB = await Event.findAll();
-  const eventsCreated = await EventsCreated.findAll();
+  const eventsCreated = await EventsCreated.findAll({
+    where: {
+      isActive: true
+    }
+  });
 
   const data = JSON.parse(fs.readFileSync("dataBase.json", "utf8"));
   try {
@@ -121,9 +125,9 @@ const getEvents = async (req, res) => {
       res.json(eventsDB.concat(eventsCreated));
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
 const getEventDetail = async (req, res, next) => {
   const { id } = req.params;
@@ -213,6 +217,20 @@ const getEventsDetailDb = async (req, res) => {
 };
 
 
+const getEventsById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const eventsById = await EventsCreated.findAll({
+      where: { userId: id, isActive: true },
+    });
+    // console.log(eventsById);
+    res.status(200).json(eventsById);
+  } catch (error) {
+    res.send(error.message);
+  }
+};
+
+
 module.exports = {
   createEvent,
   getEvents,
@@ -220,4 +238,5 @@ module.exports = {
   getEventDetail,
   deleteEvents,
   updateEvent,
+  getEventsById,
 };

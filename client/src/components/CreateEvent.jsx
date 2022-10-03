@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PlusCircleIcon } from "@heroicons/react/20/solid";
 import { createEvent } from "../store/actions";
-import { useDispatch } from "react-redux";
+import { useDispatch , useSelector} from "react-redux";
 import Logo from "../logo/logo.png";
 import data from "../utils/place.json";
 
 function CreateEvent() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state);
   const [error, setError] = useState({});
   const [artistas, setArtistas] = useState({});
   const [input, setInput] = useState({
@@ -19,9 +20,9 @@ function CreateEvent() {
     place: "",
     stock: 0,
     category: [],
+    userId: user.id,
     image: "",
     imageId: "",
-    userId: null,
   });
 
   function validation(input) {
@@ -177,9 +178,9 @@ function CreateEvent() {
       place: "",
       stock: 0,
       category: [],
+      userId: "",
       image: "",
       imageId: "",
-      userId: null,
     });
     navigate("/events");
   }
@@ -376,3 +377,4 @@ function CreateEvent() {
 }
 
 export default CreateEvent;
+
