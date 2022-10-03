@@ -38,12 +38,7 @@ const {
   putReviewScore,
   deleteReviewScore,
 } = require("../controllers/reviewScore-controller");
-const {
-  adminDelete,
-  adminPut,
-  bannedUser,
-} = require("../controllers/admin-controller");
-const {adminDelete, adminPut , bannedUser , hideEvent , showEvent , unbanUser , deleteCommentToAdmin , getAllOrders , upgradeToAdmin} = require('../controllers/admin-controller')
+const { adminPut , bannedUser , hideEvent , showEvent , unbanUser , deleteCommentToAdmin , getAllOrders , upgradeToAdmin} = require('../controllers/admin-controller')
 
 
 

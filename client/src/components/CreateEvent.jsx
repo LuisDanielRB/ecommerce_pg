@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PlusCircleIcon } from "@heroicons/react/20/solid";
 import { createEvent } from "../store/actions";
-import { useDispatch } from "react-redux";
+import { useDispatch , useSelector} from "react-redux";
 import Logo from "../logo/logo.png";
 import data from "../utils/place.json";
 
@@ -170,7 +170,7 @@ function CreateEvent() {
     e.preventDefault();
     setInput({
       ...input,
-      artist: [...input.artist, artists],
+      artist: [...input.artist, artistas],
     });
     dispatch(createEvent(input));
     setError(validation(input));
