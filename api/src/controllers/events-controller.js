@@ -4,11 +4,20 @@ const uploadImage = require("../helpers/cloudinary");
 const fsExtra = require("fs-extra");
 
 const createEvent = async (req, res) => {
-  const { description, price, date, artist, place, stock, category, image, imageId, userId } =
-    req.body;
+  const {
+    description,
+    price,
+    date,
+    artist,
+    place,
+    stock,
+    category,
+    image,
+    imageId,
+    userId,
+  } = req.body;
 
   try {
-    
     const newEvent = await EventsCreated.create({
       description,
       price,
@@ -27,14 +36,25 @@ const createEvent = async (req, res) => {
   }
 };
 const updateEvent = async (req, res) => {
-  const { description, price, date, artist, place, stock, category, image, imageId } = req.body;
+  const {
+    description,
+    price,
+    date,
+    artist,
+    place,
+    stock,
+    category,
+    image,
+    imageId,
+  } = req.body;
   const { id } = req.params;
   try {
     if (!id) res.status(404).json({ message: "id is require..." });
     let eventUpdate = await EventsCreated.findOne({ where: { id } });
     if (!eventUpdate) res.status(404).json({ message: "event not found..." });
 
-    if (description) await EventsCreated.update({ description }, { where: { id } });
+    if (description)
+      await EventsCreated.update({ description }, { where: { id } });
     if (price) await EventsCreated.update({ price }, { where: { id } });
     if (date) await EventsCreated.update({ date }, { where: { id } });
     if (artist) await EventsCreated.update({ artist }, { where: { id } });
@@ -43,10 +63,7 @@ const updateEvent = async (req, res) => {
     if (category) await EventsCreated.update({ category }, { where: { id } });
     if (image) {
       await deleteImage(eventUpdate.imageId);
-      await EventsCreated.update(
-        { image, imageId },
-        { where: { id } }
-      );
+      await EventsCreated.update({ image, imageId }, { where: { id } });
     }
     eventUpdate = await EventsCreated.findOne({ where: { id } });
     res.status(200).json(eventUpdate);
@@ -101,11 +118,9 @@ const deleteEvents = async (req, res) => {
 };
 
 const getEvents = async (req, res) => {
-
   const eventsDB = await Event.findAll();
   const eventsCreated = await EventsCreated.findAll();
-  
-  
+
   const data = JSON.parse(fs.readFileSync("dataBase.json", "utf8"));
   try {
     if (eventsDB.length === 0) {
@@ -115,9 +130,9 @@ const getEvents = async (req, res) => {
       res.json(eventsDB.concat(eventsCreated));
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
 const getEventDetail = async (req, res, next) => {
   const { id } = req.params;
@@ -206,6 +221,19 @@ const getEventsDetailDb = async (req, res) => {
   }
 };
 
+const getEventsById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const eventsById = await EventsCreated.findAll({
+      where: { userId: id, isActive: true },
+    });
+    // console.log(eventsById);
+    res.status(200).json(eventsById);
+  } catch (error) {
+    res.send(error.message);
+  }
+};
+
 module.exports = {
   createEvent,
   getEvents,
@@ -213,4 +241,5 @@ module.exports = {
   getEventsDetailDb,
   deleteEvents,
   updateEvent,
+  getEventsById,
 };
