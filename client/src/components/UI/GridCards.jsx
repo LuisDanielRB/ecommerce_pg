@@ -12,8 +12,6 @@ import Img1 from "../../assets/carousel/Img1.jpg"
 import Img2 from "../../assets/carousel/Img2.jpg"
 import Img3 from "../../assets/carousel/Img3.jpg"
 import { Carousel } from 'react-bootstrap';
-import { useDispatch, useSelector } from "react-redux";
-import { getAllEvents } from "../../store/actions";
 
 const features = [
   {
@@ -55,7 +53,6 @@ const features = [
 ];
 
 function GridCards() {
-
   return (
     <div className="relative bg-white py-16 sm:py-24 lg:py-32">
       <div className="mx-auto max-w-md px-4 text-center sm:max-w-3xl sm:px-6 lg:max-w-7xl lg:px-8">

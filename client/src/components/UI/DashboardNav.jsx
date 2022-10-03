@@ -3,31 +3,15 @@ import { Dialog, Menu, Transition } from "@headlessui/react";
 import {
   Bars3BottomLeftIcon,
   BellIcon,
-  CalendarIcon,
-  ChartBarIcon,
-  FolderIcon,
   HomeIcon,
-  InboxIcon,
   UsersIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
-import GridList from "./UI/GridList";
-import StatsDashboard from "./UI/StatsDashboard";
+import GridList from "./GridList";
+import StatsDashboard from "./StatsDashboard";
+import EventEdit from "./EventEdit";
 
-const navigation = [
-  {
-    name: "Dashboard",
-    href: "/private/admindashboard",
-    icon: HomeIcon,
-    current: true,
-  },
-  { name: "Events", href: "#", icon: UsersIcon, current: false },
-  // { name: "Projects", href: "#", icon: FolderIcon, current: false },
-  // { name: "Calendar", href: "#", icon: CalendarIcon, current: false },
-  // { name: "Documents", href: "#", icon: InboxIcon, current: false },
-  // { name: "Reports", href: "#", icon: ChartBarIcon, current: false },
-];
 const userNavigation = [
   { name: "Your Profile", href: "#" },
   { name: "Settings", href: "#" },
@@ -38,8 +22,9 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Example() {
+function DashboardNav({ eventos, user, setActiveState, navigation }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [detailOpen, setDetailOpen] = useState(false);
 
   return (
     <>
@@ -107,6 +92,7 @@ export default function Example() {
                     <nav className="space-y-1 px-2">
                       {navigation.map((item) => (
                         <a
+                          onClick={() => setActiveState(item.name)}
                           key={item.name}
                           href={item.href}
                           className={classNames(
@@ -156,6 +142,7 @@ export default function Example() {
               <nav className="flex-1 space-y-1 px-2 py-4">
                 {navigation.map((item) => (
                   <a
+                    onClick={() => setActiveState(item.name)}
                     key={item.name}
                     href={item.href}
                     className={classNames(
@@ -275,12 +262,11 @@ export default function Example() {
                 </h1>
               </div>
               <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
-                <StatsDashboard />
+                {navigation[0].current ? (
+                  <StatsDashboard user={user} eventos={eventos} />
+                ) : null}
                 <br />
-                <GridList />
-                {/* <div className="py-4">
-                  <div className="h-96 rounded-lg border-4 border-dashed border-gray-200" />
-                </div> */}
+                {navigation[1].current ? <GridList eventos={eventos} /> : null}
               </div>
             </div>
           </main>
@@ -289,3 +275,5 @@ export default function Example() {
     </>
   );
 }
+
+export default DashboardNav;

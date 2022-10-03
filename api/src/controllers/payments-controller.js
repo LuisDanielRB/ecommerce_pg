@@ -35,8 +35,6 @@ const mercadopagoPayment = async (req, res) => {
     }
 }
 
-
-
 module.exports = {
     mercadopagoPayment
 }

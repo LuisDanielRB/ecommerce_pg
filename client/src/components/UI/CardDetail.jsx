@@ -1,7 +1,7 @@
 import React from "react";
 import Footer from "./Footer";
 import { useSelector, useDispatch } from "react-redux";
-import { getEventDetail } from "../../store/actions";
+import { getEventDetail , addToCart , addToCartGuest } from "../../store/actions";
 import { Link, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import Navbar from "./Navbar";
@@ -10,11 +10,20 @@ const CardDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const eventDetail = useSelector((state) => state.eventsDetail);
+  const {user} = useSelector((state) => state);
 
   useEffect(() => {
     dispatch(getEventDetail(id));
-  }, [dispatch, id]);  
-  
+  }, [dispatch, id]);
+
+  const handleCart = (id) => {
+    if(user) {
+      dispatch(addToCart(id, user.id));
+    } else {
+      dispatch(addToCartGuest(id))
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -51,15 +60,13 @@ const CardDetail = () => {
             </section>
 
             <section aria-labelledby="options-heading" className="mt-10">
-              <form>
                 <button
-                  onClick={(e) => handleSubmit(eventDetail)} value={id}
+                  onClick={() => handleCart(id)}
                   type="submit"
                   className="mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 >
                   Add to cart
                 </button>
-              </form>
             </section>
           </div>
           <div className="flex items-center">
@@ -95,34 +102,3 @@ const CardDetail = () => {
 };
 
 export default CardDetail;
-
-{
-  /* Reviews */
-  /* <div className="mt-6">
-                <h4 className="sr-only">Reviews</h4>
-                <div className="flex items-center">
-                  <div className="flex items-center">
-                    {[0, 1, 2, 3, 4].map((rating) => (
-                      <StarIcon
-                        key={rating}
-                        className={classNames(
-                          product.rating > rating
-                            ? "text-gray-900"
-                            : "text-gray-200",
-                          "h-5 w-5 flex-shrink-0"
-                        )}
-                        aria-hidden="true"
-                      />
-                    ))}
-                  </div>
-                  <p className="sr-only">{product.rating} out of 5 stars</p>
-                  <a
-                    href="#"
-                    className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500"
-                  >
-                    {product.reviewCount} reviews
-                  </a>
-                </div>
-              </div> */
-
-}

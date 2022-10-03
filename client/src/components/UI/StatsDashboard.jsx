@@ -1,17 +1,16 @@
 import React from "react";
 
-/* This example requires Tailwind CSS v2.0+ */
-const stats = [
-  { name: "Total Subscribers", stat: "71,897" },
-  { name: "Avg. Open Rate", stat: "58.16%" },
-  { name: "Avg. Click Rate", stat: "24.57%" },
-];
+function StatsDashboard({ user, eventos }) {
+  const stats = [
+    { name: "Boletos Vendidos Total", stat: "71,897" },
+    { name: "Boletos Vendidos Semanal", stat: "5,765" },
+    { name: "Eventos Activos", stat: eventos.length },
+  ];
 
-function StatsDashboard() {
   return (
     <div>
       <h3 className="text-lg font-medium leading-6 text-gray-900">
-        Last 30 days
+        Bienvenido {user.username}
       </h3>
       <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
         {stats.map((item) => (
@@ -32,6 +31,4 @@ function StatsDashboard() {
   );
 }
 
-
 export default StatsDashboard;
-

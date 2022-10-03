@@ -29,7 +29,7 @@ function Home() {
         <p className="mt-4 text-lg leading-6 text-black-200">{p}</p>
         <a
           href={cta}
-          className="mt-8 inline-flex w-full items-center justify-center rounded-md border border-transparent px-5 py-3 text-base font-medium text-indigo-600 hover:bg-indigo-500 hover:text-white sm:w-auto"
+          className="mt-8 inline-flex w-full items-center justify-center rounded-md border border-transparent bg-gray px-5 py-3 text-base font-medium text-indigo-600 hover:bg-indigo-50 sm:w-auto"
         >
           {a}
         </a>

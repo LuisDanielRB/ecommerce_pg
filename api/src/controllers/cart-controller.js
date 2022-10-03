@@ -93,7 +93,7 @@ const addEventToCart = async (req, res, next) => {
 			await cart.update({
 				totalPrice: newPrice,
 			});
-			return res.send(`${eventToAdd.description} added to cart!`);
+			return res.json(cart);
 		
 	} catch (err) {
 		next(err);
@@ -171,7 +171,6 @@ const clearCart = async (req, res, next) => {
 
 const checkoutCart = async (req, res, next) => {
 	let { userId } = req.body;
-	console.log(userId);
 	try {
 		let arrayPromises = [];
 		let user = await Users.findByPk(userId);
@@ -236,8 +235,6 @@ const checkoutCart = async (req, res, next) => {
 		next(err);
 	}
 };
-
-
 
 module.exports = {
 	getCart,

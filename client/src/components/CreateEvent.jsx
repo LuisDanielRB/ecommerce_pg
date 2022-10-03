@@ -1,17 +1,17 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PlusCircleIcon } from "@heroicons/react/20/solid";
 import { createEvent } from "../store/actions";
-import { useSelector, useDispatch } from "react-redux";
-import data from "../utils/place.json";
+import { useDispatch, useSelector } from "react-redux";
 import Logo from "../logo/logo.png";
+import data from "../utils/place.json";
 
 function CreateEvent() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const artistInput = useRef(null);
+  const { user } = useSelector((state) => state);
   const [error, setError] = useState({});
-  const [artists, setArtists] = useState([]);
+  const [artistas, setArtistas] = useState({});
   const [input, setInput] = useState({
     description: "",
     price: 0,
@@ -23,8 +23,7 @@ function CreateEvent() {
     image: "",
     imageId: "",
     userId: null,
-  });
-  console.log(input)
+  })
 
   function validation(input) {
     let errors = {};
@@ -71,52 +70,34 @@ function CreateEvent() {
         imageId: res.public_id
       })
     })
+  }
+
+  const handleInputArtist = (e) => {
+    const { value } = e.target;
+    setArtistas(value)
   };
 
-  function handleArtistDelete(e) {
-    e.preventDefault();
-    const { value } = e.target;
-    const artistId = artists.filter((artist) => artist === value);
-    if (value && artists.includes(value)) {
-      const newArtists = artists.filter((artist) => artist !== value);
-      const newArtistInput = input.artist.filter(
-        (artist) => artist !== artistId[0].name
-      );
-      setArtists(newArtists);
+  const handleArtist = (e) => {
+    let nombre = e
+    if (Object.values(input.artist).includes(nombre)) {
+      alert('Artist already exists')
+    } else {
+      setInput({
+        ...input,
+        artist: [...input.artist, nombre]
+      })
+      setArtistas("")
     }
   };
 
-  function handleArtist(e) {
-    e.preventDefault();
-    setArtists([...artists, artistInput.current.value]);
-    setInput({ ...input, artist: [...input.artist] });
-  }
-
-  function handleInputArtist(e) {
+  const handleDeleteArtist = (e) => {
+    let newEvent = input.artist
+    const a = newEvent.filter(artist => artist !== e)
     setInput({
       ...input,
-      artist: [...artists, e.target.value]
-    });
-    setError(
-      validation({
-        ...input,
-        artist: artists
-      })
-    );
+      artist: a
+    })
   };
-
-  function handleInputChange(e) {
-    setInput({
-      ...input,
-      [e.target.name]: e.target.value,
-    });
-    setError(
-      validation({
-        ...input,
-        [e.target.name]: e.target.value,
-      })
-    );
-  }
 
   function handleInputPrice(e) {
     setInput({
@@ -173,10 +154,6 @@ function CreateEvent() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    // setInput({
-    //   ...input,
-    //   artist: [...input.artist],
-    // });
     dispatch(createEvent(input));
     setError(validation(input));
     setInput({
@@ -234,7 +211,6 @@ function CreateEvent() {
                 </label>
                 <div className="mt-1 flex">
                   <input
-                    ref={artistInput}
                     onChange={(e) => handleInputArtist(e)}
                     id="artist"
                     name="artist"
@@ -244,28 +220,17 @@ function CreateEvent() {
                     required
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   />
-                  <button onClick={(e) => handleArtist(e)} className="m-2">
+                  <button onClick={() => handleArtist(artistas)} className="m-2">
                     <PlusCircleIcon className="h-5 w-5 text-green-800 text-right" />
                   </button>
-                </div>
-                {error.artist && <p> ❌{error.artist}</p>}
-                {input.artist ? input.artist.map((artist, id) => {
-                  return (
-                    <div key={id}>
-                      <p>
-                        {artist}
-                        <button
-                          type="button"
-                          value={artist}
-                          onClick={(e) => handleArtistDelete(e, artist)}
-                        >
-                          X
-                        </button>
-                      </p>
-                    </div>
-                  );
-                }): input.artist}
-              </div>
+                </div>{error.artist && <p> ❌{error.artist}</p>}
+                {input.artist && input.artist.map((artist, idx) => {
+                  return (<p key={idx}>
+                    {artist} <button onClick={() => handleDeleteArtist(artist)}>X</button>
+                  </p>
+                  )
+                })}
+              </div >
               <div>
                 <label className="block text-sm font-medium text-gray-700">
                   Place
@@ -278,13 +243,15 @@ function CreateEvent() {
                     <option hidden>
                       Please select a place
                     </option>
-                    {data?.map((place, id) => {
-                      return <option key={id}>{place.name_es}</option>
-                    })}
-                  </select>
-                </div>
+                    {
+                      data?.map((place, id) => {
+                        return <option key={id}>{place.name_es}</option>
+                      })
+                    }
+                  </select >
+                </div >
                 {error.place && <p> ❌{error.place}</p>}
-              </div>
+              </div >
               <div>
                 <label className="block text-sm font-medium text-gray-700">
                   Category
@@ -376,14 +343,13 @@ function CreateEvent() {
                   /><img src={input.image} />
                 </div>
               </div>
-
               <button
                 type="submit"
                 className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm bg-indigo-400"
               >
                 Create
               </button>
-            </form>
+            </form >
             <div className="mt-4">
               <a
                 href="/"
@@ -392,12 +358,11 @@ function CreateEvent() {
                 <input type="button" value="Go Back" />
               </a>
             </div>
-          </div>
-        </div>
+          </div >
+        </div >
       </div >
     </>
   );
 }
-
 
 export default CreateEvent;
