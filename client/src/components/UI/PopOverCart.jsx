@@ -28,6 +28,8 @@ export default function PopOverCart() {
     }
   }
 
+  
+
   function handleDelete(id) {
     if(user) {
       dispatch(delCartUser(id)) 
@@ -105,7 +107,7 @@ export default function PopOverCart() {
                             role="list"
                             className="-my-6 divide-y divide-gray-200"
                           >
-                            {cart.length === 0 ? <p className="mt-8 text-center text-xl">Cart is empty</p> : cart.map((item, key) => (
+                            {cart.length === 0 ? <p className="mt-8 text-center text-xl">Cart is empty</p> : cart.map((item) => (
                               <li key={item.id} className="flex py-6">
                                 <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                   <img
@@ -123,7 +125,10 @@ export default function PopOverCart() {
                                           {item.description}
                                         </a>
                                       </h3>
-                                      <p className="ml-4">${(item.price)}.00</p>
+                                      <div className="flex flex-col">
+                                        <p className="ml-4">Precio$ {(item.price)}.00</p>
+                                        <p className="ml-4">Cantidad:  {user ? (item.Cart_Events.amount) : item.cantidad}</p>
+                                      </div>
                                     </div>
                                   </div>
                                   <div className="flex  items-center justify-between ">

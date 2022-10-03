@@ -4,9 +4,11 @@ import Navbar from './UI/Navbar'
 import { LockClosedIcon } from '@heroicons/react/20/solid'
 import { sendEmailPassword } from '../store/actions'
 import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 
 const PasswordRecovery = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
 
   const [email, setEmail] = useState("")
@@ -21,6 +23,8 @@ const PasswordRecovery = () => {
     e.preventDefault()
     console.log("este es el email", email)
     dispatch(sendEmailPassword({email: email}))
+    console.log("Despachar")
+    navigate("/")
   }
 
   

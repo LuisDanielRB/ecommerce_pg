@@ -93,7 +93,7 @@ const addEventToCart = async (req, res, next) => {
 			await cart.update({
 				totalPrice: newPrice,
 			});
-			return res.send(`${eventToAdd.description} added to cart!`);
+			return res.json(cart);
 		
 	} catch (err) {
 		next(err);

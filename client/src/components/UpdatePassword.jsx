@@ -4,10 +4,11 @@ import Navbar from './UI/Navbar'
 import { LockClosedIcon } from '@heroicons/react/20/solid'
 import { updatePassword } from '../store/actions'
 import { useDispatch } from 'react-redux'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 
 
 const UpdatePassword = (props) => {
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const [pass, setPass] = useState("")
     function onChange(e) {
@@ -20,6 +21,7 @@ const UpdatePassword = (props) => {
     function handleSubmit (e) {
         e.preventDefault()
         dispatch(updatePassword({id: id, password: pass}))
+        navigate("/login")
     }
     
 
