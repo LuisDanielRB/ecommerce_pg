@@ -4,18 +4,7 @@ const uploadImage = require("../helpers/cloudinary");
 const fsExtra = require("fs-extra");
 
 const createEvent = async (req, res) => {
-  const {
-    description,
-    price,
-    date,
-    artist,
-    place,
-    stock,
-    category,
-    image,
-    imageId,
-    userId,
-  } = req.body;
+  const { description, price, date, artist, place, stock, category, image, imageId, userId } = req.body;
 
   try {
     const newEvent = await EventsCreated.create({
@@ -35,6 +24,7 @@ const createEvent = async (req, res) => {
     console.log(error);
   }
 };
+
 const updateEvent = async (req, res) => {
   const {
     description,
@@ -221,6 +211,7 @@ const getEventsDetailDb = async (req, res) => {
   }
 };
 
+
 const getEventsById = async (req, res) => {
   const { id } = req.params;
   try {
@@ -234,11 +225,12 @@ const getEventsById = async (req, res) => {
   }
 };
 
+
 module.exports = {
   createEvent,
   getEvents,
-  getEventDetail,
   getEventsDetailDb,
+  getEventDetail,
   deleteEvents,
   updateEvent,
   getEventsById,

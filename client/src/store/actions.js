@@ -306,6 +306,7 @@ export function updatePassword(payload) {
   };
 }
 
+
 export const deleteEventById = (id) => async (dispatch) => {
   const deleteEvent = await axios.delete(`/events/${id}`);
   return dispatch({
@@ -325,3 +326,4 @@ export const getEventsById = (id) => async (dispatch) => {
     console.log(error.message);
   }
 };
+
