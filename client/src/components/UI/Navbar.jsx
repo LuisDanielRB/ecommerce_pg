@@ -13,6 +13,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { UserAuth } from "../../firebase/context";
 import PopOverCart from "./PopOverCart";
 import SearchInput from "./SearchInput";
+import Logo from "../../logo/logo.png";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -86,8 +87,8 @@ function Navbar() {
                   <div className="flex flex-shrink-0 items-center">
                     <a href="/">
                       <img
-                        className="block h-8 w-auto"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                        className="block h-16 w-auto"
+                        src={Logo}
                         alt="Your Company"
                       />
                     </a>

@@ -52,8 +52,3 @@ router.put('/payment' , mercadopagoPayment )
 router.put("/checkout", checkoutCart);
 
 module.exports = router;
-
-
-
-
-
