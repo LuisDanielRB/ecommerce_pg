@@ -31,10 +31,19 @@ const initialState = {
   allFavourites: localStorage.getItem("favorites")
     ? JSON.parse(localStorage.getItem("favorites"))
     : [],
+  comments: []
 };
 
 function rootReducer(state = initialState, action) {
   switch (action.type) {
+
+    case 'GET_COMMENTS' : {
+      return {
+        ...state,
+        comments: action.payload
+      }
+    }
+
     case "POST_LOGIN":
       persisLocalStorage("user", action.payload);
       return {
@@ -262,6 +271,41 @@ function rootReducer(state = initialState, action) {
         ...state,
         eventsById: state.eventsById.splice(""),
       };
+
+      ////////// REVIEWS //////////
+      case 'GET_REVIEW': {
+        return {
+          ...state,
+          eventsDetail: {
+            ...state.eventsDetail,
+            comments: [
+              {
+                text: action.payload.description,
+                score: action.payload.score,
+                EventId: action.payload.eventId,
+                UserId: action.payload.userId,
+              },
+            ],
+          },
+        }
+      }
+
+      case 'POST_REVIEW' : {
+        return {
+          ...state,
+          eventsDetail: {
+            ...state.eventsDetail,
+            comments: [
+              {
+                text: action.payload.description,
+                score: action.payload.score,
+                EventId: action.payload.eventId,
+                UserId: action.payload.userId,
+              },
+            ],
+          },
+        }
+      }
 
     default:
       return state;

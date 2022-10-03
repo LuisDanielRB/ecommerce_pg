@@ -327,3 +327,40 @@ export const getEventsById = (id) => async (dispatch) => {
   }
 };
 
+export const postReviewScore = (eventId , userId , description , score) => async (dispatch) => {
+  console.log(eventId , userId , description , score)
+  try {
+    const result = await axios.post(`reviewScore/${eventId}` , {userId , description , score})
+    console.log(result)
+    return dispatch({
+      type: "POST_REVIEW",
+      payload: result.data
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const getReviews = (eventId , userId) => async (dispatch) => {
+  try {
+    const result = await axios.get(`/reviewScor?eventId=${eventId}&userId=${userId}`)
+    return dispatch({ 
+      type: "GET_REVIEW", 
+      payload: result.data
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const getComments = (id) => async (dispatch) => {
+  try {
+    const comments = await axios.get(`/comments/${id}`)
+    return dispatch({
+      type: "GET_COMMENTS",
+      payload: comments.data
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}

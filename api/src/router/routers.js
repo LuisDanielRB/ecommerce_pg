@@ -37,6 +37,7 @@ const {
   postReviewScore,
   putReviewScore,
   deleteReviewScore,
+  getComments
 } = require("../controllers/reviewScore-controller");
 const { adminPut , bannedUser , hideEvent , showEvent , unbanUser , deleteCommentToAdmin , getAllOrders , upgradeToAdmin} = require('../controllers/admin-controller')
 
@@ -64,10 +65,11 @@ router.get("/dashboard/events/:id", getEventsById);
 router.put("/favorites", addFavorite);
 router.delete("/favorites", deleteFavorite);
 router.get("/favorites/:idUser", getFavorite);
-router.get("/reviewScore/:eventId", getReviewScore);
+router.get("/reviewScor", getReviewScore);
 router.post("/reviewScore/:eventId", postReviewScore);
 router.put("/reviewScore/:eventId", putReviewScore);
 router.delete("/reviewScore/:eventId", deleteReviewScore);
+router.get('/comments/:id', getComments);
 
 // ADMIN
 router.put("/admin", adminPut);
