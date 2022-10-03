@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   ArrowPathIcon,
   CloudArrowUpIcon,
@@ -12,47 +12,50 @@ import Img1 from "../../assets/carousel/Img1.jpg"
 import Img2 from "../../assets/carousel/Img2.jpg"
 import Img3 from "../../assets/carousel/Img3.jpg"
 import { Carousel } from 'react-bootstrap';
+import { useDispatch, useSelector } from "react-redux";
+import { getAllEvents } from "../../store/actions";
 
 const features = [
   {
     name: "Más Vendido",
     description:
-      "Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.",
+      "Eventos mas adquirido por el publico!",
     icon: StarIcon,
   },
   {
     name: "Últimos boletos",
     description:
-      "Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.",
+      "Ultimas entradas para tus eventos favoritos",
     icon: LockClosedIcon,
   },
   {
     name: "Proximamente",
     description:
-      "Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.",
+      "Los proximos conciertos que podras disfrutar",
     icon: ArrowPathIcon,
   },
   {
     name: "Más Buscado",
     description:
-      "Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.",
+      "Los eventos mas buscados",
     icon: ShieldCheckIcon,
   },
   {
     name: "Lo más nuevo",
     description:
-      "Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.",
+      "los eventos mas nuevo encontralos aca!",
     icon: CogIcon,
   },
   {
     name: "Recomendación",
     description:
-      "Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.",
+      "Lo mas recomendado",
     icon: ServerIcon,
   },
 ];
 
-function GridCards({ eventos }) {
+function GridCards() {
+
   return (
     <div className="relative bg-white py-16 sm:py-24 lg:py-32">
       <div className="mx-auto max-w-md px-4 text-center sm:max-w-3xl sm:px-6 lg:max-w-7xl lg:px-8">
