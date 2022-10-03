@@ -9,9 +9,8 @@ import Logo from "../logo/logo.png";
 function CreateEvent() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const artistInput = useRef(null);
   const [error, setError] = useState({});
-  const [artists, setArtists] = useState([]);
+  const [artistas, setArtistas] = useState({});
   const [input, setInput] = useState({
     description: "",
     price: 0,
@@ -24,7 +23,7 @@ function CreateEvent() {
     imageId: "",
     userId: null,
   });
-  console.log(input)
+ 
 
   function validation(input) {
     let errors = {};
@@ -73,37 +72,34 @@ function CreateEvent() {
     })
   };
 
-  function handleArtistDelete(e) {
-    e.preventDefault();
-    const { value } = e.target;
-    const artistId = artists.filter((artist) => artist === value);
-    if (value && artists.includes(value)) {
-      const newArtists = artists.filter((artist) => artist !== value);
-      const newArtistInput = input.artist.filter(
-        (artist) => artist !== artistId[0].name
-      );
-      setArtists(newArtists);
-    }
-  };
-
-  function handleArtist(e) {
-    e.preventDefault();
-    setArtists([...artists, artistInput.current.value]);
-    setInput({ ...input, artist: [...input.artist] });
+  const handleInputArtist = (e) => {
+    const {value} = e.target;
+    setArtistas(value)
   }
 
-  function handleInputArtist(e) {
+  const handleArtist = (e) => {
+      let nombre = e
+      if (Object.values(input.artist).includes(nombre)) {
+          alert('Artist already exists')
+      } else {
+        setInput({
+              ...input,
+              artist: [...input.artist, nombre]
+          })
+        setArtistas("")
+      }
+      
+      document.getElementById('artist').value = ""
+  }
+
+  const handleDeleteArtist = (e) => {
+    let newEvent = input.artist
+    const a = newEvent.filter(artist => artist !== e)
     setInput({
       ...input,
-      artist: [...artists, e.target.value]
-    });
-    setError(
-      validation({
-        ...input,
-        artist: artists
-      })
-    );
-  };
+      artist: a
+  })
+  }
 
   function handleInputChange(e) {
     setInput({
@@ -173,10 +169,6 @@ function CreateEvent() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    // setInput({
-    //   ...input,
-    //   artist: [...input.artist],
-    // });
     dispatch(createEvent(input));
     setError(validation(input));
     setInput({
@@ -201,7 +193,6 @@ function CreateEvent() {
           <a href="/">
             <img
               className="mx-auto h-24 w-auto"
-              src={Logo}
               alt="Your Company"
             />
           </a>
@@ -233,8 +224,8 @@ function CreateEvent() {
                   Artist
                 </label>
                 <div className="mt-1 flex">
+
                   <input
-                    ref={artistInput}
                     onChange={(e) => handleInputArtist(e)}
                     id="artist"
                     name="artist"
@@ -244,27 +235,17 @@ function CreateEvent() {
                     required
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   />
-                  <button onClick={(e) => handleArtist(e)} className="m-2">
+                  <button onClick={() => handleArtist(artistas)} className="m-2">
                     <PlusCircleIcon className="h-5 w-5 text-green-800 text-right" />
                   </button>
                 </div>
-                {error.artist && <p> ❌{error.artist}</p>}
-                {input.artist ? input.artist.map((artist, id) => {
+                {input.artist && input.artist.map((artist , idx)=> {
                   return (
-                    <div key={id}>
-                      <p>
-                        {artist}
-                        <button
-                          type="button"
-                          value={artist}
-                          onClick={(e) => handleArtistDelete(e, artist)}
-                        >
-                          X
-                        </button>
-                      </p>
-                    </div>
-                  );
-                }): input.artist}
+                    <p key={idx}>
+                      {artist} <button onClick={() => handleDeleteArtist(artist)}>X</button>
+                    </p>
+                  )
+                })}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">
