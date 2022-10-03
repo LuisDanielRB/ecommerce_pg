@@ -15,6 +15,7 @@ const CardDetail = () => {
     dispatch(getEventDetail(id));
   }, [dispatch, id]);  
   
+  
   return (
     <>
       <Navbar />

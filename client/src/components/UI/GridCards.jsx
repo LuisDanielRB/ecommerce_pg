@@ -11,6 +11,10 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getAllEvents } from "../../store/actions";
+import Img1 from "../../assets/carousel/Img1.jpg"
+import Img2 from "../../assets/carousel/Img2.jpg"
+import Img3 from "../../assets/carousel/Img3.jpg"
+import { Carousel } from 'react-bootstrap';
 
 const features = [
   {
@@ -51,13 +55,13 @@ const features = [
   },
 ];
 
-function GridCards({ eventos  }) {
-const allEvents = useSelector((state) => state.events)
-const dispatch = useDispatch();
+function GridCards({ eventos }) {
+  const allEvents = useSelector((state) => state.events)
+  const dispatch = useDispatch();
 
-useEffect(()=>{
-  dispatch(getAllEvents())
-}, [dispatch])
+  useEffect(() => {
+    dispatch(getAllEvents())
+  }, [dispatch])
 
   return (
     <div className="relative bg-white py-16 sm:py-24 lg:py-32">
@@ -91,10 +95,29 @@ useEffect(()=>{
                     <p className="mt-5 text-base text-gray-500">
                       {feature.description}
                     </p>
-                    <img
-                      className="mx-auto rounded-md mt-4"
-                      alt=""
-                    />
+                    <Carousel>
+                      <Carousel.Item className="h-48" >
+                        <img
+                          className="mx-auto rounded-md mt-4 h-full w-full"
+                          src={Img1}
+                          alt=""
+                        />
+                      </Carousel.Item>
+                      <Carousel.Item className="h-48" >
+                        <img
+                          className="mx-auto rounded-md mt-4 h-full w-full"
+                          src={Img2}
+                          alt=""
+                        />
+                      </Carousel.Item>
+                      <Carousel.Item className="h-48" >
+                        <img
+                          className="mx-auto rounded-md mt-4 h-full w-full"
+                          src={Img3}
+                          alt=""
+                        />
+                      </Carousel.Item>
+                    </Carousel>
                   </div>
                 </div>
               </div>
