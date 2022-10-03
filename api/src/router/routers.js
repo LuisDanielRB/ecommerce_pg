@@ -8,7 +8,7 @@ const {passwordRecovery} = require('../controllers/email-controller')
 const {fileUpload} = require('../helpers/fileUpload')
 const passport = require("passport");
 const {getReviewScore, postReviewScore, putReviewScore, deleteReviewScore} = require('../controllers/reviewScore-controller')
-const {adminDelete, adminPut , bannedUser} = require('../controllers/admin-controller')
+const {adminDelete, adminPut , bannedUser , hideEvent , showEvent , unbanUser , deleteCommentToAdmin , getAllOrders , upgradeToAdmin} = require('../controllers/admin-controller')
 
 
 // USUARIO
@@ -16,7 +16,7 @@ router.post("/user/google", googleSignIn);
 router.post("/login", login);
 router.post("/register", register);
 router.put("/password", passwordRecovery);
-router.put('/resetpassword/:id', resetPassword ) 
+router.put('/resetpassword', resetPassword ) 
 router.put("/user/:id/profile", fileUpload, upDateUser);
 router.get("/users", getUsers);
 
@@ -39,8 +39,13 @@ router.delete('/reviewScore/:eventId', deleteReviewScore);
 
 // ADMIN
 router.put('/admin', adminPut);
-router.put('/admin', adminDelete)
 router.put("/user/:id/banned", bannedUser);
+router.put('/hideEvent' ,hideEvent)
+router.put('/showEvent' , showEvent)
+router.get('/showOrders' , getAllOrders)
+router.put('/unbanUser' , unbanUser)
+router.put('/upgradeToAdmin' , upgradeToAdmin)
+router.delete('/deleteComents' , deleteCommentToAdmin)
 
 //CART
 router.get('/cart', getCart);
@@ -48,8 +53,10 @@ router.get('/allcart', getAllCarts);
 router.post('/addcart', addEventToCart);
 router.put('/deleteeventcart', removeOneEventFromCart);
 router.put('/clearcart', clearCart);
-router.put('/payment' , passport.authenticate('jwt-auth' , {session: false}) , mercadopagoPayment )
+router.put('/payment' , mercadopagoPayment )
 router.put("/checkout", checkoutCart);
+
+
 
 module.exports = router;
 
