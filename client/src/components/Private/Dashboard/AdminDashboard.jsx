@@ -12,9 +12,10 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
-import GridList from "./UI/GridList";
-import StatsDashboard from "./UI/StatsDashboard";
+import GridList from "../../UI/GridList";
+import StatsDashboard from '../../UI/StatsDashboard'
 import Logo from "../logo/logo.png";
+
 
 const navigation = [
   {

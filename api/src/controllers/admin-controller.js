@@ -2,9 +2,7 @@ const { Users , Cart , ReviewScore} = require("../db");
 const { Op } = require('sequelize');
 
 
-const adminDelete = async (req, res) => {
 
-}
 
 const adminPut = async (req, res) => {
     const { idUser, idAdmin } = req.query
@@ -177,7 +175,12 @@ const deleteCommentToAdmin = async (req, res, next) => {
 };
 
 module.exports = {
-    adminDelete,
     adminPut,
-	bannedUser
+	bannedUser,
+	deleteCommentToAdmin,
+	upgradeToAdmin,
+	unbanUser,
+	getAllOrders,
+	showEvent,
+	hideEvent
 };
