@@ -1,9 +1,10 @@
 import React, { lazy } from "react";
 import { Route, Navigate, BrowserRouter } from "react-router-dom";
 import { PrivateRoute, PublicRoute } from "./router/index";
-import { AuthGuard } from "../src/auth/index";
-import { RoutesWithNotFound } from "./utils/index";
+import { AuthGuard, RoleGuard } from "../src/auth/index";
+import { RoutesWithNotFound , Rol} from "./utils/index";
 import PasswordRecovery from "./components/PasswordRecovery";
+import {AdminDashboard} from './components/Private'
 import UpdatePassword from "./components/UpdatePassword";
 const Login = lazy(() => import("./components/Login"));
 const Register = lazy(() => import("./components/Register"));
@@ -25,8 +26,11 @@ function App() {
           <Route path={PublicRoute.REGISTER} element={<Register />} />
           <Route path={PublicRoute.EVENTS} element={<Events />} />
           <Route path={PublicRoute.LOGINSUCCESS} element={<LoginSuccess />} />
-          <Route element={<AuthGuard />}>
+          <Route element={<AuthGuard privateValidation={true} />}>
             <Route path={`${PrivateRoute.PRIVATE}/*`} element={<Private />} />
+          </Route>
+          <Route element={<RoleGuard rol={Rol.admin}/>}>
+                <Route path={PrivateRoute.ADMIN_DASHBOARD} element={<AdminDashboard />} />
           </Route>
           <Route path={PublicRoute.PASSWORDRECOVERY} element={<PasswordRecovery />} />
           <Route path={PublicRoute.RESETPASSWORD} element={<UpdatePassword />} />

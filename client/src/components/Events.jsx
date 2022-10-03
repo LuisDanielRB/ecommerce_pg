@@ -26,10 +26,33 @@ const Events = () => {
   });
   const [searchFilter, setSearchFilter] = useState();
 
+  //PAGINANDO
+  const [currentPage, setCurrentPage] = useState(1);
+  const [EventsXPage, setEventsXPage] = useState(30);
+  const [totalPages, setTotalPages] = useState(0);
+  const lastEvent = currentPage * EventsXPage;
+  const firstEvent = lastEvent - EventsXPage;
+  const currentEvent = eventos.slice(firstEvent, lastEvent);
+
+  const pages = (page) => {
+    //////// Solo usar para ese requisito extraño del PI !!!
+    // if (page === 1) setCountriesXPage(9);
+    // else setCountriesXPage(10);
+    setCurrentPage(page);
+  };
+  useEffect(() => {
+    if (eventos) {
+      const calcTotalPages = Math.ceil(eventos.length / EventsXPage)
+      setTotalPages(calcTotalPages);
+      if (currentPage > calcTotalPages) setCurrentPage(1);
+    }
+  }, [eventos, EventsXPage, currentPage])
+
   useEffect(() => {
     dispatch(getAllEvents());
     getFiltered();
-  }, [dispatch, filters , user ]);
+    pages(currentPage);
+  }, [dispatch, filters , user , currentPage ]);
 
   function filterArr(array, value) {
     for (let i = 0; i < array.length; i++) {
@@ -129,6 +152,7 @@ const Events = () => {
   return (
     <>
       <Navbar />
+      
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* We've used 3xl here, but feel free to try other max-widths based on your needs */}
         <div className="mx-auto max-w-3xl">
@@ -164,7 +188,9 @@ const Events = () => {
               })}
             </select>
           </div>
-
+          <div>
+          <input type="range" min='0' max={eventos.length} size='2' value={EventsXPage} onChange={(e) => setEventsXPage(e.target.value)} />
+          </div>
           <div>
             <label
               htmlFor="artists"
@@ -221,7 +247,7 @@ const Events = () => {
         </div>
       ) : (
         <div className="mx-8">
-          <EventCards eventos={eventos} />
+          <EventCards eventos={currentEvent} />
         </div>
       )}
       <Footer />

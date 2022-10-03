@@ -7,7 +7,7 @@ const CreateEvent = lazy(() => import("../CreateEvent"));
 const Cart = lazy(() => import("../UI/Cart"));
 const EventDetail = lazy(() => import("../UI/CardDetail"));
 const Events = lazy(() => import("../Events"));
-const AdminDashboard = lazy(() => import("../AdminDashboard"));
+const AdminDashboard = lazy(() => import("./Dashboard/AdminDashboard"));
 const Checkout = lazy(() => import('../UI/Checkout'))
 
 function Private() {
