@@ -69,7 +69,7 @@ function CreateEvent() {
         imageId: res.public_id
       })
     })
-  }
+  };
 
   const handleInputArtist = (e) => {
     const { value } = e.target;
@@ -167,10 +167,6 @@ function CreateEvent() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    setInput({
-      ...input,
-      artist: [...input.artist, artists],
-    });
     dispatch(createEvent(input));
     setError(validation(input));
     setInput({
@@ -234,7 +230,6 @@ function CreateEvent() {
                     type="text"
                     placeholder="Artist..."
                     autoComplete="current-Artist"
-                    required
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   />
                   <button onClick={() => handleArtist(artistas)} className="m-2">

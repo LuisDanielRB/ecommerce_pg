@@ -5,10 +5,11 @@ import { userAddFavorite, addToCartGuest, addToCart, cartStateSet } from '../../
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
 
-const EventCards = ({ eventos }) => {
+const EventCards = ({ eventos  }) => {
     const dispatch = useDispatch();
     const { user } = useSelector((state) => state);
-
+    const allEvents = useSelector((state) => state.events)
+    console.log(allEvents)
     const toastOptions = {
         position: "bottom-center",
         autoClose: 1000,
@@ -55,19 +56,19 @@ const EventCards = ({ eventos }) => {
                             <div className="grid justify-items-center">
                                 <div className="justify-center">
                                     <img
-                                        className="h-50 w-80 flex-shrink-0 rounded bg-gray-300"
+                                        className="h-56 w-80 flex-shrink-0 rounded bg-gray-300"
                                         src={evento.image}
                                         alt=""
                                     />
                                 </div>
-                                <h3 className="mt-3 truncate text-xs font-medium text-gray-900">
+                                <h3 className="mt-1 truncate text-xs font-medium text-gray-900">
                                     {evento.artist.join(" - ")}
                                 </h3>
                                 <span className=" text-center rounded-full bg-green-300 px-1.5 py-1.5 text font-medium text-green-800 mt-2">
                                     STOCK:       {evento.stock}
                                 </span>
                                 <span className=" text-center rounded-full bg-green-300 px-1.5 py-1.5 text font-medium text-green-800 mt-2">
-                                    PRICE:        ${evento.price}
+                                    PRICE:        ${evento.price}.00
                                 </span>
                             </div>
                             <p className="mt-1 text-center truncate text-sm text-gray-500">
@@ -91,7 +92,10 @@ const EventCards = ({ eventos }) => {
                             <button
                                 onClick={() => handleSubmit(evento)}
                                 className="relative inline-flex w-0 flex-1 items-center justify-center rounded-br-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500"
-                            >Add to cart</button>
+                            ><strong>BUY TICKET</strong><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mx-5">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z" />
+                                </svg>
+                            </button>
                         </div>
                         <div className="-ml-px flex inline-flex relative">
                             {user ? (<button
