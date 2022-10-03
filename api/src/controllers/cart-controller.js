@@ -171,7 +171,6 @@ const clearCart = async (req, res, next) => {
 
 const checkoutCart = async (req, res, next) => {
 	let { userId } = req.body;
-	console.log(userId);
 	try {
 		let arrayPromises = [];
 		let user = await Users.findByPk(userId);

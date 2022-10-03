@@ -188,7 +188,7 @@ const Events = () => {
           </div>
           <div >
             <span id="rangeValue">Eventos: {EventsXPage}</span>
-            <input class="range" type="range"  value={EventsXPage} min="0" max={eventos.length} onChange={(e) => setEventsXPage(e.target.value)} onMouseMove={(e) => setEventsXPage(e.target.value)}></input>
+            <input className="range" type="range"  value={EventsXPage} min="0" max={eventos.length} onChange={(e) => setEventsXPage(e.target.value)} onMouseMove={(e) => setEventsXPage(e.target.value)}></input>
           </div>
           <div>
             <label

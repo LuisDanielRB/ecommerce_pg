@@ -291,7 +291,7 @@ const getFavorite = async (req, res) => {
 
 		if (user) {
 			let response = user.favorites;
-			res.send(response);
+			res.json(response);
 		} else {
 			throw new Error('Invalid user');
 		}

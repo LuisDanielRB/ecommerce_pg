@@ -1,7 +1,7 @@
 import React from "react";
 import Footer from "./Footer";
 import { useSelector, useDispatch } from "react-redux";
-import { getEventDetail } from "../../store/actions";
+import { getEventDetail , addToCart , addToCartGuest } from "../../store/actions";
 import { Link, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import Navbar from "./Navbar";
@@ -10,10 +10,19 @@ const CardDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const eventDetail = useSelector((state) => state.eventsDetail);
+  const {user} = useSelector((state) => state);
 
   useEffect(() => {
     dispatch(getEventDetail(id));
   }, [dispatch, id]);
+
+  const handleCart = (id) => {
+    if(user) {
+      dispatch(addToCart(id, user.id));
+    } else {
+      dispatch(addToCartGuest(id))
+    }
+  }
 
   return (
     <>
@@ -52,14 +61,12 @@ const CardDetail = () => {
             </section>
 
             <section aria-labelledby="options-heading" className="mt-10">
-              <form>
                 <button
-                  type="submit"
+                  onClick={() => handleCart(id)}
                   className="mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 >
                   Add to cart
                 </button>
-              </form>
             </section>
           </div>
         </div>
