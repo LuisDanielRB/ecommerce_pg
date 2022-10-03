@@ -2,10 +2,6 @@ const { Users , Cart , ReviewScore} = require("../db");
 const { Op } = require('sequelize');
 
 
-const adminDelete = async (req, res) => {
-
-}
-
 const adminPut = async (req, res) => {
     const { idUser, idAdmin } = req.query
     const {status} = req.body
@@ -55,7 +51,7 @@ const bannedUser = async (req, res)=>{
 		console.log(error);
 	}
 }
-
+// Update to joaco , hay que revisar  si anda bien
 const hideEvent = async (req, res, next) => {
 	let { eventId } = req.body;
 	try {
@@ -97,7 +93,7 @@ const showEvent = async (req, res, next) => {
 		next(err);
 	}
 };
-// Update to joaco , hay que revisar  si anda bien
+
 const getAllOrders = async (req, res, next) => {
 	try {
 		let allOrders = await Cart.findAll({
@@ -176,7 +172,13 @@ const deleteCommentToAdmin = async (req, res, next) => {
 };
 
 module.exports = {
-    adminDelete,
     adminPut,
-	bannedUser
+	bannedUser,
+	hideEvent,
+	showEvent,
+	getAllOrders,
+	unbanUser,
+	upgradeToAdmin,
+	deleteCommentToAdmin
+
 };
