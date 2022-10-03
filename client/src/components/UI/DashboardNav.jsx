@@ -1,70 +1,33 @@
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import DashboardNav from "./UI/DashboardNav";
-import { getEventsById } from "../store/actions";
-import { HomeIcon, UsersIcon } from "@heroicons/react/24/outline";
-import { DocumentIcon } from "@heroicons/react/20/solid";
 import { Fragment, useState } from "react";
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import {
   Bars3BottomLeftIcon,
   BellIcon,
-  CalendarIcon,
-  ChartBarIcon,
-  FolderIcon,
   HomeIcon,
-  InboxIcon,
   UsersIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
-import GridList from "../../UI/GridList";
-import StatsDashboard from '../../UI/StatsDashboard'
+import GridList from "./GridList";
+import StatsDashboard from "./StatsDashboard";
+import EventEdit from "./EventEdit";
 
+const userNavigation = [
+  { name: "Your Profile", href: "#" },
+  { name: "Settings", href: "#" },
+  { name: "Sign out", href: "#" },
+];
 
-function AdminDashboard() {
-  const dispatch = useDispatch();
-  const eventosById = useSelector((state) => state.eventsById);
-  const user = useSelector((state) => state.user);
-  const [navigation, setNavigation] = useState([
-    {
-      name: "Dashboard",
-      href: "#",
-      icon: HomeIcon,
-      current: true,
-    },
-    { name: "Events", href: "#", icon: UsersIcon, current: false },
-  ]);
+function classNames(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
 
-  function setActiveState(name) {
-    const newNav = navigation.map((navlink) => {
-      return {
-        ...navlink,
-        current: navlink.name === name,
-      };
-    });
-    setNavigation(newNav);
-  }
-
-  useEffect(
-    () => {
-      dispatch(getEventsById(user.id));
-      eventosById;
-    },
-    dispatch,
-    user,
-    eventosById
-  );
+function DashboardNav({ eventos, user, setActiveState, navigation }) {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [detailOpen, setDetailOpen] = useState(false);
 
   return (
-
-<>
-    <DashboardNav
-      eventos={eventosById}
-      user={user}
-      navigation={navigation}
-      setActiveState={setActiveState}
-    />
+    <>
       <div>
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog
@@ -94,7 +57,7 @@ function AdminDashboard() {
                 leaveFrom="translate-x-0"
                 leaveTo="-translate-x-full"
               >
-                <Dialog.Panel className="relative flex w-full max-w-xs flex-1 flex-col bg-gray-300 pt-5 pb-4">
+                <Dialog.Panel className="relative flex w-full max-w-xs flex-1 flex-col bg-gray-800 pt-5 pb-4">
                   <Transition.Child
                     as={Fragment}
                     enter="ease-in-out duration-300"
@@ -118,19 +81,18 @@ function AdminDashboard() {
                       </button>
                     </div>
                   </Transition.Child>
-                  <div href="/" className="flex flex-shrink-0 items-center px-4">
-                    <a href="/">
-                      <img
-                        className="mx-auto h-24 w-auto"
-                        src={Logo}
-                        alt="Your Company"
-                      />
-                    </a>
+                  <div className="flex flex-shrink-0 items-center px-4">
+                    <img
+                      className="h-8 w-auto"
+                      src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                      alt="Your Company"
+                    />
                   </div>
                   <div className="mt-5 h-0 flex-1 overflow-y-auto">
                     <nav className="space-y-1 px-2">
                       {navigation.map((item) => (
                         <a
+                          onClick={() => setActiveState(item.name)}
                           key={item.name}
                           href={item.href}
                           className={classNames(
@@ -167,11 +129,11 @@ function AdminDashboard() {
         <div className="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex min-h-0 flex-1 flex-col bg-gray-800">
-            <div className="flex h-16 flex-shrink-0 items-center bg-white px-4">
+            <div className="flex h-16 flex-shrink-0 items-center bg-gray-900 px-4">
               <a href="/">
                 <img
-                  className="mx-auto h-16 w-auto"
-                  src={Logo}
+                  className="h-8 w-auto"
+                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
                   alt="Your Company"
                 />
               </a>
@@ -180,6 +142,7 @@ function AdminDashboard() {
               <nav className="flex-1 space-y-1 px-2 py-4">
                 {navigation.map((item) => (
                   <a
+                    onClick={() => setActiveState(item.name)}
                     key={item.name}
                     href={item.href}
                     className={classNames(
@@ -299,12 +262,11 @@ function AdminDashboard() {
                 </h1>
               </div>
               <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
-                <StatsDashboard />
+                {navigation[0].current ? (
+                  <StatsDashboard user={user} eventos={eventos} />
+                ) : null}
                 <br />
-                <GridList />
-                {/* <div className="py-4">
-                  <div className="h-96 rounded-lg border-4 border-dashed border-gray-200" />
-                </div> */}
+                {navigation[1].current ? <GridList eventos={eventos} /> : null}
               </div>
             </div>
           </main>
@@ -314,4 +276,4 @@ function AdminDashboard() {
   );
 }
 
-export default AdminDashboard;
+export default DashboardNav;

@@ -23,7 +23,6 @@ function CreateEvent() {
     userId: user.id,
     image: "",
     imageId: "",
-
   });
 
   function validation(input) {
@@ -383,3 +382,4 @@ function CreateEvent() {
 }
 
 export default CreateEvent;
+

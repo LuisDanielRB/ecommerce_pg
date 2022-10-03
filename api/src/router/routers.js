@@ -1,14 +1,50 @@
 const express = require("express");
 const router = express.Router();
-const {mercadopagoPayment} = require('../controllers/payments-controller')
-const {register, login, getUsers , resetPassword , addFavorite, upDateUser , googleSignIn  , deleteFavorite , getFavorite} = require('../controllers/users-controller')
-const {createEvent, getEvents, getEventDetail , getEventsDetailDb, deleteEvents , updateEvent} = require('../controllers/events-controller')
-const {getCart,getAllCarts,addEventToCart,removeOneEventFromCart,clearCart,checkoutCart} = require('../controllers/cart-controller')
-const {passwordRecovery} = require('../controllers/email-controller')
-const {fileUpload} = require('../helpers/fileUpload')
+const { mercadopagoPayment } = require("../controllers/payments-controller");
+const {
+  register,
+  login,
+  getUsers,
+  resetPassword,
+  addFavorite,
+  upDateUser,
+  googleSignIn,
+  deleteFavorite,
+  getFavorite,
+} = require("../controllers/users-controller");
+const {
+  createEvent,
+  getEvents,
+  getEventDetail,
+  getEventsDetailDb,
+  deleteEvents,
+  updateEvent,
+  getEventsById,
+} = require("../controllers/events-controller");
+const {
+  getCart,
+  getAllCarts,
+  addEventToCart,
+  removeOneEventFromCart,
+  clearCart,
+  checkoutCart,
+} = require("../controllers/cart-controller");
+const { passwordRecovery } = require("../controllers/email-controller");
+const { fileUpload } = require("../helpers/fileUpload");
 const passport = require("passport");
-const {getReviewScore, postReviewScore, putReviewScore, deleteReviewScore} = require('../controllers/reviewScore-controller')
+const {
+  getReviewScore,
+  postReviewScore,
+  putReviewScore,
+  deleteReviewScore,
+} = require("../controllers/reviewScore-controller");
+const {
+  adminDelete,
+  adminPut,
+  bannedUser,
+} = require("../controllers/admin-controller");
 const {adminDelete, adminPut , bannedUser , hideEvent , showEvent , unbanUser , deleteCommentToAdmin , getAllOrders , upgradeToAdmin} = require('../controllers/admin-controller')
+
 
 
 // USUARIO
@@ -27,18 +63,19 @@ router.get("/events", getEvents);
 router.get("/eventsCreate/:id", getEventDetail);
 router.delete("/events/:id", deleteEvents);
 router.get("/eventsDB/:id", getEventsDetailDb);
+router.get("/dashboard/events/:id", getEventsById);
 
-//FAVORITOS / REVIEWS / COMMENTS 
-router.put('/favorites', addFavorite);
-router.delete('/favorites', deleteFavorite);
-router.get('/favorites/:idUser', getFavorite);
-router.get('/reviewScore/:eventId', getReviewScore);
-router.post('/reviewScore/:eventId', postReviewScore);
-router.put('/reviewScore/:eventId', putReviewScore);
-router.delete('/reviewScore/:eventId', deleteReviewScore);
+//FAVORITOS / REVIEWS / COMMENTS
+router.put("/favorites", addFavorite);
+router.delete("/favorites", deleteFavorite);
+router.get("/favorites/:idUser", getFavorite);
+router.get("/reviewScore/:eventId", getReviewScore);
+router.post("/reviewScore/:eventId", postReviewScore);
+router.put("/reviewScore/:eventId", putReviewScore);
+router.delete("/reviewScore/:eventId", deleteReviewScore);
 
 // ADMIN
-router.put('/admin', adminPut);
+router.put("/admin", adminPut);
 router.put("/user/:id/banned", bannedUser);
 router.put('/hideEvent' ,hideEvent)
 router.put('/showEvent' , showEvent)
@@ -48,12 +85,12 @@ router.put('/upgradeToAdmin' , upgradeToAdmin)
 router.delete('/deleteComents' , deleteCommentToAdmin)
 
 //CART
-router.get('/cart', getCart);
-router.get('/allcart', getAllCarts);
-router.post('/addcart', addEventToCart);
-router.put('/deleteeventcart', removeOneEventFromCart);
-router.put('/clearcart', clearCart);
-router.put('/payment' , mercadopagoPayment )
+router.get("/cart", getCart);
+router.get("/allcart", getAllCarts);
+router.post("/addcart", addEventToCart);
+router.put("/deleteeventcart", removeOneEventFromCart);
+router.put("/clearcart", clearCart);
+router.put("/payment", mercadopagoPayment);
 router.put("/checkout", checkoutCart);
 
 
