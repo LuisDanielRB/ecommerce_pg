@@ -8,6 +8,13 @@ import {
   ShieldCheckIcon,
   StarIcon,
 } from "@heroicons/react/24/outline";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getAllEvents } from "../../store/actions";
+import Img1 from "../../assets/carousel/Img1.jpg"
+import Img2 from "../../assets/carousel/Img2.jpg"
+import Img3 from "../../assets/carousel/Img3.jpg"
+import { Carousel } from 'react-bootstrap';
 
 const features = [
   {
@@ -25,7 +32,7 @@ const features = [
   {
     name: "Proximamente",
     description:
-      "Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.",
+      "Encontraras los eventos que se vienen.",
     icon: ArrowPathIcon,
   },
   {
@@ -49,6 +56,13 @@ const features = [
 ];
 
 function GridCards({ eventos }) {
+  const allEvents = useSelector((state) => state.events)
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllEvents())
+  }, [dispatch])
+
   return (
     <div className="relative bg-white py-16 sm:py-24 lg:py-32">
       <div className="mx-auto max-w-md px-4 text-center sm:max-w-3xl sm:px-6 lg:max-w-7xl lg:px-8">
@@ -81,11 +95,29 @@ function GridCards({ eventos }) {
                     <p className="mt-5 text-base text-gray-500">
                       {feature.description}
                     </p>
-                    <img
-                      className="mx-auto rounded-md mt-4"
-                      src="https://via.placeholder.com/300"
-                      alt=""
-                    />
+                    <Carousel>
+                      <Carousel.Item className="h-48" >
+                        <img
+                          className="mx-auto rounded-md mt-4 h-full w-full"
+                          src={Img1}
+                          alt=""
+                        />
+                      </Carousel.Item>
+                      <Carousel.Item className="h-48" >
+                        <img
+                          className="mx-auto rounded-md mt-4 h-full w-full"
+                          src={Img2}
+                          alt=""
+                        />
+                      </Carousel.Item>
+                      <Carousel.Item className="h-48" >
+                        <img
+                          className="mx-auto rounded-md mt-4 h-full w-full"
+                          src={Img3}
+                          alt=""
+                        />
+                      </Carousel.Item>
+                    </Carousel>
                   </div>
                 </div>
               </div>

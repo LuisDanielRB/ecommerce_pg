@@ -236,8 +236,6 @@ const checkoutCart = async (req, res, next) => {
 	}
 };
 
-
-
 module.exports = {
 	getCart,
 	getAllCarts,

@@ -4,8 +4,9 @@ const uploadImage = require("../helpers/cloudinary");
 const fsExtra = require("fs-extra");
 
 const createEvent = async (req, res) => {
-  const { description, price, date, artist, place, stock, category, image, imageId, userId } =
-    req.body;
+  const { description, price, date, artist, place, stock, category, image, imageId, userId } = req.body;
+
+  var result;
 
   try {
     
@@ -26,6 +27,7 @@ const createEvent = async (req, res) => {
     console.log(error);
   }
 };
+
 const updateEvent = async (req, res) => {
   const { description, price, date, artist, place, stock, category, image, imageId } = req.body;
   const { id } = req.params;
@@ -101,11 +103,9 @@ const deleteEvents = async (req, res) => {
 };
 
 const getEvents = async (req, res) => {
-
   const eventsDB = await Event.findAll();
   const eventsCreated = await EventsCreated.findAll();
-  
-  
+
   const data = JSON.parse(fs.readFileSync("dataBase.json", "utf8"));
   try {
     if (eventsDB.length === 0) {
@@ -206,11 +206,12 @@ const getEventsDetailDb = async (req, res) => {
   }
 };
 
+
 module.exports = {
   createEvent,
   getEvents,
-  getEventDetail,
   getEventsDetailDb,
+  getEventDetail,
   deleteEvents,
   updateEvent,
 };

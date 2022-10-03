@@ -320,4 +320,3 @@ export function updatePassword(payload) {
     let update = await axios.put(`resetpassword/${id}`, payload)
   }
 }
-

@@ -1,16 +1,17 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PlusCircleIcon } from "@heroicons/react/20/solid";
 import { createEvent } from "../store/actions";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
+import Logo from "../logo/logo.png";
+import data from "../utils/place.json";
 
 function CreateEvent() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state);
-  const artistInput = useRef(null);
   const [error, setError] = useState({});
-  const [artists, setArtists] = useState([]);
+  const [artistas, setArtistas] = useState({});
   const [input, setInput] = useState({
     description: "",
     price: 0,
@@ -20,6 +21,9 @@ function CreateEvent() {
     stock: 0,
     category: [],
     userId: user.id,
+    image: "",
+    imageId: "",
+
   });
 
   function validation(input) {
@@ -51,37 +55,51 @@ function CreateEvent() {
     return errors;
   }
 
-  function handleArtistDelete(e) {
+  async function handleFile(e) {
     e.preventDefault();
+    let image = e.target.files[0];
+    let data = new FormData();
+    data.append("file", image);
+    data.append("upload_preset", "pkokipva");
+    fetch("https://api.cloudinary.com/v1_1/dzjonhhps/image/upload", {
+      method: 'POST',
+      body: data
+    }).then(res => res.json()).then(res => {
+      setInput({
+        ...input,
+        image: res.secure_url,
+        imageId: res.public_id
+      })
+    })
+  }
+
+  const handleInputArtist = (e) => {
     const { value } = e.target;
-    const artistId = artists.filter((artist) => artist === value);
-    if (value && artists.includes(value)) {
-      const newArtists = artists.filter((artist) => artist !== value);
-      const newArtistInput = input.artist.filter(
-        (artist) => artist !== artistId[0].name
-      );
-      setArtists(newArtists);
+    setArtistas(value)
+  };
+
+  const handleArtist = (e) => {
+    let nombre = e
+    if (Object.values(input.artist).includes(nombre)) {
+      alert('Artist already exists')
+    } else {
+      setInput({
+        ...input,
+        artist: [...input.artist, nombre]
+      })
+      setArtistas("")
     }
-  }
+    document.getElementById('artist').value = ""
+  };
 
-  function handleArtist(e) {
-    e.preventDefault();
-    setArtists([...artists, artistInput.current.value]);
-    setInput({ ...input, artist: [] });
-  }
-
-  function handleInputArtist(e) {
+  const handleDeleteArtist = (e) => {
+    let newEvent = input.artist
+    const a = newEvent.filter(artist => artist !== e)
     setInput({
       ...input,
-      artist: artists,
-    });
-    setError(
-      validation({
-        ...input,
-        artist: artists,
-      })
-    );
-  }
+      artist: a
+    })
+  };
 
   function handleInputChange(e) {
     setInput({
@@ -166,6 +184,8 @@ function CreateEvent() {
       stock: 0,
       category: [],
       userId: "",
+      image: "",
+      imageId: "",
     });
     navigate("/events");
   }
@@ -174,11 +194,13 @@ function CreateEvent() {
     <>
       <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <img
-            className="mx-auto h-12 w-auto"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-            alt="Your Company"
-          />
+          <a href="/">
+            <img
+              className="mx-auto h-24 w-auto"
+              src={Logo}
+              alt="Your Company"
+            />
+          </a>
           <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
             Create your Event
           </h2>
@@ -208,7 +230,6 @@ function CreateEvent() {
                 </label>
                 <div className="mt-1 flex">
                   <input
-                    ref={artistInput}
                     onChange={(e) => handleInputArtist(e)}
                     id="artist"
                     name="artist"
@@ -218,27 +239,16 @@ function CreateEvent() {
                     required
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   />
-                  <button onClick={(e) => handleArtist(e)} className="m-2">
+                  <button onClick={() => handleArtist(artistas)} className="m-2">
                     <PlusCircleIcon className="h-5 w-5 text-green-800 text-right" />
                   </button>
-                </div>
-                {error.artist && <p> ❌{error.artist}</p>}
-                {artists.length
-                  ? artists.map((artist) => {
-                      return (
-                        <div key={artist}>
-                          {artist}
-                          <button
-                            type="button"
-                            value={artist}
-                            onClick={(e) => handleArtistDelete(e)}
-                          >
-                            X
-                          </button>
-                        </div>
-                      );
-                    })
-                  : null}
+                </div>{error.artist && <p> ❌{error.artist}</p>}
+                {input.artist && input.artist.map((artist, idx) => {
+                  return (<p key={idx}>
+                    {artist} <button onClick={() => handleDeleteArtist(artist)}>X</button>
+                  </p>
+                  )
+                })}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -249,14 +259,13 @@ function CreateEvent() {
                     onChange={(e) => handleSelectPlace(e)}
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   >
-                    <option default value="">
+                    <option hidden>
                       Please select a place
                     </option>
                     <option value="Estados Unidos">Estados Unidos</option>
-                    <option value="Argentina">Argentina</option>
-                    <option value="Mexico">Mexico</option>
-                    <option value="Colombia">Colombia</option>
-                    <option value="Venezuela">Venezuela</option>
+                    {data?.map((place, id) => {
+                      return <option key={id}>{place.name_es}</option>
+                    })}
                   </select>
                 </div>
                 {error.place && <p> ❌{error.place}</p>}
@@ -293,7 +302,7 @@ function CreateEvent() {
                     onChange={(e) => handleInputPrice(e)}
                     id="price"
                     name="price"
-                    type="price"
+                    type="text"
                     placeholder="$..."
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   />
@@ -309,7 +318,7 @@ function CreateEvent() {
                     onChange={(e) => handleInputStock(e)}
                     id="stock"
                     name="stock"
-                    type="stock"
+                    type="text"
                     placeholder="Stock..."
                     autoComplete="current-Stock"
                     required
@@ -335,6 +344,22 @@ function CreateEvent() {
                 </div>
                 {error.date && <p> ❌{error.date}</p>}
               </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Image
+                </label>
+                <div className="mt-1">
+                  <input
+                    onChange={handleFile}
+                    type="file"
+                    placeholder="The url of your image"
+                    name="image"
+                    autoComplete="off"
+                    required
+                    className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                  /><img src={input.image} />
+                </div>
+              </div>
               <button
                 type="submit"
                 className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm bg-indigo-400"
@@ -357,6 +382,4 @@ function CreateEvent() {
   );
 }
 
-
 export default CreateEvent;
-

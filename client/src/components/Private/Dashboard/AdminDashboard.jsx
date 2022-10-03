@@ -14,6 +14,8 @@ import {
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import GridList from "../../UI/GridList";
 import StatsDashboard from '../../UI/StatsDashboard'
+import Logo from "../logo/logo.png";
+
 
 const navigation = [
   {
@@ -72,7 +74,7 @@ export default function Example() {
                 leaveFrom="translate-x-0"
                 leaveTo="-translate-x-full"
               >
-                <Dialog.Panel className="relative flex w-full max-w-xs flex-1 flex-col bg-gray-800 pt-5 pb-4">
+                <Dialog.Panel className="relative flex w-full max-w-xs flex-1 flex-col bg-gray-300 pt-5 pb-4">
                   <Transition.Child
                     as={Fragment}
                     enter="ease-in-out duration-300"
@@ -96,12 +98,14 @@ export default function Example() {
                       </button>
                     </div>
                   </Transition.Child>
-                  <div className="flex flex-shrink-0 items-center px-4">
-                    <img
-                      className="h-8 w-auto"
-                      src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                      alt="Your Company"
-                    />
+                  <div href="/" className="flex flex-shrink-0 items-center px-4">
+                    <a href="/">
+                      <img
+                        className="mx-auto h-24 w-auto"
+                        src={Logo}
+                        alt="Your Company"
+                      />
+                    </a>
                   </div>
                   <div className="mt-5 h-0 flex-1 overflow-y-auto">
                     <nav className="space-y-1 px-2">
@@ -143,11 +147,11 @@ export default function Example() {
         <div className="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex min-h-0 flex-1 flex-col bg-gray-800">
-            <div className="flex h-16 flex-shrink-0 items-center bg-gray-900 px-4">
+            <div className="flex h-16 flex-shrink-0 items-center bg-white px-4">
               <a href="/">
                 <img
-                  className="h-8 w-auto"
-                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                  className="mx-auto h-16 w-auto"
+                  src={Logo}
                   alt="Your Company"
                 />
               </a>
