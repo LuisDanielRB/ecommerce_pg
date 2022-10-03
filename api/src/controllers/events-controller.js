@@ -109,7 +109,11 @@ const deleteEvents = async (req, res) => {
 
 const getEvents = async (req, res) => {
   const eventsDB = await Event.findAll();
-  const eventsCreated = await EventsCreated.findAll();
+  const eventsCreated = await EventsCreated.findAll({
+    where: {
+      isActive: true
+    }
+  });
 
   const data = JSON.parse(fs.readFileSync("dataBase.json", "utf8"));
   try {
