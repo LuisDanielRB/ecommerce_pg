@@ -3,6 +3,7 @@ import EventCards from "./UI/EventCards";
 import Footer from "./UI/Footer";
 import Navbar from "./UI/Navbar";
 import { useState } from "react";
+import './css/input.css'
 import { useSelector, useDispatch } from "react-redux";
 import { getAllEvents , userGetFavorite } from "../store/actions";
 import { useNavigate } from "react-router-dom";
@@ -35,9 +36,6 @@ const Events = () => {
   const currentEvent = eventos.slice(firstEvent, lastEvent);
 
   const pages = (page) => {
-    //////// Solo usar para ese requisito extraño del PI !!!
-    // if (page === 1) setCountriesXPage(9);
-    // else setCountriesXPage(10);
     setCurrentPage(page);
   };
   useEffect(() => {
@@ -188,8 +186,9 @@ const Events = () => {
               })}
             </select>
           </div>
-          <div>
-          <input type="range" min='0' max={eventos.length} size='2' value={EventsXPage} onChange={(e) => setEventsXPage(e.target.value)} />
+          <div >
+            <span id="rangeValue">Eventos: {EventsXPage}</span>
+            <input class="range" type="range"  value={EventsXPage} min="0" max={eventos.length} onChange={(e) => setEventsXPage(e.target.value)} onMouseMove={(e) => setEventsXPage(e.target.value)}></input>
           </div>
           <div>
             <label
