@@ -20,7 +20,6 @@ function classNames(...classes) {
 }
 
 function Navbar() {
-
   const dispatch = useDispatch();
   const { logOut } = UserAuth();
   const { user } = useSelector((state) => state);
@@ -108,13 +107,9 @@ function Navbar() {
                       >
                         Buscar...
                       </button>
-
                       {
                         search === true ? <SearchInput /> : null
                       }
-
-
-
                     </div>
                   </div>
                 </div>
