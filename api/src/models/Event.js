@@ -29,7 +29,7 @@ module.exports = (sequelize) => {
           type: DataTypes.INTEGER,
           allowNull: false,
       },
-      originalStock:{
+      stock:{
         type: DataTypes.INTEGER,
         allowNull: false
       },
