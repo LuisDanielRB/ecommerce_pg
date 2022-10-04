@@ -100,7 +100,7 @@ const EventCards = ({ eventos}) => {
                            </button>
                         </div>
                         <div className="-ml-px flex relative">
-                            <Favorites id={evento.id}/>
+                            {user ? <Favorites id={evento.id}/> : null}
                         </div>
                     </div>
                 </li>

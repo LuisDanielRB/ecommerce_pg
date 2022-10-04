@@ -3,6 +3,7 @@ const fs = require("fs");
 const uploadImage = require("../helpers/cloudinary");
 const fsExtra = require("fs-extra");
 
+
 const createEvent = async (req, res) => {
   const { description, price, date, artist, place, stock, category, image, imageId, userId } = req.body;
 
@@ -219,7 +220,6 @@ const getEventsDetailDb = async (req, res) => {
   }
 };
 
-
 const getEventsById = async (req, res) => {
   const { id } = req.params;
   try {
@@ -234,6 +234,47 @@ const getEventsById = async (req, res) => {
 };
 
 
+const getEventHome = async (req, res) => {
+  try {
+    let eventos;
+    const evento1 = await Event.findOne({
+      where: {
+        stock: stock<=200
+      }
+    })
+    res.status(200).json(evento1)
+    console.log(evento1)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
+const ticketsSoldAndAvailableAndAvailableEvents = async (req, res)=>{
+  let availableEvents;
+  let availableTickets;
+  let totalTickets;
+  let soldTickets;
+
+  try {
+    const {count, rows} = await Event.findAndCountAll();
+    
+    availableEvents = count;
+    
+    rows.map(el => {
+      availableTickets = availableTickets + el.currentStock;
+      totalTickets = totalTickets + el.originalStock;
+    });
+
+    soldTickets = totalTickets - availableTickets;
+
+    res.status(200).json({availableEvents, soldTickets, availableTickets});
+  } catch (error) {
+    res.send('error...',error);
+  }
+}
+
+
 module.exports = {
   createEvent,
   getEvents,
@@ -242,4 +283,7 @@ module.exports = {
   deleteEvents,
   updateEvent,
   getEventsById,
+  getEventHome,
+  ticketsSoldAndAvailableAndAvailableEvents
+
 };
