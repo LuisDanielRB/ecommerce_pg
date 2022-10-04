@@ -20,7 +20,6 @@ function classNames(...classes) {
 }
 
 function Navbar() {
-
   const dispatch = useDispatch();
   const { logOut } = UserAuth();
   const { user } = useSelector((state) => state);
@@ -48,7 +47,7 @@ function Navbar() {
 
   const userNavigation = [
     { name: "Your Profile", href: "#" },
-    { name: "Settings", href: "#" },
+    { name: "Settings", href: `/private/user/profile` },
     { name: "Log out", href: "#" },
     { name: "Dashboard", href: "/private/admindashboard" },
   ];
@@ -108,13 +107,9 @@ function Navbar() {
                       >
                         Buscar...
                       </button>
-
                       {
                         search === true ? <SearchInput /> : null
                       }
-
-
-
                     </div>
                   </div>
                 </div>
@@ -183,6 +178,20 @@ function Navbar() {
                           </Menu.Item>
                           <Menu.Item>
                             {({ active }) => (
+                              <button
+                                onClick={handleClick}
+                                href={`/private/user/${user.id}/profile`}
+                                className={classNames(
+                                  active ? "bg-gray-100" : "",
+                                  "block py-2 px-4 text-sm text-gray-700"
+                                )}
+                              >
+                                Settings
+                              </button>
+                            )}
+                          </Menu.Item>
+                          <Menu.Item>
+                            {({ active }) => (
                               <a
                                 onClick={() => null}
                                 href="/private/createvent"
@@ -237,29 +246,11 @@ function Navbar() {
             </div>
 
             <Popover.Panel as="nav" className="lg:hidden" aria-label="Global">
-              {/* <div className="mx-auto max-w-3xl space-y-1 px-2 pt-2 pb-3 sm:px-4">
-                {navigation.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    aria-current={item.current ? "page" : undefined}
-                    className={classNames(
-                      item.current
-                        ? "bg-gray-100 text-gray-900"
-                        : "hover:bg-gray-50",
-                      "block rounded-md py-2 px-3 text-base font-medium"
-                    )}
-                  >
-                    {item.name}
-                  </a>
-                ))}
-              </div> */}
               <div className="border-t border-gray-200 pt-4 pb-3">
                 <div className="mx-auto flex max-w-3xl items-center px-4 sm:px-6">
                   <div className="flex-shrink-0">
                     <img
                       className="h-10 w-10 rounded-full"
-                      // src={usuario.profile_picture}
                       alt=""
                     />
                   </div>

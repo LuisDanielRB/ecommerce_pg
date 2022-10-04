@@ -11,6 +11,7 @@ const {
   googleSignIn,
   deleteFavorite,
   getFavorite,
+  changePassword
 } = require("../controllers/users-controller");
 const {
   createEvent,
@@ -47,9 +48,10 @@ router.post("/user/google", googleSignIn);
 router.post("/login", login);
 router.post("/register", register);
 router.put("/password", passwordRecovery);
-router.put('/resetpassword', resetPassword ) 
+router.put('/resetpassword/:id', resetPassword ) 
 router.put("/user/:id/profile", fileUpload, upDateUser);
 router.get("/users", getUsers);
+router.put("/changePassword", changePassword);
 
 //EVENTOS
 router.post("/createEvent", fileUpload, createEvent);
@@ -64,7 +66,7 @@ router.get("/dashboard/events/:id", getEventsById);
 router.put("/favorites", addFavorite);
 router.delete("/favorites", deleteFavorite);
 router.get("/favorites/:idUser", getFavorite);
-router.get("/reviewScore/:eventId", getReviewScore);
+router.get("/reviewScor", getReviewScore);
 router.post("/reviewScore/:eventId", postReviewScore);
 router.put("/reviewScore/:eventId", putReviewScore);
 router.delete("/reviewScore/:eventId", deleteReviewScore);
@@ -90,4 +92,3 @@ router.put("/checkout", checkoutCart);
 
 
 module.exports = router;
-

@@ -10,7 +10,9 @@ const CardDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const eventDetail = useSelector((state) => state.eventsDetail);
-  const {user} = useSelector((state) => state);
+  const { user } = useSelector((state) => state);
+
+
 
   useEffect(() => {
     dispatch(getEventDetail(id));
@@ -23,10 +25,6 @@ const CardDetail = () => {
       dispatch(addToCartGuest(id))
     }
   }
-
- 
-  
-  
 
   return (
     <>
