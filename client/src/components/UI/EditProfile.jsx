@@ -34,7 +34,6 @@ export default function EditProfile() {
     const [sidebarOpen, setSidebarOpen] = useState(false)
 
     const [password, setPassword] = useState("")
-    const [active, setActive] = useState(0);
     const usuario = JSON.parse(localStorage.user);
     const favoritos = usuario.favorites;
     const eventos = useSelector((state) => state.events)
