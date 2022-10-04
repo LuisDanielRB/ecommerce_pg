@@ -63,7 +63,6 @@ export default function EditProfile() {
         })
     }
 
-    console.log(image)
     useEffect(() => {
         dispatch(getAllEvents());
         user ? dispatch(userGetFavorite(user.id)) : null

@@ -110,14 +110,14 @@ export function userSignOut(datos) {
   };
 }
 
-export const changePassword = (userId , password) => async (dispatch) => {
-  console.log(userId , password)
+export const changePassword = (userId, password) => async (dispatch) => {
+  console.log(userId, password)
   try {
-      const change = await axios.put("/changePassword", {userId , password});
-      return dispatch({
-        type: "POST_PASSWORD",
-        payload: change
-      })
+    const change = await axios.put("/changePassword", { userId, password });
+    return dispatch({
+      type: "POST_PASSWORD",
+      payload: change
+    })
   } catch (error) {
     console.log(error);
   }
@@ -188,6 +188,12 @@ export function userGetFavorite(userId) {
   };
 }
 
+export function editProfile(id, payload) {
+  return async function (dispatch) {
+    let edit = await axios.put(`/user/${id}/profile`, payload);
+    return dispatch({ type: "EDIT_PROFILE", payload: edit.data })
+  }
+}
 
 
 ///////////////////////////CART///////////////////////////////////
@@ -352,10 +358,10 @@ export const getEventsById = (id) => async (dispatch) => {
 
 };
 
-export const postReviewScore = (eventId , userId , description , score) => async (dispatch) => {
-  console.log(eventId , userId , description , score)
+export const postReviewScore = (eventId, userId, description, score) => async (dispatch) => {
+  console.log(eventId, userId, description, score)
   try {
-    const result = await axios.post(`reviewScore/${eventId}` , {userId , description , score})
+    const result = await axios.post(`reviewScore/${eventId}`, { userId, description, score })
     console.log(result)
     return dispatch({
       type: "POST_REVIEW",
@@ -369,8 +375,8 @@ export const postReviewScore = (eventId , userId , description , score) => async
 export const getReviews = (eventId) => async (dispatch) => {
   try {
     const result = await axios.get(`/reviewScor?eventId=${eventId}`)
-    return dispatch({ 
-      type: "GET_REVIEW", 
+    return dispatch({
+      type: "GET_REVIEW",
       payload: result.data
     })
   } catch (error) {
