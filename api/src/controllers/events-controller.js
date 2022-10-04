@@ -1,4 +1,4 @@
-const { EventsCreated, Event, Users } = require("../db");
+const { EventsCreated, Event, Users , ReviewScore} = require("../db");
 const fs = require("fs");
 const uploadImage = require("../helpers/cloudinary");
 const fsExtra = require("fs-extra");
@@ -189,10 +189,13 @@ const getEventsDetailDb = async (req, res) => {
     }
   } else {
     try {
+   
+
       const response = await Event.findOne({
         where: {
           id: id,
         },
+       
       });
       const elem = response.dataValues;
       detail = {

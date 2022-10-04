@@ -22,7 +22,7 @@ const CardDetail = () => {
 
   useEffect(() => {
     dispatch(getEventDetail(id));
-    dispatch(getReviews(id, user.id));
+    dispatch(getReviews(id));
     dispatch(getComments(user.id))
   }, [dispatch, id]);
 
@@ -48,11 +48,7 @@ const CardDetail = () => {
     setReview({});
   };
 
-  const test = (e) => {
-    e.preventDefault();
-    dispatch(getReviews(id, user.id));
-  };
-
+  
   return (
     <>
       <Navbar />

@@ -107,15 +107,29 @@ function rootReducer(state = initialState, action) {
       };
 
     case "USER_GET_FAVORITES":
-      let favoriteEvents = [];
-      let eventId = action.payload;
-
-      favoriteEvents = state.eventsCopy.filter((e) => eventId.includes(e.id));
-      persisLocalStorage("favorites", favoriteEvents);
+      localStorage.setItem('favorites', JSON.stringify(action.payload));
       return {
         ...state,
-        allFavourites: favoriteEvents,
+        allFavourites: action.payload,
       };
+
+    case 'USER_ADD_FAVORITE': {
+      localStorage.setItem('favorites' , JSON.stringify(action.payload))
+      return {
+        ...state,
+        allFavourites: action.payload
+      }
+    }
+
+    case 'DELETE_FAVORITE': {
+      let favoritos = JSON.parse(localStorage.getItem("favorites"))
+      let nuevoArray = favoritos.filter(e => e !== action.payload)
+      localStorage.setItem('favorites' , JSON.stringify(nuevoArray))
+        return {
+        ...state,
+        allFavourites: nuevoArray
+      }
+    }
 
     ////////////CART///////////////////////
     case "ADD_CART_GUEST":
@@ -161,10 +175,7 @@ function rootReducer(state = initialState, action) {
       };
 
     case "ADD_CART":
-      let newPrice = action.payload.reduce(
-        (acc, item) => item.price + state.summary,
-        0
-      );
+      let newPrice = action.payload.reduce((acc, item) => item.price + state.summary,0);
       return {
         ...state,
         cart: action.payload,

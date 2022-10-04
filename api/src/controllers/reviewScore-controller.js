@@ -3,14 +3,13 @@ const { where } = require("sequelize");
 const { ReviewScore } = require("../db");
 
 const getReviewScore = async (req, res) => {
-    const { eventId , userId } = req.query
+    const { eventId } = req.query
 
     console.log(req.query)
     try {
         const review = await ReviewScore.findOne({
             where: {
-                eventId: eventId,
-                userId: userId
+                eventId: eventId
             }
         })
         if (!review) res.json("Review not found")

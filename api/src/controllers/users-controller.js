@@ -241,7 +241,7 @@ const addFavorite = async (req, res) => {
 				favorites: newArray,
 			});
 
-			return res.send('Added id');
+			return res.json(user);
 		} else {
 			throw new Error('Invalid user');
 		}
@@ -255,7 +255,6 @@ const deleteFavorite = async (req, res) => {
 
 	try {
 		let user = await Users.findByPk(idUser);
-
 		if (user) {
 			let newArray = user.favorites;
 			if (newArray.includes(idEvent)) {
@@ -274,7 +273,7 @@ const deleteFavorite = async (req, res) => {
 				favorites: newArray,
 			});
 
-			res.send('Id removed');
+			res.send(user.favorites);
 		} else {
 			throw new Error('Invalid user');
 		}
@@ -288,7 +287,6 @@ const getFavorite = async (req, res) => {
 
 	try {
 		let user = await Users.findByPk(idUser);
-
 		if (user) {
 			let response = user.favorites;
 			res.json(response);
@@ -333,6 +331,38 @@ const resetPassword = async (req, res, next) => {
 	}
 };
 
+const changePassword = async (req, res , next) => {
+	let { userId, password } = req.body;
+	console.log(req.body)
+	try {
+		let user = await Users.findOne({
+			where: {
+				id: userId,
+			},
+		});
+
+		if (!user)
+			return res.status(400).send('User has not been found with that ID');
+		let newPassword = await encrypt(password)
+		console.log(newPassword);
+
+		await Users.update(
+			{
+				password: newPassword,
+			},
+			{
+				where: {
+					id: userId,
+				},
+			}
+		);
+
+		res.send(`User ${user.username} has updated their password`);
+	} catch (err) {
+		next(err);
+	}
+}
+
 
 
 module.exports = {
@@ -344,5 +374,6 @@ module.exports = {
 	addFavorite,
 	deleteFavorite,
 	getFavorite,
-	resetPassword
+	resetPassword,
+	changePassword
 }

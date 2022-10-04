@@ -110,6 +110,19 @@ export function userSignOut(datos) {
   };
 }
 
+export const changePassword = (userId , password) => async (dispatch) => {
+  console.log(userId , password)
+  try {
+      const change = await axios.put("/changePassword", {userId , password});
+      return dispatch({
+        type: "POST_PASSWORD",
+        payload: change
+      })
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export function addGoogleUser(currentUser) {
   return async function (dispatch) {
     try {
@@ -140,22 +153,31 @@ export function cleanDetail() {
 }
 
 export function userAddFavorite(userId, idEvent) {
-  return async function () {
-    return await axios.put("/favorites", {
+  return async function (dispatch) {
+    const res = await axios.put("/favorites", {
       idUser: userId,
       idEvent: idEvent,
+    });
+    return dispatch({
+      type: "USER_ADD_FAVORITE",
+      payload: res.data.favorites
     });
   };
 }
 
 export function userDeleteFavorite(userId, idEvent) {
-  return async function () {
-    return await axios.delete("/favorites", {
+  return async function (dispatch) {
+    const res = await axios.delete("/favorites", {
       data: {
         idUser: userId,
         idEvent: idEvent,
       },
     });
+    console.log(res.data);
+    return dispatch({
+      type: 'DELETE_FAVORITE',
+      payload: idEvent
+    })
   };
 }
 
@@ -341,9 +363,9 @@ export const postReviewScore = (eventId , userId , description , score) => async
   }
 }
 
-export const getReviews = (eventId , userId) => async (dispatch) => {
+export const getReviews = (eventId) => async (dispatch) => {
   try {
-    const result = await axios.get(`/reviewScor?eventId=${eventId}&userId=${userId}`)
+    const result = await axios.get(`/reviewScor?eventId=${eventId}`)
     return dispatch({ 
       type: "GET_REVIEW", 
       payload: result.data
