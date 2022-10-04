@@ -289,14 +289,7 @@ function rootReducer(state = initialState, action) {
           ...state,
           eventsDetail: {
             ...state.eventsDetail,
-            comments: [
-              {
-                text: action.payload.description,
-                score: action.payload.score,
-                EventId: action.payload.eventId,
-                UserId: action.payload.userId,
-              },
-            ],
+            comments: action.payload
           },
         }
       }
@@ -306,14 +299,7 @@ function rootReducer(state = initialState, action) {
           ...state,
           eventsDetail: {
             ...state.eventsDetail,
-            comments: [
-              {
-                text: action.payload.description,
-                score: action.payload.score,
-                EventId: action.payload.eventId,
-                UserId: action.payload.userId,
-              },
-            ],
+            comments: [...state.eventsDetail.comments , action.payload]
           },
         }
       }
