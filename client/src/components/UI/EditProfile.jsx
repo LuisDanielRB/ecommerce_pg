@@ -12,6 +12,7 @@ import Logo from "../../logo/logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllEvents, userGetFavorite } from "../../store/actions";
 
+
 const navigation = [
     { name: 'Settings', icon: Cog6ToothIcon, current: false },
 ]
@@ -31,6 +32,7 @@ export default function EditProfile() {
     const dispatch = useDispatch()
     const { user } = useSelector((state) => state)
     const [sidebarOpen, setSidebarOpen] = useState(false)
+
     const [password, setPassword] = useState("")
     const [active, setActive] = useState(0);
     const usuario = JSON.parse(localStorage.user);
@@ -38,6 +40,7 @@ export default function EditProfile() {
     const eventos = useSelector((state) => state.events)
     console.log(eventos)
     
+
     const changePasswordInput = (e) => {
         setPassword(e.target.value)
     }

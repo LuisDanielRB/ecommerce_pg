@@ -6,6 +6,9 @@ import { RoutesWithNotFound , Rol} from "./utils/index";
 import PasswordRecovery from "./components/PasswordRecovery";
 import {AdminDashboard} from './components/Private'
 import UpdatePassword from "./components/UpdatePassword";
+import { useEffect } from "react";
+import { useDispatch , useSelector } from "react-redux";
+import { getCart } from "./store/actions";
 const Login = lazy(() => import("./components/Login"));
 const Register = lazy(() => import("./components/Register"));
 const Private = lazy(() => import("./components/Private/Private"));
@@ -16,6 +19,7 @@ const LoginSuccess = lazy(() => import("./components/UI/LoginSuccess"));
 
 
 function App() {
+ 
 
   return (
     <div className="App">

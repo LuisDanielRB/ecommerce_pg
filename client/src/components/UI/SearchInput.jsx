@@ -10,16 +10,20 @@ function classNames(...classes) {
 }
 
 export default function SearchInput() {
+
   const events = useSelector((state) => state.events)
+
   const [query, setQuery] = useState('')
 
   const [open, setOpen] = useState(true)
 
 
   function mappingArtist(arr, sea) {
+
     for (let i = 0; i < arr.length; i++) {
       if (arr[i].toLowerCase().includes(sea)) return arr[i]
-    }
+
+
   }
 
   const filteredPeople =
@@ -84,7 +88,11 @@ export default function SearchInput() {
                           classNames('cursor-default select-none px-4 py-2', active && 'bg-indigo-600 text-white')
                         }
                       >
+
                         <Link to={`/private/events/${person.id}`}>{person.artist.join(" - ")}</Link>
+
+                       <Link to={`/private/events/${person.id}`}>{person.artist.join(" - ")}</Link> 
+
                       </Combobox.Option>
                     ))}
                   </Combobox.Options>
