@@ -16,4 +16,3 @@ export const PrivateRoute = {
   ADMIN_DASHBOARD: "admindashboard",
   CHECKOUT: 'payment/success',
   EDITPROFILE: 'user/:id/profile',
-};

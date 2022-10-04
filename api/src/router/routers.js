@@ -38,6 +38,7 @@ const {
   postReviewScore,
   putReviewScore,
   deleteReviewScore,
+  getComments
 } = require("../controllers/reviewScore-controller");
 const { adminPut , bannedUser , hideEvent , showEvent , unbanUser , deleteCommentToAdmin , getAllOrders , upgradeToAdmin} = require('../controllers/admin-controller')
 
@@ -52,6 +53,7 @@ router.put('/resetpassword/:id', resetPassword )
 router.put("/user/:id/profile", fileUpload, upDateUser);
 router.get("/users", getUsers);
 router.put("/changePassword", changePassword);
+
 
 //EVENTOS
 router.post("/createEvent", fileUpload, createEvent);
@@ -70,6 +72,7 @@ router.get("/reviewScor", getReviewScore);
 router.post("/reviewScore/:eventId", postReviewScore);
 router.put("/reviewScore/:eventId", putReviewScore);
 router.delete("/reviewScore/:eventId", deleteReviewScore);
+router.get('/comments/:id', getComments);
 
 // ADMIN
 router.put("/admin", adminPut);

@@ -38,6 +38,10 @@ function Navbar() {
     navigate('/login')
   };
 
+  const reset = () => {
+    localStorage.clear()
+  }
+
   const navigation = [
     { name: "Dashboard", href: "#", current: true },
     { name: "Calendar", href: "#", current: false },
@@ -225,6 +229,7 @@ function Navbar() {
                     <div className="flex justify-center">
                       <div>
                         <Link
+                        onClick={() => reset()}
                           to={"/login"}
                           className="ml-6 inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         >
@@ -233,6 +238,7 @@ function Navbar() {
                       </div>
                       <div>
                         <Link
+                        onClick={() => reset()}
                           to={"/register"}
                           className="ml-6 inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         >
