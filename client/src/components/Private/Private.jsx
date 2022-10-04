@@ -11,6 +11,7 @@ const AdminDashboard = lazy(() => import("./Dashboard/AdminDashboard"));
 const Checkout = lazy(() => import('../UI/Checkout'));
 const EditProfile = lazy(() => import("../UI/EditProfile"));
 
+
 function Private() {
   return (
     <RoutesWithNotFound>
@@ -22,6 +23,7 @@ function Private() {
       <Route path={PrivateRoute.ADMIN_DASHBOARD} element={<AdminDashboard />} />
       <Route path={PrivateRoute.CHECKOUT} element={<Checkout />} />
       <Route path={PrivateRoute.EDITPROFILE} element={<EditProfile />} />
+
     </RoutesWithNotFound>
   );
 }

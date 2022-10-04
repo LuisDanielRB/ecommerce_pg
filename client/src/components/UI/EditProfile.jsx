@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import {
@@ -10,6 +10,7 @@ import {
 } from '@heroicons/react/24/outline';
 import Logo from "../../logo/logo.png";
 import { useDispatch, useSelector } from "react-redux";
+import { getAllEvents, userGetFavorite } from "../../store/actions";
 
 
 const navigation = [
@@ -28,15 +29,21 @@ function classNames(...classes) {
 }
 
 export default function EditProfile() {
-    const dispatch = useDispatch();
-    const { user } = useSelector((state) => state);
-    const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [password, setPassword] = useState("");
+    const dispatch = useDispatch()
+    const { user } = useSelector((state) => state)
+    const [sidebarOpen, setSidebarOpen] = useState(false)
+    const [password, setPassword] = useState("")
+    const [active, setActive] = useState(0);
+    const usuario = JSON.parse(localStorage.user);
+    const favoritos = usuario.favorites;
+    const eventos = useSelector((state) => state.events);
     const [image, setImage] = useState()
-    console.log(user)
+    console.log(favoritos)
+
+
     const changePasswordInput = (e) => {
         setPassword(e.target.value)
-    };
+    }
 
     const sendPassword = () => {
         dispatch(changePassword(user.id, password))
@@ -56,13 +63,20 @@ export default function EditProfile() {
         })
     }
 
-    function handleChangeImage(e) {
-        e.preventDefault();
-        let profile_picture = user.profile_picture;
-        typeof profile_picture === "string" ? [...image] : null;
+    console.log(image)
+    useEffect(() => {
+        dispatch(getAllEvents());
+        user ? dispatch(userGetFavorite(user.id)) : null
+    }, [dispatch, user])
+
+    function recArr(el, arr) {
+        for (let i = 0; i < arr.length; i++) {
+            if (el === arr[i]) return true
+        }
     }
 
-    console.log(image)
+    const eventsFavourites = eventos.filter((el) => recArr(el.id, favoritos))
+
     return (
         <>
             <div>
@@ -329,7 +343,6 @@ export default function EditProfile() {
                                                                     />
                                                                     <span className="ml-4 flex-shrink-0">
                                                                         <button
-                                                                            onClick={(e) => handleChangeImage(e)}
                                                                             type="button"
                                                                             className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                                                         >
@@ -339,6 +352,12 @@ export default function EditProfile() {
                                                                 </span>
                                                             </dd>
                                                         </div>
+                                                        <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:pt-5">
+                                                            <h1 className="text-sm font-medium text-gray-500">Favoritos</h1>
+                                                            {
+                                                                eventsFavourites ? eventsFavourites.map((el) => el.description) : null
+                                                            }
+                                                        </div >
                                                         <form>
                                                             <input
                                                                 onChange={(e) => changePasswordInput(e)}
@@ -353,23 +372,23 @@ export default function EditProfile() {
                                                                 Change Password
                                                             </button>
                                                         </form>
-                                                    </dl>
+                                                    </dl >
                                                     <button
                                                         type="button"
                                                         className=" mt-8 appearance-none bg-red-400 rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-red-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                                     >
                                                         Delete Account
                                                     </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </main>
-                    </div>
-                </div>
-            </div>
+                                                </div >
+                                            </div >
+                                        </div >
+                                    </div >
+                                </div >
+                            </div >
+                        </main >
+                    </div >
+                </div >
+            </div >
         </>
     )
 }
