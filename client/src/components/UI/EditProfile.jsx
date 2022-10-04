@@ -28,19 +28,41 @@ function classNames(...classes) {
 }
 
 export default function EditProfile() {
-    const dispatch = useDispatch()
-    const { user } = useSelector((state) => state)
-    const [sidebarOpen, setSidebarOpen] = useState(false)
-    const [password, setPassword] = useState("")    
-
+    const dispatch = useDispatch();
+    const { user } = useSelector((state) => state);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [password, setPassword] = useState("");
+    const [image, setImage] = useState()
+    console.log(user)
     const changePasswordInput = (e) => {
         setPassword(e.target.value)
-    }
+    };
 
     const sendPassword = () => {
         dispatch(changePassword(user.id, password))
+    };
+
+    async function handleFile(e) {
+        e.preventDefault();
+        let profile_picture = e.target.files[0];
+        let data = new FormData();
+        data.append("file", profile_picture);
+        data.append("upload_preset", "pkokipva");
+        fetch("https://api.cloudinary.com/v1_1/dzjonhhps/image/upload", {
+            method: 'POST',
+            body: data
+        }).then(res => res.json()).then(res => {
+            setImage(res.secure_url)
+        })
     }
 
+    function handleChangeImage(e) {
+        e.preventDefault();
+        let profile_picture = user.profile_picture;
+        typeof profile_picture === "string" ? [...image] : null;
+    }
+
+    console.log(image)
     return (
         <>
             <div>
@@ -264,15 +286,15 @@ export default function EditProfile() {
                                             {/* Description list with inline editing */}
                                             <div className="mt-10 divide-y divide-gray-200">
                                                 <div className="space-y-1">
-                                                    <h3 className="text-lg font-medium leading-6 text-gray-900">Profile</h3>
+                                                    <h3 className="text-lg font-medium leading-6 text-gray-900">Perfil</h3>
                                                     <p className="max-w-2xl text-sm text-gray-500">
-                                                        This information will be displayed publicly so be careful what you share.
+                                                        Configuracion de datos del perfil.
                                                     </p>
                                                 </div>
                                                 <div className="mt-6">
                                                     <dl className="divide-y divide-gray-200">
                                                         <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5">
-                                                            <dt className="text-sm font-medium text-gray-500">Name</dt>
+                                                            <dt className="text-sm font-medium text-gray-500">Name:</dt>
                                                             <dd className="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                                                                 <input
                                                                     type="text"
@@ -289,54 +311,31 @@ export default function EditProfile() {
                                                             </dd>
                                                         </div>
                                                         <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:pt-5">
-                                                            <dt className="text-sm font-medium text-gray-500">Photo</dt>
+                                                            <dt className="text-sm font-medium text-gray-500">Photo:</dt>
                                                             <dd className="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                                                                 <span className="flex-grow">
                                                                     <img
-                                                                        className="h-8 w-8 rounded-full"
+                                                                        className="h-20 w-20 rounded-full"
                                                                         alt=""
+                                                                        src={image}
                                                                     />
                                                                 </span>
-                                                                <span className="ml-4 flex flex-shrink-0 items-start space-x-4">
+                                                                <span className="ml-4 flex flex-shrink-0 items-center space-x-4">
                                                                     <input
+                                                                        onChange={handleFile}
                                                                         type="file"
                                                                         accept="image/*"
                                                                         className="rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                                                                     />
                                                                     <span className="ml-4 flex-shrink-0">
                                                                         <button
+                                                                            onClick={(e) => handleChangeImage(e)}
                                                                             type="button"
                                                                             className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                                                         >
                                                                             Update
                                                                         </button>
                                                                     </span>
-                                                                    {/* <span className="text-gray-300" aria-hidden="true">
-                                                                        |
-                                                                    </span> */}
-                                                                    {/* <button
-                                                                        type="button"
-                                                                        className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                                                                        >
-                                                                        Remove
-                                                                    </button> */}
-                                                                </span>
-                                                            </dd>
-                                                        </div>
-                                                        <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:pt-5">
-                                                            <dt className="text-sm font-medium text-gray-500">Email</dt>
-                                                            <dd className="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                                                <input
-                                                                    type="text"
-                                                                    className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                                                                />
-                                                                <span className="ml-4 flex-shrink-0">
-                                                                    <button
-                                                                        type="button"
-                                                                        className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                                                                    >
-                                                                        Update
-                                                                    </button>
                                                                 </span>
                                                             </dd>
                                                         </div>
@@ -344,7 +343,7 @@ export default function EditProfile() {
                                                             <input
                                                                 onChange={(e) => changePasswordInput(e)}
                                                                 type="text"
-                                                                className="appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                                                className="mt-8 appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                                             />
                                                             <button
                                                                 onClick={(e) => sendPassword(e)}
