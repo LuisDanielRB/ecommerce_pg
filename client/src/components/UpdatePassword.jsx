@@ -5,11 +5,22 @@ import { LockClosedIcon } from '@heroicons/react/20/solid'
 import { updatePassword } from '../store/actions'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom'
+import { toast, ToastContainer } from 'react-toastify'
 
 
 const UpdatePassword = (props) => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const toastOptions = {
+      position: "bottom-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark"
+  };
     const [pass, setPass] = useState("")
     function onChange(e) {
         e.preventDefault()
@@ -20,8 +31,15 @@ const UpdatePassword = (props) => {
 
     function handleSubmit (e) {
         e.preventDefault()
-        dispatch(updatePassword({id: id, password: pass}))
-        navigate("/login")
+        if(pass) {
+          dispatch(updatePassword({id: id, password: pass}))
+          setTimeout(() => {
+            navigate("/login")
+          }, 4000)
+          toast.success("Contraseña actualizada correctamente serás redirigido al login", toastOptions)
+        } else {
+          toast.error("Debes ingresar una contraseña", toastOptions)
+        }
     }
     
 
