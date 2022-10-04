@@ -10,22 +10,15 @@ function classNames(...classes) {
 }
 
 export default function SearchInput() {
-    const events = useSelector((state) => state.events)
-    console.log(events)
-
-
-
-
+  const events = useSelector((state) => state.events)
   const [query, setQuery] = useState('')
 
   const [open, setOpen] = useState(true)
 
 
   function mappingArtist(arr, sea) {
-    console.log("Dentro del mapping", sea)
-    for(let i = 0; i < arr.length; i++){
-        console.log(arr[i].toLowerCase())
-        return arr[i].toLowerCase().includes(sea)
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i].toLowerCase().includes(sea)) return arr[i]
     }
   }
 
@@ -33,14 +26,14 @@ export default function SearchInput() {
     query === ''
       ? []
       : events.filter((el) => {
-          return mappingArtist(el.artist, query.toLowerCase())
-        })
+        return mappingArtist(el.artist, query.toLowerCase())
+      })
 
-    function returnNames(arr){
-        for(let i = 0; i < arr.length; i++){
-            return arr[i]
-        }
+  function returnNames(arr) {
+    for (let i = 0; i < arr.length; i++) {
+      return arr[i]
     }
+  }
 
   return (
     <Transition.Root show={open} as={Fragment} afterLeave={() => setQuery('')} appear>
@@ -91,7 +84,7 @@ export default function SearchInput() {
                           classNames('cursor-default select-none px-4 py-2', active && 'bg-indigo-600 text-white')
                         }
                       >
-                       <Link to={`/private/events/${person.id}`}>{person.artist}</Link> 
+                        <Link to={`/private/events/${person.id}`}>{person.artist.join(" - ")}</Link>
                       </Combobox.Option>
                     ))}
                   </Combobox.Options>

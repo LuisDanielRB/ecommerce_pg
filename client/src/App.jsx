@@ -1,5 +1,5 @@
 import React, { lazy } from "react";
-import { Route, Navigate, BrowserRouter } from "react-router-dom";
+import { Route, BrowserRouter } from "react-router-dom";
 import { PrivateRoute, PublicRoute } from "./router/index";
 import { AuthGuard, RoleGuard } from "../src/auth/index";
 import { RoutesWithNotFound , Rol} from "./utils/index";

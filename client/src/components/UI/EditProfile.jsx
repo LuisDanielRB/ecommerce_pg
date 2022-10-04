@@ -20,6 +20,7 @@ const secondaryNavigation = [
 ]
 const tabs = [
     { name: 'General', href: '#', current: true },
+    { name: "Favourites", href: '#', current: false }
 ]
 
 function classNames(...classes) {
@@ -343,7 +344,7 @@ export default function EditProfile() {
                                                             <input
                                                                 onChange={(e) => changePasswordInput(e)}
                                                                 type="text"
-                                                                className="appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                                                className="mt-8 appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                                             />
                                                             <button
                                                                 onClick={(e) => sendPassword(e)}
