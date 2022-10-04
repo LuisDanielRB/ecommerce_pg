@@ -5,7 +5,18 @@ const fsExtra = require("fs-extra");
 
 
 const createEvent = async (req, res) => {
-  const { description, price, date, artist, place, stock, category, image, imageId, userId } = req.body;
+  const {
+    description,
+    price,
+    date,
+    artist,
+    place,
+    stock,
+    category,
+    image,
+    imageId,
+    userId,
+  } = req.body;
 
   try {
     const newEvent = await EventsCreated.create({
@@ -105,7 +116,6 @@ const deleteEvents = async (req, res) => {
       console.log(error);
       res.status(404).send("Event not found");
     }
-    
   }
 };
 
@@ -113,8 +123,8 @@ const getEvents = async (req, res) => {
   const eventsDB = await Event.findAll();
   const eventsCreated = await EventsCreated.findAll({
     where: {
-      isActive: true
-    }
+      isActive: true,
+    },
   });
 
   const data = JSON.parse(fs.readFileSync("dataBase.json", "utf8"));
@@ -190,9 +200,7 @@ const getEventsDetailDb = async (req, res) => {
     }
   } else {
     try {
-   
-
-      const response = await Event.findOne({
+      const response = await EventsCreated.findOne({
         where: {
           id: id,
         },
@@ -233,7 +241,6 @@ const getEventsById = async (req, res) => {
   }
 };
 
-
 const getEventHome = async (req, res) => {
   try {
     let eventos;
@@ -273,7 +280,6 @@ const ticketsSoldAndAvailableAndAvailableEvents = async (req, res)=>{
     res.send('error...',error);
   }
 }
-
 
 module.exports = {
   createEvent,

@@ -8,7 +8,6 @@ import Carousel from "./UI/Carousel";
 import { useEffect } from "react";
 import { getAllEvents } from "../store/actions";
 
-
 function Home() {
   const dispatch = useDispatch();
   const eventos = useSelector((state) => state.events);
