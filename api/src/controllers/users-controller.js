@@ -88,6 +88,7 @@ const upDateUser = async (req, res) => {
 					profile_picture_id
 				},
 					{ where: { id: id } });
+
 			}
 		}
 
