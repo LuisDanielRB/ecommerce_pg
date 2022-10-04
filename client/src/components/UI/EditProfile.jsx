@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import {
@@ -10,6 +10,7 @@ import {
 } from '@heroicons/react/24/outline';
 import Logo from "../../logo/logo.png";
 import { useDispatch, useSelector } from "react-redux";
+import { getAllEvents, userGetFavorite } from "../../store/actions";
 
 
 const navigation = [
@@ -31,15 +32,26 @@ export default function EditProfile() {
     const dispatch = useDispatch()
     const { user } = useSelector((state) => state)
     const [sidebarOpen, setSidebarOpen] = useState(false)
-    const [password, setPassword] = useState("")    
+
+    const [password, setPassword] = useState("")
+    const [active, setActive] = useState(0);
+    const usuario = JSON.parse(localStorage.user);
+    const favoritos = usuario.favorites;
+    const eventos = useSelector((state) => state.events)
+    console.log(eventos)
+    
 
     const changePasswordInput = (e) => {
         setPassword(e.target.value)
     }
-
     const sendPassword = () => {
         dispatch(changePassword(user.id, password))
     }
+
+    useEffect(() => {
+        dispatch(getAllEvents());
+        user ? dispatch(userGetFavorite(user.id)) : null
+    }, [dispatch, user])
 
     return (
         <>
@@ -311,32 +323,6 @@ export default function EditProfile() {
                                                                             Update
                                                                         </button>
                                                                     </span>
-                                                                    {/* <span className="text-gray-300" aria-hidden="true">
-                                                                        |
-                                                                    </span> */}
-                                                                    {/* <button
-                                                                        type="button"
-                                                                        className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                                                                        >
-                                                                        Remove
-                                                                    </button> */}
-                                                                </span>
-                                                            </dd>
-                                                        </div>
-                                                        <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:pt-5">
-                                                            <dt className="text-sm font-medium text-gray-500">Email</dt>
-                                                            <dd className="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                                                <input
-                                                                    type="text"
-                                                                    className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                                                                />
-                                                                <span className="ml-4 flex-shrink-0">
-                                                                    <button
-                                                                        type="button"
-                                                                        className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                                                                    >
-                                                                        Update
-                                                                    </button>
                                                                 </span>
                                                             </dd>
                                                         </div>
@@ -344,7 +330,7 @@ export default function EditProfile() {
                                                             <input
                                                                 onChange={(e) => changePasswordInput(e)}
                                                                 type="text"
-                                                                className="appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                                                className="mt-8 appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                                             />
                                                             <button
                                                                 onClick={(e) => sendPassword(e)}
