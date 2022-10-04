@@ -15,4 +15,5 @@ export const PrivateRoute = {
   CART: "cart",
   ADMIN_DASHBOARD: "admindashboard",
   CHECKOUT: 'payment/success',
-  EDITPROFILE: 'user/:id/profile',
+  EDITPROFILE: 'user/:id/profile'
+}
