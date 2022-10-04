@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PlusCircleIcon } from "@heroicons/react/20/solid";
 import { createEvent } from "../store/actions";
-import { useDispatch , useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Logo from "../logo/logo.png";
 import data from "../utils/place.json";
 
@@ -20,10 +20,10 @@ function CreateEvent() {
     place: "",
     stock: 0,
     category: [],
-    userId: user.id,
     image: "",
     imageId: "",
-  });
+    userId: null,
+  })
 
   function validation(input) {
     let errors = {};
@@ -94,7 +94,6 @@ function CreateEvent() {
       );
       setArtistas("")
     }
-    document.getElementById('artist').value = ""
   };
 
   const handleDeleteArtist = (e) => {
@@ -105,19 +104,6 @@ function CreateEvent() {
       artist: a
     })
   };
-
-  function handleInputChange(e) {
-    setInput({
-      ...input,
-      [e.target.name]: e.target.value,
-    });
-    setError(
-      validation({
-        ...input,
-        [e.target.name]: e.target.value,
-      })
-    );
-  }
 
   function handleInputPrice(e) {
     setInput({
@@ -174,10 +160,6 @@ function CreateEvent() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    setInput({
-      ...input,
-      artist: [...input.artist, artistas],
-    });
     dispatch(createEvent(input));
     setError(validation(input));
     setInput({
@@ -188,9 +170,9 @@ function CreateEvent() {
       place: "",
       stock: 0,
       category: [],
-      userId: "",
       image: "",
       imageId: "",
+      userId: null,
     });
     navigate("/events");
   }
@@ -254,7 +236,7 @@ function CreateEvent() {
                   </p>
                   )
                 })}
-              </div>
+              </div >
               <div>
                 <label className="block text-sm font-medium text-gray-700">
                   Place
@@ -267,14 +249,15 @@ function CreateEvent() {
                     <option hidden>
                       Please select a place
                     </option>
-                    <option value="Estados Unidos">Estados Unidos</option>
-                    {data?.map((place, id) => {
-                      return <option key={id}>{place.name_es}</option>
-                    })}
-                  </select>
-                </div>
+                    {
+                      data?.map((place, id) => {
+                        return <option key={id}>{place.name_es}</option>
+                      })
+                    }
+                  </select >
+                </div >
                 {error.place && <p> ❌{error.place}</p>}
-              </div>
+              </div >
               <div>
                 <label className="block text-sm font-medium text-gray-700">
                   Category
@@ -284,7 +267,7 @@ function CreateEvent() {
                     onChange={(e) => handleSelectCategory(e)}
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   >
-                    <option default value="">
+                    <option hidden>
                       Please select a category
                     </option>
                     <option value="Musica">Musica</option>
@@ -309,6 +292,7 @@ function CreateEvent() {
                     name="price"
                     type="text"
                     placeholder="$..."
+                    required
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   />
                 </div>
@@ -371,7 +355,7 @@ function CreateEvent() {
               >
                 Create
               </button>
-            </form>
+            </form >
             <div className="mt-4">
               <a
                 href="/"
@@ -380,12 +364,11 @@ function CreateEvent() {
                 <input type="button" value="Go Back" />
               </a>
             </div>
-          </div>
-        </div>
-      </div>
+          </div >
+        </div >
+      </div >
     </>
   );
 }
 
 export default CreateEvent;
-

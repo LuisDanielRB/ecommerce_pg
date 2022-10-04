@@ -1,65 +1,45 @@
 import React from "react";
 import { Fragment, useState } from 'react'
-import { Dialog, Switch, Transition } from '@headlessui/react'
-import {useDispatch , useSelector} from 'react-redux'
+import { Dialog, Transition } from '@headlessui/react'
 import {
     ArrowLeftOnRectangleIcon,
     Bars3BottomLeftIcon,
-    BellIcon,
-    BriefcaseIcon,
-    ChatBubbleOvalLeftEllipsisIcon,
-    CogIcon,
-    DocumentMagnifyingGlassIcon,
-    HomeIcon,
+    Cog6ToothIcon,
     QuestionMarkCircleIcon,
-    UsersIcon,
     XMarkIcon,
 } from '@heroicons/react/24/outline';
-import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 import Logo from "../../logo/logo.png";
-
-import {changePassword} from '../../store/actions'
+import { useDispatch, useSelector } from "react-redux";
 
 const navigation = [
-    { name: 'Home', href: '/', icon: HomeIcon, current: true },
-    //   { name: 'Jobs', href: '#', icon: BriefcaseIcon, current: false },
-    //   { name: 'Applications', href: '#', icon: DocumentMagnifyingGlassIcon, current: false },
-    //   { name: 'Messages', href: '#', icon: ChatBubbleOvalLeftEllipsisIcon, current: false },
-    //   { name: 'Team', href: '#', icon: UsersIcon, current: false },
-    //   { name: 'Settings', href: '#', icon: CogIcon, current: true },
+    { name: 'Settings', icon: Cog6ToothIcon, current: false },
 ]
 const secondaryNavigation = [
     { name: 'Help', href: '#', icon: QuestionMarkCircleIcon },
-    { name: 'Logout', href: '#', icon: ArrowLeftOnRectangleIcon },
+    { name: 'Logout', href: '/', icon: ArrowLeftOnRectangleIcon },
 ]
 const tabs = [
     { name: 'General', href: '#', current: true },
-    //   { name: 'Password', href: '#', current: false },
-    //   { name: 'Notifications', href: '#', current: false },
-    //   { name: 'Plan', href: '#', current: false },
-    //   { name: 'Billing', href: '#', current: false },
-    //   { name: 'Team Members', href: '#', current: false },
 ]
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function Example() {
+export default function EditProfile() {
     const dispatch = useDispatch()
-    const {user} = useSelector((state)  => state)
+    const { user } = useSelector((state) => state)
     const [sidebarOpen, setSidebarOpen] = useState(false)
-    const [automaticTimezoneEnabled, setAutomaticTimezoneEnabled] = useState(true)
-    const [autoUpdateApplicantDataEnabled, setAutoUpdateApplicantDataEnabled] = useState(false)
-    const [password , setPassword] = useState("")
+    const [password, setPassword] = useState("")
 
     const changePasswordInput = (e) => {
         setPassword(e.target.value)
     }
 
     const sendPassword = () => {
-        dispatch(changePassword(user.id , password))
+        dispatch(changePassword(user.id, password))
     }
+
     return (
         <>
             <div>
@@ -234,48 +214,7 @@ export default function Example() {
                                 <span className="sr-only">Open sidebar</span>
                                 <Bars3BottomLeftIcon className="h-6 w-6" aria-hidden="true" />
                             </button>
-                            {/* <div className="flex flex-1 justify-between px-4 md:px-0">
-                                <div className="flex flex-1">
-                                    <form className="flex w-full md:ml-0" action="#" method="GET">
-                                        <label htmlFor="mobile-search-field" className="sr-only">
-                                            Search
-                                        </label>
-                                        <label htmlFor="desktop-search-field" className="sr-only">
-                                            Search
-                                        </label>
-                                        <div className="relative w-full text-gray-400 focus-within:text-gray-600">
-                                            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center">
-                                                <MagnifyingGlassIcon className="h-5 w-5 flex-shrink-0" aria-hidden="true" />
-                                            </div>
-                                            <input
-                                                name="mobile-search-field"
-                                                id="mobile-search-field"
-                                                className="h-full w-full border-transparent py-2 pl-8 pr-3 text-base text-gray-900 placeholder-gray-500 focus:border-transparent focus:placeholder-gray-400 focus:outline-none focus:ring-0 sm:hidden"
-                                                placeholder="Search"
-                                                type="search"
-                                            />
-                                            <input
-                                                name="desktop-search-field"
-                                                id="desktop-search-field"
-                                                className="hidden h-full w-full border-transparent py-2 pl-8 pr-3 text-sm text-gray-900 placeholder-gray-500 focus:border-transparent focus:placeholder-gray-400 focus:outline-none focus:ring-0 sm:block"
-                                                placeholder="Search jobs, applicants, and more"
-                                                type="search"
-                                            />
-                                        </div>
-                                    </form>
-                                </div>
-                                <div className="ml-4 flex items-center md:ml-6">
-                                    <button
-                                        type="button"
-                                        className="rounded-full bg-white p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
-                                    >
-                                        <BellIcon className="h-6 w-6" aria-hidden="true" />
-                                        <span className="sr-only">View notifications</span>
-                                    </button>
-                                </div>
-                            </div> */}
                         </div>
-
                         <main className="flex-1">
                             <div className="relative mx-auto max-w-4xl md:px-8 xl:px-0">
                                 <div className="pt-10 pb-16">
@@ -334,11 +273,14 @@ export default function Example() {
                                                         <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5">
                                                             <dt className="text-sm font-medium text-gray-500">Name</dt>
                                                             <dd className="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                                                <span className="flex-grow">Chelsea Hagon</span>
+                                                                <input
+                                                                    type="text"
+                                                                    className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                                                />
                                                                 <span className="ml-4 flex-shrink-0">
                                                                     <button
                                                                         type="button"
-                                                                        className="rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                                                                        className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                                                     >
                                                                         Update
                                                                     </button>
@@ -351,54 +293,73 @@ export default function Example() {
                                                                 <span className="flex-grow">
                                                                     <img
                                                                         className="h-8 w-8 rounded-full"
-                                                                        src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                                                                         alt=""
                                                                     />
                                                                 </span>
                                                                 <span className="ml-4 flex flex-shrink-0 items-start space-x-4">
-                                                                    <button
-                                                                        type="button"
+                                                                    <input
+                                                                        type="file"
+                                                                        accept="image/*"
                                                                         className="rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
-                                                                    >
-                                                                        Update
-                                                                    </button>
-                                                                    <span className="text-gray-300" aria-hidden="true">
-                                                                        |
+                                                                    />
+                                                                    <span className="ml-4 flex-shrink-0">
+                                                                        <button
+                                                                            type="button"
+                                                                            className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                                                        >
+                                                                            Update
+                                                                        </button>
                                                                     </span>
-                                                                    <button
+                                                                    {/* <span className="text-gray-300" aria-hidden="true">
+                                                                        |
+                                                                    </span> */}
+                                                                    {/* <button
                                                                         type="button"
-                                                                        className="rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
-                                                                    >
+                                                                        className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                                                        >
                                                                         Remove
-                                                                    </button>
+                                                                    </button> */}
                                                                 </span>
                                                             </dd>
                                                         </div>
                                                         <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:pt-5">
                                                             <dt className="text-sm font-medium text-gray-500">Email</dt>
                                                             <dd className="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                                                <span className="flex-grow">chelsea.hagon@example.com</span>
+                                                                <input
+                                                                    type="text"
+                                                                    className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                                                />
                                                                 <span className="ml-4 flex-shrink-0">
                                                                     <button
                                                                         type="button"
-                                                                        className="rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                                                                        className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                                                     >
                                                                         Update
                                                                     </button>
                                                                 </span>
                                                             </dd>
                                                         </div>
-                                                        <form action="">
-                                                            <input onChange={(e) => changePasswordInput(e)} type="text" />
+                                                        <form>
+                                                            <input
+                                                                onChange={(e) => changePasswordInput(e)}
+                                                                type="text"
+                                                                className="appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                                            />
                                                             <button
-                                                                onClick={(e) => sendPassword(e)} 
+                                                                onClick={(e) => sendPassword(e)}
                                                                 type="button"
-                                                                className="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-3 py-2 text-sm font-medium leading-4 text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                                                className=" ml-8 appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                                             >
                                                                 Change Password
                                                             </button>
                                                         </form>
                                                     </dl>
+                                                    <button
+                                                        type="button"
+                                                        className=" mt-8 appearance-none bg-red-400 rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-red-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                                    >
+                                                        Delete Account
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>

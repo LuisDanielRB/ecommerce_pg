@@ -20,6 +20,7 @@ const CardDetail = () => {
   const { user } = useSelector((state) => state);
   const [review, setReview] = useState({});
 
+
   useEffect(() => {
     dispatch(getEventDetail(id));
     dispatch(getReviews(id));
@@ -33,6 +34,7 @@ const CardDetail = () => {
       dispatch(addToCartGuest(id));
     }
   };
+
 
   const handleChange = (e) => {
     const { value, name } = e.target;
@@ -49,6 +51,7 @@ const CardDetail = () => {
   };
 
   
+
   return (
     <>
       <Navbar />

@@ -52,7 +52,8 @@ router.put("/password", passwordRecovery);
 router.put('/resetpassword/:id', resetPassword ) 
 router.put("/user/:id/profile", fileUpload, upDateUser);
 router.get("/users", getUsers);
-router.put('/changePassword', changePassword)
+router.put("/changePassword", changePassword);
+
 
 //EVENTOS
 router.post("/createEvent", fileUpload, createEvent);
@@ -94,4 +95,3 @@ router.put("/checkout", checkoutCart);
 
 
 module.exports = router;
-
