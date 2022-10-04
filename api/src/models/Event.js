@@ -25,9 +25,13 @@ module.exports = (sequelize) => {
       place: {
           type: DataTypes.STRING
       },
-      stock: {
+      currentStock: {
           type: DataTypes.INTEGER,
           allowNull: false,
+      },
+      originalStock:{
+        type: DataTypes.INTEGER,
+        allowNull: false
       },
       category: {
           type: DataTypes.ARRAY(DataTypes.STRING)
