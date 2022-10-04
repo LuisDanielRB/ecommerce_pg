@@ -9,6 +9,7 @@ import { useEffect } from "react";
 const EventCards = ({ eventos}) => {
     const dispatch = useDispatch();
     const { user } = useSelector((state) => state);
+    
     useEffect(()=> {
         user ? dispatch(userGetFavorite(user.id)) : null
     },[dispatch , user])
