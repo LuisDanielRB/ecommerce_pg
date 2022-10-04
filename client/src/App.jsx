@@ -1,5 +1,5 @@
 import React, { lazy } from "react";
-import { Route, Navigate, BrowserRouter } from "react-router-dom";
+import { Route, BrowserRouter } from "react-router-dom";
 import { PrivateRoute, PublicRoute } from "./router/index";
 import { AuthGuard, RoleGuard } from "../src/auth/index";
 import { RoutesWithNotFound, Rol } from "./utils/index";
@@ -7,6 +7,9 @@ import PasswordRecovery from "./components/PasswordRecovery";
 import { AdminDashboard } from "./components/Private";
 import AdminDashboardEdit from "./components/Private/Dashboard/AdminDashboardEdit";
 import UpdatePassword from "./components/UpdatePassword";
+import { useEffect } from "react";
+import { useDispatch , useSelector } from "react-redux";
+import { getCart } from "./store/actions";
 const Login = lazy(() => import("./components/Login"));
 const Register = lazy(() => import("./components/Register"));
 const Private = lazy(() => import("./components/Private/Private"));

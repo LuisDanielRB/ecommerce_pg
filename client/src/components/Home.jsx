@@ -3,11 +3,18 @@ import Navbar from "./UI/Navbar";
 import Stats from "./UI/Stats";
 import Footer from "./UI/Footer";
 import GridCards from "./UI/GridCards";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Carousel from "./UI/Carousel";
+import { useEffect } from "react";
+import { getAllEvents } from "../store/actions";
 
 function Home() {
+  const dispatch = useDispatch();
   const eventos = useSelector((state) => state.events);
+  
+  useEffect(()=>{
+    dispatch(getAllEvents());
+  },[]) 
 
   // TODO: cambiar los datos a mandar a un objeto
   const sp1 = "Consigue los mejores boletos,";

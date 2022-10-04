@@ -1,19 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import Footer from "./Footer";
 import { useSelector, useDispatch } from "react-redux";
-import { getEventDetail, addToCart, addToCartGuest } from "../../store/actions";
+import {
+  getEventDetail,
+  addToCart,
+  addToCartGuest,
+  postReviewScore,
+  getReviews,
+  getComments,
+} from "../../store/actions";
 import { Link, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import Navbar from "./Navbar";
+import Reviews from "./Reviews";
 
 const CardDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const eventDetail = useSelector((state) => state.eventsDetail);
   const { user } = useSelector((state) => state);
+  const [review, setReview] = useState({});
 
   useEffect(() => {
     dispatch(getEventDetail(id));
+    dispatch(getReviews(id));
+    dispatch(getComments(user.id))
   }, [dispatch, id]);
 
   const handleCart = (id) => {
@@ -22,6 +33,19 @@ const CardDetail = () => {
     } else {
       dispatch(addToCartGuest(id));
     }
+  };
+  const handleChange = (e) => {
+    const { value, name } = e.target;
+    setReview({
+      ...review,
+      [name]: value,
+    });
+  };
+
+  const handleReview = (e) => {
+    e.preventDefault();
+    dispatch(postReviewScore(id, user.id, review.description, review.score));
+    setReview({});
   };
 
   return (
@@ -69,6 +93,7 @@ const CardDetail = () => {
               </button>
             </section>
           </div>
+
           <div className="flex items-center">
             <article>
               <div className="flex items-center mb-4 space-x-4">
@@ -173,6 +198,19 @@ const CardDetail = () => {
                 </a>
               </div>
             </article>
+
+            <Reviews id={id}/>
+    
+              {eventDetail.comments && eventDetail.comments.map((comment) => {
+              return (
+                <div key={comment.id}>
+                  <ul>
+                    <li>Review: {comment.description}</li>
+                    <li>Score: {comment.score}</li>
+                  </ul>
+                </div>
+              )})}
+           
           </div>
         </div>
       </div>

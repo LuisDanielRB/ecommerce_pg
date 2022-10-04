@@ -9,7 +9,6 @@ import { getAllEvents , userGetFavorite } from "../store/actions";
 import { useNavigate } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
 
-
 const Events = () => {
   const searchLive = useSelector((state) => state.searchLive);
   const navigate = useNavigate();
@@ -82,23 +81,6 @@ const Events = () => {
     }
   }
 
-  // function filterIncludes(arr, value){
-  //   for(let i = 0; i < arr.length; i++){
-  //     if(arr[i].includes(value)) return true
-  //   }
-  // }
-
-  // function searching(){
-  //   if(filtered) {
-  //     let searchIncludes = filtered.filter(el => filterIncludes(el.artist, value) || filterIncludes(el.category, value) || el.place.includes(searchLive))
-  //     setSearchFilter(searchIncludes)
-  //   }
-  //   if(!filtered) {
-  //     let searchIncludes = eventos.filter(el => filterIncludes(el.artist, value) || filterIncludes(el.category, value) || el.place.includes(searchLive))
-  //     setSearchFilter(searchIncludes)
-  //   }
-  // }
-
   function getFiltered() {
     const { category, artist, place } = filters;
     if (category !== "-" && artist === "-" && place === "-") {
@@ -152,7 +134,6 @@ const Events = () => {
       <Navbar />
       
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* We've used 3xl here, but feel free to try other max-widths based on your needs */}
         <div className="mx-auto max-w-3xl">
           <div className=" pt-10 pl-1 pr-1 pb-10 ">
             <p className="pl-7 font-extrabold text-3xl">Explorar</p>

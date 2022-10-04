@@ -5,11 +5,23 @@ import { LockClosedIcon } from '@heroicons/react/20/solid'
 import { sendEmailPassword } from '../store/actions'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { toast, ToastContainer } from 'react-toastify'
+
 
 
 const PasswordRecovery = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const toastOptions = {
+    position: "bottom-center",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "dark"
+};
 
   const [email, setEmail] = useState("")
 
@@ -20,11 +32,18 @@ const PasswordRecovery = () => {
 
 
   function handleSubmit(e) {
+    if(email) {
     e.preventDefault()
     console.log("este es el email", email)
     dispatch(sendEmailPassword({email: email}))
     console.log("Despachar")
-    navigate("/")
+    setTimeout(() => {
+      navigate("/");
+  }, 4000)
+  toast.success("Revisa tu bandeja de entrada", toastOptions);
+    } else {
+      toast.error("Ingresa un correo registrado", toastOptions)
+    }
   }
 
   
@@ -80,7 +99,7 @@ console.log(email)
                 <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                   <LockClosedIcon className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" aria-hidden="true" />
                 </span>
-                Enviar correo
+                Enviar correo de Reestablecimiento
               </button>
             </div>
           </form>

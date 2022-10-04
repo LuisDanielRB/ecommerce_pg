@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   ArrowPathIcon,
   CloudArrowUpIcon,
@@ -8,42 +9,41 @@ import {
   ShieldCheckIcon,
   StarIcon,
 } from "@heroicons/react/24/outline";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { getAllEvents } from "../../store/actions";
 import Img1 from "../../assets/carousel/Img1.jpg";
 import Img2 from "../../assets/carousel/Img2.jpg";
 import Img3 from "../../assets/carousel/Img3.jpg";
 import { Carousel } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 function GridCards({ eventos }) {
-  const allEvents = useSelector((state) => state.events);
-  const dispatch = useDispatch();
+  const eventStock = eventos.filter((e) => e.stock < 300);
+  const image = eventStock.map((m) => m.image);
+  const id = eventStock.map((i)=>i.id)
 
   const features = [
     {
       name: "Más Vendido",
-      description:
-        "Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.",
+      description: "Eventos mas adquirido por el publico!",
+      id: id[0],
+      image: image[0],
       icon: StarIcon,
     },
     {
       name: "Últimos boletos",
-      description:
-        "Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.",
+      description: "Ultimas entradas para tus eventos favoritos",
+      id: id[1],
+      image: image[1],
       icon: LockClosedIcon,
     },
     {
-      name: "Proximamente",
-      description: "Encontraras los eventos que se vienen.",
-      icon: ArrowPathIcon,
+      name: "Recomendación",
+      description: "Lo mas recomendado",
+      id: id[2],
+      image: image[2],
+      icon: ServerIcon,
     },
   ];
-
-  useEffect(() => {
-    dispatch(getAllEvents());
-  }, [dispatch]);
-
+  
   return (
     <div className="relative bg-white py-16 sm:py-24 lg:py-32">
       <div className="mx-auto max-w-md px-4 text-center sm:max-w-3xl sm:px-6 lg:max-w-7xl lg:px-8">
@@ -78,25 +78,34 @@ function GridCards({ eventos }) {
                     </p>
                     <Carousel>
                       <Carousel.Item className="h-48">
-                        <img
-                          className="mx-auto rounded-md mt-4 h-full w-full"
-                          src={Img1}
-                          alt=""
-                        />
+                        <Link to={`/private/events/${feature.id}`}>
+                          <img
+                            className="mx-auto rounded-md mt-4 h-full w-full"
+                            src={feature.image}
+                            alt=""
+                            href={`/events/${feature.id}`}
+                          />
+                        </Link>
                       </Carousel.Item>
                       <Carousel.Item className="h-48">
-                        <img
-                          className="mx-auto rounded-md mt-4 h-full w-full"
-                          src={Img2}
-                          alt=""
-                        />
+                      <Link to={`/private/events/${feature.id}`}>
+                          <img
+                            className="mx-auto rounded-md mt-4 h-full w-full"
+                            src={feature.image}
+                            alt=""
+                            href={`/events/${feature.id}`}
+                          />
+                        </Link>
                       </Carousel.Item>
                       <Carousel.Item className="h-48">
-                        <img
-                          className="mx-auto rounded-md mt-4 h-full w-full"
-                          src={Img3}
-                          alt=""
-                        />
+                      <Link to={`/private/events/${feature.id}`}>
+                          <img
+                            className="mx-auto rounded-md mt-4 h-full w-full"
+                            src={feature.image}
+                            alt=""
+                            href={`/events/${feature.id}`}
+                          />
+                        </Link>
                       </Carousel.Item>
                     </Carousel>
                   </div>

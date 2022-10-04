@@ -148,7 +148,7 @@ function Login() {
 
               <div className="text-sm">
                 <a
-                  href="#"
+                  href="/passwordRecovery"
                   className="font-medium text-indigo-600 hover:text-indigo-500"
                 >
                   Forgot your password?
