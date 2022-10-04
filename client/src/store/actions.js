@@ -166,6 +166,19 @@ export function userGetFavorite(userId) {
   };
 }
 
+export const changePassword = (userId , password) => async (dispatch) => {
+  console.log(userId , password)
+  try {
+      const change = await axios.put("/changePassword", {userId , password});
+      return dispatch({
+        type: "POST_PASSWORD",
+        payload: change
+      })
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 ///////////////////////////CART///////////////////////////////////
 
 export function addToCart(id, idUser) {
@@ -326,4 +339,3 @@ export const getEventsById = (id) => async (dispatch) => {
     console.log(error.message);
   }
 };
-
