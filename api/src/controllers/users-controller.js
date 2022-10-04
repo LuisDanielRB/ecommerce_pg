@@ -77,12 +77,12 @@ const upDateUser = async (req, res) => {
         if(profile_picture){
 			if(user.profile_picture_id){
 				await deleteImage(user.profile_picture_id);
-				await Users.update({profile_picture: result.secure_url,
-									profile_picture_id: result.public_id},
+				await Users.update({profile_picture,
+									profile_picture_id},
 									{where:{id: id}});
 			}else{
-				await Users.update({profile_picture: result.secure_url,
-					profile_picture_id: result.public_id},
+				await Users.update({profile_picture,
+					profile_picture_id},
 					{where:{id: id}});
 			}
         }
