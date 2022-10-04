@@ -233,6 +233,23 @@ const getEventsById = async (req, res) => {
   }
 };
 
+
+const getEventHome = async (req, res) => {
+  try {
+    let eventos;
+    const evento1 = await Event.findOne({
+      where: {
+        stock: stock<=200
+      }
+    })
+    res.status(200).json(evento1)
+    console.log(evento1)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
 const ticketsSoldAndAvailableAndAvailableEvents = async (req, res)=>{
   let availableEvents;
   let availableTickets;
@@ -257,6 +274,7 @@ const ticketsSoldAndAvailableAndAvailableEvents = async (req, res)=>{
   }
 }
 
+
 module.exports = {
   createEvent,
   getEvents,
@@ -265,5 +283,7 @@ module.exports = {
   deleteEvents,
   updateEvent,
   getEventsById,
+  getEventHome,
   ticketsSoldAndAvailableAndAvailableEvents
+
 };
