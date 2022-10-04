@@ -10,13 +10,15 @@ import {
 } from '@heroicons/react/24/outline';
 import Logo from "../../logo/logo.png";
 import { useDispatch, useSelector } from "react-redux";
+import { UserAuth } from "../../firebase/context";
+import { Navigate } from "react-router-dom";
 
 const navigation = [
     { name: 'Settings', icon: Cog6ToothIcon, current: false },
 ]
 const secondaryNavigation = [
     { name: 'Help', href: '#', icon: QuestionMarkCircleIcon },
-    { name: 'Logout', href: '/', icon: ArrowLeftOnRectangleIcon },
+    { name: 'Logout', href: '#', icon: ArrowLeftOnRectangleIcon },
 ]
 const tabs = [
     { name: 'General', href: '#', current: true },
@@ -29,6 +31,7 @@ function classNames(...classes) {
 
 export default function EditProfile() {
     const dispatch = useDispatch()
+    const { logOut } = UserAuth();
     const { user } = useSelector((state) => state)
     const [sidebarOpen, setSidebarOpen] = useState(false)
     const [password, setPassword] = useState("")
@@ -40,6 +43,13 @@ export default function EditProfile() {
     const sendPassword = () => {
         dispatch(changePassword(user.id, password))
     }
+
+    const handleClick = (e) => {
+        e.preventDefault();
+        dispatch(userSignOut("user"));
+        logOut();
+        Navigate('/')
+    };
 
     return (
         <>
@@ -125,19 +135,11 @@ export default function EditProfile() {
                                                 ))}
                                             </div>
                                             <div className="mt-auto space-y-1 pt-10">
-                                                {secondaryNavigation.map((item) => (
-                                                    <a
-                                                        key={item.name}
-                                                        href={item.href}
-                                                        className="group flex items-center border-l-4 border-transparent py-2 px-3 text-base font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                                                    >
-                                                        <item.icon
-                                                            className="mr-4 h-6 w-6 text-gray-400 group-hover:text-gray-500"
-                                                            aria-hidden="true"
-                                                        />
-                                                        {item.name}
-                                                    </a>
-                                                ))}
+                                                <a
+                                                    onClick={handleClick}
+                                                >
+                                                    <ArrowLeftOnRectangleIcon>Logout</ArrowLeftOnRectangleIcon>
+                                                </a>
                                             </div>
                                         </nav>
                                     </div>
