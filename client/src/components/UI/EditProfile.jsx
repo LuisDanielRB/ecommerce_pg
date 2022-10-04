@@ -53,8 +53,15 @@ export default function EditProfile() {
         user ? dispatch(userGetFavorite(user.id)) : null
     }, [dispatch, user])
 
-
+    function recArr(el, arr) {
+        for(let i= 0; i<arr.length; i++){
+            if(el === arr[i]) return true
+        }
+    }
     
+    const eventsFavourites = eventos.filter((el) => recArr(el.id, favoritos))
+    
+    console.log(eventsFavourites)
 
 
     return (
@@ -330,9 +337,10 @@ export default function EditProfile() {
                                                                 </span>
                                                             </dd>
                                                         </div>
-                                                        <div>
+                                                        <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:pt-5">
+                                                        <h1 className="text-sm font-medium text-gray-500">Favoritos</h1>
                                                             {
-                                                                favoritos ? favoritos.map((el) => console.log(el.description)) : null
+                                                                eventsFavourites ? eventsFavourites.map((el) => el.description) : null
                                                             }
                                                         </div>
                                                         <form>
