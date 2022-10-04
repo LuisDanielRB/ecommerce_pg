@@ -109,3 +109,4 @@ export default function SearchInput() {
     </Transition.Root>
   )
 }
+}

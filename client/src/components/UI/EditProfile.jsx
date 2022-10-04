@@ -38,7 +38,7 @@ export default function EditProfile() {
     const usuario = JSON.parse(localStorage.user);
     const favoritos = usuario.favorites;
     const eventos = useSelector((state) => state.events)
-    console.log(eventos)
+    console.log(favoritos)
     
 
     const changePasswordInput = (e) => {
@@ -52,6 +52,10 @@ export default function EditProfile() {
         dispatch(getAllEvents());
         user ? dispatch(userGetFavorite(user.id)) : null
     }, [dispatch, user])
+
+
+    
+
 
     return (
         <>
@@ -325,6 +329,11 @@ export default function EditProfile() {
                                                                     </span>
                                                                 </span>
                                                             </dd>
+                                                        </div>
+                                                        <div>
+                                                            {
+                                                                favoritos ? favoritos.map((el) => console.log(el.description)) : null
+                                                            }
                                                         </div>
                                                         <form>
                                                             <input
