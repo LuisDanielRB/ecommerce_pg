@@ -1,65 +1,5 @@
 [
   {
-    "image": "https://www.collinsdictionary.com/images/full/concert_295115348_1000.jpg?version=4.0.276",
-    "description": "Concert",
-    "price": 1000,
-    "date": "20-09-2022",
-    "artist": ["TINI", "LALI", "PAULO LONDRA", "BAD BUUNY", "DADDY YANKEE"],
-    "place": "River Plate Stadium, CABA",
-    "stock": 20000,
-    "category": ["Music Event"]
-  },
-  {
-    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBAXCm32QaZOy5vfxuQAP0OhkgSvhmSOtJYQ&usqp=CAU",
-    "description": "Tennis Match",
-    "price": 4100,
-    "date": "2-10-2022",
-    "artist": ["Martin Del Potro", "Rafael Nadal"],
-    "place": "Racket CLub, Buenos Aires",
-    "stock": 2300,
-    "category": ["Sporting Event", "Social Event"]
-  },
-  {
-    "image": "http://e00-ar-marca.uecdn.es/claro/assets/multimedia/imagenes/2019/09/16/15685961492865.jpg",
-    "description": "Soccer Match",
-    "price": 3500,
-    "date": "6-10-2022",
-    "artist": ["Team Boca Jr", "Team Estudiantes LP"],
-    "place": "Bombonera Stadium, Buenos Aires",
-    "stock": 54000,
-    "category": ["Sporting Event", "Social Event"]
-  },
-  {
-    "description": "Hollywood Bowl",
-    "price": 8000,
-    "date": "2022-09-20",
-    "artist": ["Dave Matthews Band"],
-    "place": "Bombonera Stadium, Buenos Aires",
-    "stock": 80000,
-    "category": ["Music Event", "Social Event"],
-    "image": "https://images.sk-static.com/images/media/profile_images/artists/334506/huge_avatar"
-  },
-  {
-    "description": "Hollywood Bowl",
-    "price": 4000,
-    "date": "2022-09-21",
-    "artist": ["Cimafunk", "Chucho Valdes"],
-    "place": "Hollywood, CA",
-    "stock": 540000,
-    "category": ["Music Event", "Social Event"],
-    "image": "https://images.sk-static.com/images/media/profile_images/artists/9554454/huge_avatar"
-  },
-  {
-    "description": "Hollywood Bowl",
-    "price": 2500,
-    "date": "2022-09-23",
-    "artist": ["ABBA The Concert"],
-    "stock": 30000,
-    "place": "River Plate Stadium, CABA",
-    "category": ["Music Event", "Social Event", "Teather"],
-    "image": "https://images.sk-static.com/images/media/profile_images/artists/8726874/huge_avatar"
-  },
-  {
     "description": "Hollywood Bowl",
     "price": 6500,
     "date": "2022-09-24",
@@ -67,7 +7,8 @@
     "stock": 95000,
     "place": "River Plate Stadium, CABA",
     "category": ["Music Event", "Teather"],
-    "image": "https://images.sk-static.com/images/media/profile_images/artists/8726874/huge_avatar"
+    "image": "https://images.sk-static.com/images/media/profile_images/artists/8726874/huge_avatar",
+    "currentStock": 95000
   },
   {
     "description": "Concert",
@@ -77,7 +18,8 @@
     "stock": 99999,
     "place": "Hollywood, CA",
     "category": ["Music Event", "Social Event"],
-    "image": "https://images.sk-static.com/images/media/profile_images/artists/370226/huge_avatar"
+    "image": "https://images.sk-static.com/images/media/profile_images/artists/370226/huge_avatar",
+    "currentStock": 99999
   },
   {
     "description": "Concert",
@@ -87,7 +29,8 @@
     "place": "Gran Rex, Buenos Aires",
     "stock": 60000,
     "category": ["Music Event", "Social Event", "Teather"],
-    "image": "https://images.sk-static.com/images/media/profile_images/artists/440797/huge_avatar"
+    "image": "https://images.sk-static.com/images/media/profile_images/artists/440797/huge_avatar",
+    "currentStock": 60000
   },
   {
     "description": "Concert",
@@ -97,7 +40,8 @@
     "place": "Hollywood, CA",
     "stock": 75000,
     "category": ["Music Event", "Social Event"],
-    "image": "https://images.sk-static.com/images/media/profile_images/artists/224916/huge_avatar"
+    "image": "https://images.sk-static.com/images/media/profile_images/artists/224916/huge_avatar",
+    "currentStock": 75000
   },
   {
     "description": "Hollywood Bowl",
@@ -107,7 +51,8 @@
     "place": "Colon Theater, CABA",
     "stock": 80000,
     "category": ["Music Event", "Event"],
-    "image": "https://images.sk-static.com/images/media/profile_images/artists/5612033/huge_avatar"
+    "image": "https://images.sk-static.com/images/media/profile_images/artists/5612033/huge_avatar",
+    "currentStock": 80000
   },
   {
     "description": "Hollywood Bowl",
@@ -117,7 +62,8 @@
     "stock": 20000,
     "place": "Bombonera Stadium, Buenos Aires",
     "category": ["Music Event", "Event"],
-    "image": "https://images.sk-static.com/images/media/profile_images/artists/2785766/huge_avatar"
+    "image": "https://images.sk-static.com/images/media/profile_images/artists/2785766/huge_avatar",
+    "currentStock": 20000
   },
   {
     "description": "Concert",
@@ -127,7 +73,8 @@
     "place": "Ciudad de Mexico, CDMX, México",
     "stock": 89000,
     "category": ["Music Event", "Social Event"],
-    "image": "https://images.sk-static.com/images/media/profile_images/artists/111365/huge_avatar"
+    "image": "https://images.sk-static.com/images/media/profile_images/artists/111365/huge_avatar",
+    "currentStock": 89000
   },
   {
     "description": "Hollywood Bowl",
@@ -139,6 +86,7 @@
       "Ron Artis II",
       "Thunderstorm Artis"
     ],
+    "currentStock": 2900,
     "stock": 20000,
     "place": "Ciudad de Mexico, CDMX, México",
     "category": ["Music Event", "Social Event", "Event"],
@@ -152,7 +100,8 @@
     "artist": ["Dave Matthews Band"],
     "date": "2022-09-20",
     "category": ["Music Event"],
-    "price": 413
+    "price": 413,
+    "currentStock": 2022092
   },
 
   {
@@ -164,7 +113,8 @@
     "artist": ["Cimafunk", "Chucho Valdes"],
     "date": "2022-09-21",
     "category": ["Music Event"],
-    "price": 413
+    "price": 413,
+    "currentStock": 2022092
   },
   {
     "description": "ABBA The Concert at Hollywood Bow",
@@ -174,7 +124,8 @@
     "artist": ["ABBA The Concert"],
     "date": "2022-09-24",
     "category": ["Music Event"],
-    "price": 413
+    "price": 413,
+    "currentStock": 2022092
   },
   {
     "description": "Grace Jones and CHVRCHES at Hollywood Bowl",
@@ -184,7 +135,8 @@
     "artist": ["Grace Jones", "CHVRCHES", "Charlotte AdigÃ©ry & Bolis Pupul"],
     "date": "2022-09-25",
     "category": ["Music Event"],
-    "price": 123
+    "price": 123,
+    "currentStock": 225
   },
   {
     "description": "Pitbull, Sean Paul, and Iggy Azalea at Hollywood Bowl",
@@ -194,7 +146,8 @@
     "artist": ["Pitbul", "Sean Paul", "Iggy Azale"],
     "category": ["Music Event"],
     "date": "2022-09-27",
-    "price": 413
+    "price": 413,
+    "currentStock": 2022
   },
   {
     "description": "Herbie Hancock at Hollywood Bowl ",
@@ -204,7 +157,8 @@
     "artist": ["Herbie Hancoc"],
     "date": "2022-09-28",
     "category": ["Music Event"],
-    "price": 413
+    "price": 413,
+    "currentStock": 202
   },
   {
     "description": "Pentatonix at Hollywood Bowl ",
@@ -214,11 +168,13 @@
     "artist": ["Pentatonix"],
     "date": "2022-09-29",
     "category": ["Music Event"],
-    "price": 413
+    "price": 413,
+    "currentStock": 20229
   },
   {
     "description": "Jamie xx at Hollywood Bowl at 2022-09-30T17:30:00-0700",
     "stock": 293,
+    "currentStock": 293,
     "image": "https://images.sk-static.com/images/media/profile_images/artists/2785766/huge_avatar",
     "place": "Hollywood Bowl",
     "artist": ["Jamie xx", "Caribou", "Arushi Jain"],
@@ -240,6 +196,7 @@
     ],
     "place": "Colon Theater, CABA",
     "stock": 2000,
+    "currentStock": 2000,
     "category": ["Cultural Event", "Social Event", "Teather"]
   }
 ]

@@ -4,10 +4,8 @@ const { ReviewScore } = require("../db");
 
 const getReviewScore = async (req, res) => {
     const { eventId } = req.query
-
-    console.log(req.query)
     try {
-        const review = await ReviewScore.findOne({
+        const review = await ReviewScore.findAll({
             where: {
                 eventId: eventId
             }
@@ -31,7 +29,7 @@ const postReviewScore = async (req, res) => {
             }
         })
 
-        if (review) return res.json("You already left a review on this event")
+        // if (review) return res.json("You already left a review on this event")
         const newReview = await ReviewScore.create({
             description,
             score,

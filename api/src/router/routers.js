@@ -21,7 +21,8 @@ const {
   deleteEvents,
   updateEvent,
   getEventsById,
-  getEventHome
+  getEventHome,
+  ticketsSoldAndAvailableAndAvailableEvents
 } = require("../controllers/events-controller");
 const {
   getCart,
@@ -70,6 +71,7 @@ router.get("/eventsCreate/:id", getEventDetail);
 router.delete("/events/:id", deleteEvents);
 router.get("/eventsDB/:id", getEventsDetailDb);
 router.get("/dashboard/events/:id", getEventsById);
+router.get("/ticketsSoldAndAvailableAndAvailableEvents", ticketsSoldAndAvailableAndAvailableEvents);
 
 //FAVORITOS / REVIEWS / COMMENTS
 router.put("/favorites", addFavorite);
