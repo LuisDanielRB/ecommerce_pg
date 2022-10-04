@@ -10,7 +10,7 @@ import {
 } from '@heroicons/react/24/outline';
 import Logo from "../../logo/logo.png";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllEvents, userGetFavorite } from "../../store/actions";
+import { getAllEvents, userGetFavorite, changePassword } from "../../store/actions";
 
 
 const navigation = [
