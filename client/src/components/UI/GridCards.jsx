@@ -11,57 +11,38 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getAllEvents } from "../../store/actions";
-import Img1 from "../../assets/carousel/Img1.jpg"
-import Img2 from "../../assets/carousel/Img2.jpg"
-import Img3 from "../../assets/carousel/Img3.jpg"
-import { Carousel } from 'react-bootstrap';
-
-const features = [
-  {
-    name: "Más Vendido",
-    description:
-      "Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.",
-    icon: StarIcon,
-  },
-  {
-    name: "Últimos boletos",
-    description:
-      "Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.",
-    icon: LockClosedIcon,
-  },
-  {
-    name: "Proximamente",
-    description:
-      "Encontraras los eventos que se vienen.",
-    icon: ArrowPathIcon,
-  },
-  {
-    name: "Más Buscado",
-    description:
-      "Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.",
-    icon: ShieldCheckIcon,
-  },
-  {
-    name: "Lo más nuevo",
-    description:
-      "Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.",
-    icon: CogIcon,
-  },
-  {
-    name: "Recomendación",
-    description:
-      "Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.",
-    icon: ServerIcon,
-  },
-];
+import Img1 from "../../assets/carousel/Img1.jpg";
+import Img2 from "../../assets/carousel/Img2.jpg";
+import Img3 from "../../assets/carousel/Img3.jpg";
+import { Carousel } from "react-bootstrap";
 
 function GridCards({ eventos }) {
-  const allEvents = useSelector((state) => state.events)
+  const allEvents = useSelector((state) => state.events);
   const dispatch = useDispatch();
 
+  const features = [
+    {
+      name: "Más Vendido",
+      description:
+        "Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.",
+      icon: StarIcon,
+    },
+    {
+      name: "Últimos boletos",
+      description:
+        "Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.",
+      icon: LockClosedIcon,
+    },
+    {
+      name: "Proximamente",
+      description: "Encontraras los eventos que se vienen.",
+      icon: ArrowPathIcon,
+    },
+  ];
+
   useEffect(() => {
-    dispatch(getAllEvents())
-  }, [dispatch])
+    dispatch(getAllEvents());
+  }, [dispatch]);
 
   return (
     <div className="relative bg-white py-16 sm:py-24 lg:py-32">
@@ -96,21 +77,21 @@ function GridCards({ eventos }) {
                       {feature.description}
                     </p>
                     <Carousel>
-                      <Carousel.Item className="h-48" >
+                      <Carousel.Item className="h-48">
                         <img
                           className="mx-auto rounded-md mt-4 h-full w-full"
                           src={Img1}
                           alt=""
                         />
                       </Carousel.Item>
-                      <Carousel.Item className="h-48" >
+                      <Carousel.Item className="h-48">
                         <img
                           className="mx-auto rounded-md mt-4 h-full w-full"
                           src={Img2}
                           alt=""
                         />
                       </Carousel.Item>
-                      <Carousel.Item className="h-48" >
+                      <Carousel.Item className="h-48">
                         <img
                           className="mx-auto rounded-md mt-4 h-full w-full"
                           src={Img3}
@@ -129,6 +110,4 @@ function GridCards({ eventos }) {
   );
 }
 
-
 export default GridCards;
-

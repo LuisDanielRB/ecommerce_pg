@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import DashboardNav from "../../UI/DashboardNav"
-import { getEventsById } from "../../../store/actions"
-import { HomeIcon, UsersIcon } from "@heroicons/react/24/outline";
-import { DocumentIcon } from "@heroicons/react/20/solid";
+import DashboardNav from "../../UI/DashboardNav";
+import { getEventsById } from "../../../store/actions";
+import { HomeIcon, UsersIcon, TicketIcon } from "@heroicons/react/24/outline";
 
 function AdminDashboard() {
   const dispatch = useDispatch();
@@ -17,6 +16,7 @@ function AdminDashboard() {
       current: true,
     },
     { name: "Events", href: "#", icon: UsersIcon, current: false },
+    { name: "Orders", href: "#", icon: TicketIcon, current: false },
   ]);
 
   function setActiveState(name) {

@@ -8,7 +8,8 @@ const Cart = lazy(() => import("../UI/Cart"));
 const EventDetail = lazy(() => import("../UI/CardDetail"));
 const Events = lazy(() => import("../Events"));
 const AdminDashboard = lazy(() => import("./Dashboard/AdminDashboard"));
-const Checkout = lazy(() => import('../UI/Checkout'))
+const AdminDashboardEdit = lazy(() => import("./Dashboard/AdminDashboardEdit"));
+const Checkout = lazy(() => import("../UI/Checkout"));
 
 function Private() {
   return (
@@ -19,11 +20,13 @@ function Private() {
       <Route path={PrivateRoute.EVENTDETAIL} element={<EventDetail />} />
       <Route path={PrivateRoute.CART} element={<Cart />} />
       <Route path={PrivateRoute.ADMIN_DASHBOARD} element={<AdminDashboard />} />
+      <Route
+        path={PrivateRoute.ADMIN_DASHBOARD_EDIT}
+        element={<AdminDashboardEdit />}
+      />
       <Route path={PrivateRoute.CHECKOUT} element={<Checkout />} />
     </RoutesWithNotFound>
   );
 }
 
-
 export default Private;
-

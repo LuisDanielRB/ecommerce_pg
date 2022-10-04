@@ -6,7 +6,6 @@ import GridCards from "./UI/GridCards";
 import { useSelector } from "react-redux";
 import Carousel from "./UI/Carousel";
 
-
 function Home() {
   const eventos = useSelector((state) => state.events);
 
