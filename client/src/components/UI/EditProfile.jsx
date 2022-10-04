@@ -11,6 +11,7 @@ import {
 import Logo from "../../logo/logo.png";
 import { useDispatch, useSelector } from "react-redux";
 
+
 const navigation = [
     { name: 'Settings', icon: Cog6ToothIcon, current: false },
 ]
@@ -30,7 +31,7 @@ export default function EditProfile() {
     const dispatch = useDispatch()
     const { user } = useSelector((state) => state)
     const [sidebarOpen, setSidebarOpen] = useState(false)
-    const [password, setPassword] = useState("")
+    const [password, setPassword] = useState("")    
 
     const changePasswordInput = (e) => {
         setPassword(e.target.value)

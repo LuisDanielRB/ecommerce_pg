@@ -35,8 +35,12 @@ function Navbar() {
     e.preventDefault();
     dispatch(userSignOut("user"));
     logOut();
-    navigate('/login')
+    navigate('/')
   };
+
+  const id = user? user.id : false
+
+  // console.log(user.id)
 
   const navigation = [
     { name: "Dashboard", href: "#", current: true },
@@ -47,7 +51,7 @@ function Navbar() {
 
   const userNavigation = [
     { name: "Your Profile", href: "#" },
-    { name: "Settings", href: `/private/user/profile` },
+    { name: "Settings", href: `/private/user/${id}/profile` },
     { name: "Log out", href: "#" },
     { name: "Dashboard", href: "/private/admindashboard" },
   ];
@@ -178,16 +182,16 @@ function Navbar() {
                           </Menu.Item>
                           <Menu.Item>
                             {({ active }) => (
-                              <button
-                                onClick={handleClick}
-                                href={`/private/user/${user.id}/profile`}
+                              <a
+                                onClick={() => null}
+                                href={`/private/user/${id}/profile`}
                                 className={classNames(
                                   active ? "bg-gray-100" : "",
                                   "block py-2 px-4 text-sm text-gray-700"
                                 )}
                               >
                                 Settings
-                              </button>
+                              </a>
                             )}
                           </Menu.Item>
                           <Menu.Item>
