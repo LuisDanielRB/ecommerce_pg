@@ -37,22 +37,6 @@ const CardDetail = () => {
   };
 
 
-  const handleChange = (e) => {
-    const { value, name } = e.target;
-    setReview({
-      ...review,
-      [name]: value,
-    });
-  };
-
-  const handleReview = (e) => {
-    e.preventDefault();
-    dispatch(postReviewScore(id, user.id, review.description, review.score));
-    setReview({});
-  };
-
-  
-
   return (
     <>
       <Navbar />
@@ -106,6 +90,7 @@ const CardDetail = () => {
               return (
                 <div key={comment.id}>
                   <ul>
+                    <li>Usuario: {comment.username}</li>
                     <li>Review: {comment.description}</li>
                     <li>Score: {comment.score}</li>
                   </ul>

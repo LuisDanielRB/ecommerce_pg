@@ -352,10 +352,10 @@ export const getEventsById = (id) => async (dispatch) => {
 
 };
 
-export const postReviewScore = (eventId , userId , description , score) => async (dispatch) => {
+export const postReviewScore = (eventId , userId , description , score , username) => async (dispatch) => {
 
   try {
-    const result = await axios.post(`reviewScore/${eventId}` , {userId , description , score})
+    const result = await axios.post(`reviewScore/${eventId}` , {userId , description , score , username})
     return dispatch({
       type: "POST_REVIEW",
       payload: result.data

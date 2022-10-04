@@ -19,7 +19,7 @@ const getReviewScore = async (req, res) => {
 
 const postReviewScore = async (req, res) => {
     const { eventId } = req.params
-    const { description, score, userId } = req.body
+    const { description, score, userId , username} = req.body
 
     try {
         const review = await ReviewScore.findOne({
@@ -29,12 +29,12 @@ const postReviewScore = async (req, res) => {
             }
         })
 
-        // if (review) return res.json("You already left a review on this event")
         const newReview = await ReviewScore.create({
             description,
             score,
             userId,
-            eventId: eventId
+            eventId: eventId,
+            username: username
         })
         res.json(newReview)
     } catch (error) {

@@ -20,6 +20,10 @@ module.exports = (sequelize) => {
         },
         eventId: {
             type: DataTypes.UUID,
+        },
+        username: {
+            type: DataTypes.STRING,
+            allowNull: false
         }
     })
 }

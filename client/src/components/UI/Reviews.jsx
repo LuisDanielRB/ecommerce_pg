@@ -43,7 +43,7 @@ function Review({id}) {
 
   const handleReview = (e) => {
     e.preventDefault();
-    dispatch(postReviewScore(id, user.id, review.description, currentValue));
+    dispatch(postReviewScore(id, user.id, review.description, currentValue , user.username));
     setReview({});
   };
 
