@@ -3,14 +3,13 @@ const { where } = require("sequelize");
 const { ReviewScore } = require("../db");
 
 const getReviewScore = async (req, res) => {
-    const { eventId } = req.params
-    const { userId } = req.body
+    const { eventId } = req.query
 
+    console.log(req.query)
     try {
         const review = await ReviewScore.findOne({
             where: {
-                eventId: eventId,
-                userId: userId
+                eventId: eventId
             }
         })
         if (!review) res.json("Review not found")
@@ -95,10 +94,22 @@ const deleteReviewScore = (req, res) => {
     }
 }
 
+const getComments = async (req, res) => {
+	try {
+		const { id } = req.params;
+		const data = await ReviewScore.findAll({
+			where: { userId: id },
+		});
+		res.send(data);
+	} catch (error) {
+		console.log(error);
+	}
+};
 
 module.exports = {
     getReviewScore,
     postReviewScore,
     putReviewScore,
-    deleteReviewScore
+    deleteReviewScore,
+    getComments
 }

@@ -5,13 +5,12 @@ import {userAddFavorite , addToCartGuest , addToCart , cartStateSet, userGetFavo
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
 import { useEffect } from "react";
+import Favorites from "./Favorites";
 
 const EventCards = ({ eventos}) => {
     const dispatch = useDispatch();
     const { user } = useSelector((state) => state);
-    useEffect(()=> {
-        user ? dispatch(userGetFavorite(user.id)) : null
-    },[dispatch , user])
+
 
     const toastOptions = {
         position: "bottom-center",
@@ -29,19 +28,14 @@ const EventCards = ({ eventos}) => {
     function handleSubmit(e) {
         if (user) {
             dispatch(addToCart(e.id, user.id))
+            setTimeout(() => {
+                dispatch(cartStateSet(false));
+            }, 2000);
+            dispatch(cartStateSet(true));
+            toast.success("Evento added", toastOptions);
         } else {
-            dispatch(addToCartGuest(e))
+            toast.error("Register please", toastOptions);
         }
-        setTimeout(() => {
-            dispatch(cartStateSet(false));
-        }, 2000);
-        dispatch(cartStateSet(true));
-        toast.success("Evento added", toastOptions);
-    }
-
-    //Agrego a favoritos el evento
-    const addFavorite = (idEvent) => {
-        dispatch(userAddFavorite(user.id, idEvent));
     }
 
     return (
@@ -100,11 +94,8 @@ const EventCards = ({ eventos}) => {
                           </svg>
                            </button>
                         </div>
-                        <div className="-ml-px flex inline-flex relative">
-                            {user ? (<button
-                                onClick={() => addFavorite(evento.id)}
-                                className="w-8 flex-1 text-gray-700 hover:text-red-500"
-                            ><HeartIcon /></button>) : null}
+                        <div className="-ml-px flex relative">
+                            <Favorites id={evento.id}/>
                         </div>
                     </div>
                 </li>

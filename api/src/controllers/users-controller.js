@@ -88,6 +88,7 @@ const upDateUser = async (req, res) => {
 					profile_picture_id
 				},
 					{ where: { id: id } });
+
 			}
 		}
 
@@ -245,7 +246,7 @@ const addFavorite = async (req, res) => {
 				favorites: newArray,
 			});
 
-			return res.send('Added id');
+			return res.json(user);
 		} else {
 			throw new Error('Invalid user');
 		}
@@ -259,7 +260,6 @@ const deleteFavorite = async (req, res) => {
 
 	try {
 		let user = await Users.findByPk(idUser);
-
 		if (user) {
 			let newArray = user.favorites;
 			if (newArray.includes(idEvent)) {
@@ -278,7 +278,7 @@ const deleteFavorite = async (req, res) => {
 				favorites: newArray,
 			});
 
-			res.send('Id removed');
+			res.send(user.favorites);
 		} else {
 			throw new Error('Invalid user');
 		}
@@ -292,7 +292,6 @@ const getFavorite = async (req, res) => {
 
 	try {
 		let user = await Users.findByPk(idUser);
-
 		if (user) {
 			let response = user.favorites;
 			res.json(response);
@@ -337,7 +336,9 @@ const resetPassword = async (req, res, next) => {
 	}
 };
 
+
 const changePassword = async (req, res, next) => {
+
 	let { userId, password } = req.body;
 	console.log(req.body)
 	try {
@@ -362,6 +363,7 @@ const changePassword = async (req, res, next) => {
 				},
 			}
 		);
+
 
 		res.send(`User ${user.username} has updated their password`);
 	} catch (err) {
