@@ -12,6 +12,7 @@ import {
 import { Link, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import Navbar from "./Navbar";
+import Reviews from "./Reviews";
 
 const CardDetail = () => {
   const { id } = useParams();
@@ -99,28 +100,18 @@ const CardDetail = () => {
           </div>
 
           <div className="flex items-center">
-            <form action="">
-              <input
-                onChange={(e) => handleChange(e)}
-                name="description"
-                type="text"
-              />
-              <input
-                name="score"
-                onChange={(e) => handleChange(e)}
-                type="number"
-              />
-              <button onClick={(e) => handleReview(e)}>ENVIAR</button>
+            <Reviews id={id}/>
+    
               {eventDetail.comments && eventDetail.comments.map((comment) => {
               return (
-                <div key={comment}>
+                <div key={comment.id}>
                   <ul>
-                    <li>Review: {comment.text}</li>
+                    <li>Review: {comment.description}</li>
                     <li>Score: {comment.score}</li>
                   </ul>
                 </div>
               )})}
-            </form>
+           
           </div>
         </div>
       </div>

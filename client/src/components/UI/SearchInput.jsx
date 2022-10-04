@@ -108,5 +108,5 @@ export default function SearchInput() {
       </Dialog>
     </Transition.Root>
   )
-}
-}
+}}
+
