@@ -64,7 +64,7 @@ const updateEvent = async (req, res) => {
     if (stock) await Event.update({ stock }, { where: { id } });
     if (category) await Event.update({ category }, { where: { id } });
     if (image) {
-      await deleteImage(eventUpdate.imageId);
+      await uploadImage.deleteImage(eventUpdate.imageId);
       await Event.update({ image, imageId }, { where: { id } });
     }
     eventUpdate = await Event.findOne({ where: { id } });
@@ -282,5 +282,5 @@ module.exports = {
   updateEvent,
   getEventsById,
   getEventHome,
-  ticketsSoldAndAvailableAndAvailableEvents
+  ticketsSoldAndAvailableAndAvailableEvents,
 };
