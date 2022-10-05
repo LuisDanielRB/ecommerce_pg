@@ -22,7 +22,7 @@ const {
   updateEvent,
   getEventsById,
   getEventHome,
-  ticketsSoldAndAvailableAndAvailableEvents
+  ticketsSoldAndAvailableAndAvailableEvents,
 } = require("../controllers/events-controller");
 const {
   getCart,
@@ -71,7 +71,10 @@ router.get("/eventsCreate/:id", getEventDetail);
 router.delete("/events/:id", deleteEvents);
 router.get("/eventsDB/:id", getEventsDetailDb);
 router.get("/dashboard/events/:id", getEventsById);
-router.get("/ticketsSoldAndAvailableAndAvailableEvents", ticketsSoldAndAvailableAndAvailableEvents);
+router.get(
+  "/ticketsSoldAndAvailableAndAvailableEvents",
+  ticketsSoldAndAvailableAndAvailableEvents
+);
 
 //FAVORITOS / REVIEWS / COMMENTS
 router.put("/favorites", addFavorite);
@@ -95,7 +98,7 @@ router.delete("/deleteComents", deleteCommentToAdmin);
 
 //CART
 router.get("/cart", getCart);
-router.get("/allcart", getAllCarts);
+router.get("/allcart/:userId", getAllCarts);
 router.post("/addcart", addEventToCart);
 router.put("/deleteeventcart", removeOneEventFromCart);
 router.put("/clearcart", clearCart);

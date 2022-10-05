@@ -1,37 +1,32 @@
 import { useState } from "react";
-import { useDispatch , useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FaStar } from "react-icons/fa";
-import {
-  postReviewScore,
-} from "../../store/actions";
+import { postReviewScore } from "../../store/actions";
 
 const colors = {
-    orange: "#FFBA5A",
-    grey: "#a9a9a9"
-    
+  orange: "#FFBA5A",
+  grey: "#a9a9a9",
 };
 
-
-
-function Review({id}) {
+function Review({ id }) {
   const { user } = useSelector((state) => state);
   const [currentValue, setCurrentValue] = useState(0);
   const [hoverValue, setHoverValue] = useState(undefined);
   const [review, setReview] = useState({});
   const dispatch = useDispatch();
-  const stars = Array(5).fill(0)
+  const stars = Array(5).fill(0);
 
-  const handleClick = value => {
-    setCurrentValue(value)
-  }
+  const handleClick = (value) => {
+    setCurrentValue(value);
+  };
 
-  const handleMouseOver = newHoverValue => {
-    setHoverValue(newHoverValue)
+  const handleMouseOver = (newHoverValue) => {
+    setHoverValue(newHoverValue);
   };
 
   const handleMouseLeave = () => {
-    setHoverValue(undefined)
-  }
+    setHoverValue(undefined);
+  };
 
   const handleChange = (e) => {
     const { value, name } = e.target;
@@ -43,7 +38,15 @@ function Review({id}) {
 
   const handleReview = (e) => {
     e.preventDefault();
-    dispatch(postReviewScore(id, user.id, review.description, currentValue));
+    dispatch(
+      postReviewScore(
+        id,
+        user.id,
+        review.description,
+        currentValue,
+        user.username
+      )
+    );
     setReview({});
   };
 
@@ -59,13 +62,17 @@ function Review({id}) {
               onClick={() => handleClick(index + 1)}
               onMouseOver={() => handleMouseOver(index + 1)}
               onMouseLeave={handleMouseLeave}
-              color={(hoverValue || currentValue) > index ? colors.orange : colors.grey}
+              color={
+                (hoverValue || currentValue) > index
+                  ? colors.orange
+                  : colors.grey
+              }
               style={{
                 marginRight: 10,
-                cursor: "pointer"
+                cursor: "pointer",
               }}
             />
-          )
+          );
         })}
       </div>
       <textarea
@@ -74,17 +81,12 @@ function Review({id}) {
         placeholder="What's your experience?"
         style={styles.textarea}
       />
-      <button
-        style={styles.button}
-        onClick={(e) => handleReview(e)}
-      >
+      <button style={styles.button} onClick={(e) => handleReview(e)}>
         Submit
       </button>
-      
     </div>
   );
-};
-
+}
 
 const styles = {
   container: {
@@ -102,18 +104,14 @@ const styles = {
     padding: 10,
     margin: "20px 0",
     minHeight: 100,
-    width: 300
+    width: 300,
   },
   button: {
     border: "1px solid #a9a9a9",
     borderRadius: 5,
     width: 300,
     padding: 10,
-  }
-
+  },
 };
-
-
-
 
 export default Review;
