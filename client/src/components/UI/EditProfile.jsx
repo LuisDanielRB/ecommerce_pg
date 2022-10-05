@@ -10,7 +10,7 @@ import {
 } from '@heroicons/react/24/outline';
 import Logo from "../../logo/logo.png";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllEvents, userGetFavorite } from "../../store/actions";
+import { getAllEvents, userGetFavorite, changePassword } from "../../store/actions";
 
 
 const navigation = [
@@ -33,7 +33,6 @@ export default function EditProfile() {
     const { user } = useSelector((state) => state)
     const [sidebarOpen, setSidebarOpen] = useState(false)
     const [password, setPassword] = useState("")
-    const [active, setActive] = useState(0);
     const usuario = JSON.parse(localStorage.user);
     const favoritos = usuario.favorites;
     const eventos = useSelector((state) => state.events);

@@ -10,8 +10,11 @@ function classNames(...classes) {
 }
 
 export default function SearchInput() {
+    const events = useSelector((state) => state.events)
 
-  const events = useSelector((state) => state.events)
+
+
+
 
   const [query, setQuery] = useState('')
 
@@ -19,25 +22,23 @@ export default function SearchInput() {
 
 
   function mappingArtist(arr, sea) {
-
-    for (let i = 0; i < arr.length; i++) {
-      if (arr[i].toLowerCase().includes(sea)) return arr[i]
-
-
+    for(let i = 0; i < arr.length; i++){
+        if( arr[i].toLowerCase().includes(sea)) return arr[i]
+    }
   }
 
   const filteredPeople =
     query === ''
       ? []
       : events.filter((el) => {
-        return mappingArtist(el.artist, query.toLowerCase())
-      })
+          return mappingArtist(el.artist, query.toLowerCase())
+        })
 
-  function returnNames(arr) {
-    for (let i = 0; i < arr.length; i++) {
-      return arr[i]
+    function returnNames(arr){
+        for(let i = 0; i < arr.length; i++){
+            return arr[i]
+        }
     }
-  }
 
   return (
     <Transition.Root show={open} as={Fragment} afterLeave={() => setQuery('')} appear>
@@ -88,11 +89,7 @@ export default function SearchInput() {
                           classNames('cursor-default select-none px-4 py-2', active && 'bg-indigo-600 text-white')
                         }
                       >
-
-                        <Link to={`/private/events/${person.id}`}>{person.artist.join(" - ")}</Link>
-
                        <Link to={`/private/events/${person.id}`}>{person.artist.join(" - ")}</Link> 
-
                       </Combobox.Option>
                     ))}
                   </Combobox.Options>
@@ -108,5 +105,4 @@ export default function SearchInput() {
       </Dialog>
     </Transition.Root>
   )
-}
 }
