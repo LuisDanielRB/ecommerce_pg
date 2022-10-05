@@ -7,6 +7,7 @@ import {
   addToCart,
   cartStateSet,
   userGetFavorite,
+  getCart,
 } from "../../store/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
@@ -20,6 +21,7 @@ const EventCards = ({ eventos }) => {
 
   useEffect(() => {
     user ? dispatch(userGetFavorite(user.id)) : null;
+    dispatch(getCart(user.id))
   }, [dispatch, user]);
 
   const toastOptions = {

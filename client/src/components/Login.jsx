@@ -74,7 +74,15 @@ function Login() {
       password: "",
     });
 
-    user ? navigate("/") : toast.error('password or email not valid' , toastOptions);
+    if(user) {
+      navigate("/") 
+    } else {
+      toast.error('password or email not valid' , toastOptions);
+      setInput({
+        email: "",
+        password: "",
+      });
+    }
 
   }
 

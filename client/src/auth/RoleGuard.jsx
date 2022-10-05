@@ -1,13 +1,14 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { PrivateRoute, PublicRoute } from "../router/index";
-import { UserAuth} from '../firebase/context'
+import { PublicRoute } from "../router/index";
+
 import { useSelector } from "react-redux";
  
 const RoleGuard = ({rol}) => {
-  const {user} = UserAuth()
+
+
   const auth = useSelector((state) => state.user)
-  console.log(auth.status);
-  return auth.status === rol ? <Outlet /> : <Navigate replace to={PublicRoute.HOME} />;
+
+  return auth.status === rol  ? <Outlet /> : <Navigate replace to={PublicRoute.HOME} />;
 };
 
 

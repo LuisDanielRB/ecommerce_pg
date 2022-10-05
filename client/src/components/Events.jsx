@@ -168,7 +168,6 @@ const Events = () => {
             </select>
           </div>
           <div>
-            <span id="rangeValue">Eventos: {EventsXPage}</span>
             <input
               className="range"
               type="range"

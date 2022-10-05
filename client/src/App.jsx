@@ -1,6 +1,6 @@
 import React, { lazy } from "react";
 import { Route, BrowserRouter } from "react-router-dom";
-import { PrivateRoute, PublicRoute } from "./router/index";
+import { PrivateRoute, PublicRoute ,PrivateAdmin } from "./router/index";
 import { AuthGuard, RoleGuard } from "../src/auth/index";
 import { RoutesWithNotFound, Rol } from "./utils/index";
 import PasswordRecovery from "./components/PasswordRecovery";
@@ -33,11 +33,11 @@ function App() {
           </Route>
           <Route element={<RoleGuard rol={Rol.admin} />}>
             <Route
-              path={PrivateRoute.ADMIN_DASHBOARD}
+              path={PrivateAdmin.ADMIN_DASHBOARD}
               element={<AdminDashboard />}
             />
             <Route
-              path={PrivateRoute.ADMIN_DASHBOARD_EDIT}
+              path={PrivateAdmin.ADMIN_DASHBOARD_EDIT}
               element={<AdminDashboardEdit />}
             />
           </Route>
