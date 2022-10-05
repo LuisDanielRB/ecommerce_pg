@@ -13,8 +13,11 @@ export const PrivateRoute = {
   CREATEEVENT: "createvent",
   EVENTDETAIL: "events/:id",
   CART: "cart",
-  ADMIN_DASHBOARD: "admindashboard",
-  ADMIN_DASHBOARD_EDIT: "admindashboard/:id",
   CHECKOUT: 'payment/success',
   EDITPROFILE: 'user/:id/profile'
+}
+
+export const PrivateAdmin = {
+  ADMIN_DASHBOARD: "admindashboard",
+  ADMIN_DASHBOARD_EDIT: "admindashboard/:id",
 }

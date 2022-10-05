@@ -21,12 +21,7 @@ const login = async (req, res, next) => {
 
 		const checkPassword = await compare(password, userCheck.password)
 
-		if (!checkPassword)
-			return res.status(400).send('Password does not match!');
-		else if (
-			userCheck.email !== email
-		)
-			return res.status(400).send('Username does not match!');
+		if (!checkPassword) {return res.status(400).send('Password does not match!')}
 		else {
 			const jwtToken = jwt.sign(
 				{
@@ -123,8 +118,26 @@ const register = async (req, res, next) => {
 			res.status(400).send('Username already registered');
 			return;
 		}
-
 		let newPassword = await encrypt(password)
+		
+		if(email === 'admin@admin.com') {
+		 const userAdmin = await Users.create({
+			email: email,
+			password: newPassword,
+			username: username,
+			status: 'Admin',
+			profile_picture: 'https://media.istockphoto.com/vectors/man-reading-book-and-question-marks-vector-id1146072534?k=20&m=1146072534&s=612x612&w=0&h=sMqSGvSjf4rg1IjZD-6iHEJxHDHOw3ior1ZRmc-E1YQ=',
+		 })
+		 sendMailWelcome(username, email)
+		 let cartToAssociate = await Cart.create();
+		await cartToAssociate.setUser(userAdmin);
+		return res.json({
+			message: 'User created succesfully!',
+			id: userAdmin.id,
+			email: userAdmin.email,
+		});
+		}
+
 
 		const newUser = await Users.create({
 			email: email,

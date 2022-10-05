@@ -38,8 +38,8 @@ function AdminDashboard() {
   useEffect(() => {
     dispatch(getEventsById(user.id));
     eventosById;
-  }, []);
-  //dispatch, user, eventosById
+  }, [dispatch]);
+
 
   return (
     <DashboardNav

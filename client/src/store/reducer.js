@@ -34,6 +34,8 @@ const initialState = {
   comments: [],
   // past orders
   pastOrders: [],
+
+  currentUsers: []
 };
 
 function rootReducer(state = initialState, action) {
@@ -171,7 +173,7 @@ function rootReducer(state = initialState, action) {
         suma += eventosDelLocal[i].price * eventosDelLocal[i].cantidad;
       }
       localStorage.setItem("summary", JSON.stringify(suma));
-      console.log(eventosDelLocal);
+
       return {
         ...state,
         cart: eventosDelLocal,
@@ -330,6 +332,14 @@ function rootReducer(state = initialState, action) {
       return {
         ...state,
       };
+    }
+
+    case 'GET_USERS': {
+      
+      return {
+        ...state,
+        currentUsers: action.payload
+      }
     }
 
     default:

@@ -53,7 +53,7 @@ function Navbar() {
     { name: "Settings", href: `/private/user/${id}/profile`, current: true },
     { name: "Log out", href: "#", current: true },
 
-    { name: "Dashboard", href: "/private/admindashboard" },
+    { name: "Dashboard", href: "/admindashboard" },
   ];
 
   function handleCartClick() {
@@ -180,7 +180,7 @@ function Navbar() {
                           </Menu.Item>
                           <Menu.Item>
                             {({ active }) => (
-                              <button
+                              <a
                                 onClick={() => null}
                                 href={`/private/user/${id}/profile`}
                                 className={classNames(
@@ -189,7 +189,7 @@ function Navbar() {
                                 )}
                               >
                                 Settings
-                              </button>
+                              </a>
                             )}
                           </Menu.Item>
                           <Menu.Item>
@@ -206,11 +206,12 @@ function Navbar() {
                               </a>
                             )}
                           </Menu.Item>
-                          <Menu.Item>
+                          {user.status === "Admin" ? (
+                            <Menu.Item>
                             {({ active }) => (
                               <a
                                 onClick={() => null}
-                                href="/private/admindashboard"
+                                href="/admindashboard"
                                 className={classNames(
                                   active ? "bg-gray-100" : "",
                                   "block py-2 px-4 text-sm text-gray-700"
@@ -220,6 +221,8 @@ function Navbar() {
                               </a>
                             )}
                           </Menu.Item>
+                          ) : null}
+                          
                         </Menu.Items>
                       </Transition>
                     </Menu>

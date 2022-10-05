@@ -439,3 +439,15 @@ export const updateEvent = (data, id) => async (dispatch) => {
   }
 };
 
+export const getUsers = () => async (dispatch) => {
+  try {
+    const usuarios = await axios.get(`/users`);
+  
+    return dispatch({
+      type: 'GET_USERS',
+      payload: usuarios.data
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
