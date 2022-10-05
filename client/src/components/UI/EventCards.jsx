@@ -36,10 +36,6 @@ const EventCards = ({ eventos }) => {
   function handleSubmit(e) {
     if (user) {
       dispatch(addToCart(e.id, user.id));
-      setTimeout(() => {
-        dispatch(cartStateSet(false));
-      }, 2000);
-      dispatch(cartStateSet(true));
       toast.success("Evento added", toastOptions);
     } else {
       toast.error("Register please", toastOptions);

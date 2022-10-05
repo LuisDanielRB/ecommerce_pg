@@ -43,7 +43,11 @@ export default function EditProfile() {
     };
 
     const sendPassword = () => {
-        dispatch(changePassword(user.id, password))
+        if(password.length <= 0) {
+            alert("Please enter a password")
+        } else {
+            dispatch(changePassword(user.id, password))
+            }
     };
 
     useEffect(() => {
@@ -360,19 +364,22 @@ export default function EditProfile() {
                                                                 eventsFavourites ? eventsFavourites.map((el) => el.description) : null
                                                             }
                                                         </div >
-                                                        <form>
-                                                            <input
-                                                                onChange={(e) => changePasswordInput(e)}
-                                                                type="password"
-                                                                className="mt-8 appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                                                            />
-                                                            <button
-                                                                onClick={(e) => sendPassword(e)}
-                                                                type="button"
-                                                                className=" ml-8 appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                                                            >
-                                                                Change Password
-                                                            </button>
+                                                        <form >
+                                                        <div className="flex items-center" >
+                                                            <h1 className="text-sm font-medium text-gray-500">Reset password:</h1>
+                                                                <input
+                                                                    onChange={(e) => changePasswordInput(e)}
+                                                                    type="password"
+                                                                    className="mt-8 appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                                                />
+                                                                <button
+                                                                    onClick={(e) => sendPassword(e)}
+                                                                    type="button"
+                                                                    className=" ml-8 appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                                                >
+                                                                    Change Password
+                                                                </button>
+                                                        </div>
                                                         </form>
                                                     </dl >
                                                     <button

@@ -29,15 +29,16 @@ const getAllCarts = async (req, res, next) => {
     let allCartsUser = await Cart.findAll({
       where: {
         userId,
+        status: "Disabled",
       },
       include: {
         model: Event,
-        attributes: ["id", "description", "price", "artist"],
+        attributes: ["id", "description", "price", "artist" , 'image'],
         through: { attributes: ["amount"] },
       },
     });
-    if (allCartsUser) res.status(200).json(allCartsUser.slice(1));
-    //con slice(1) remuevo el primer elemento (osea el carrito activo porq no lo necesitamos en el front)
+    if (allCartsUser) res.status(200).json(allCartsUser);
+
     else res.status(400).send("No user was found with that ID");
   } catch (err) {
     next(err);

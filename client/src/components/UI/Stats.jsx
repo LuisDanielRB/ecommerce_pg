@@ -5,7 +5,7 @@ import { getAllEvents } from "../../store/actions";
 function Stats() {
   const dispatch = useDispatch();
   const allEvents = useSelector((state) => state.events)
-  console.log(allEvents)
+
   const [stock, setStock] = useState(0)
 
   useEffect(() => {

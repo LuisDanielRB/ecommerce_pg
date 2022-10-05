@@ -282,9 +282,12 @@ function rootReducer(state = initialState, action) {
       };
 
     case "DELETE_EVENT_BY_ID":
+      console.log(action.payload);
+      let nuevosEventos = state.eventsById.filter(event => event.id !== action.payload)
+      console.log(nuevosEventos);
       return {
         ...state,
-        eventsById: state.eventsById.splice(""),
+        eventsById: nuevosEventos
       };
 
       ////////// REVIEWS //////////
@@ -305,6 +308,13 @@ function rootReducer(state = initialState, action) {
             ...state.eventsDetail,
             comments: [...state.eventsDetail.comments , action.payload]
           },
+        }
+      }
+
+      case 'GET_PAST_ORDERS': {
+        return {
+          ...state,
+          pastOrders: action.payload
         }
       }
 

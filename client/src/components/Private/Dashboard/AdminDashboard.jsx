@@ -7,7 +7,6 @@ import { HomeIcon, UsersIcon, TicketIcon } from "@heroicons/react/24/outline";
 function AdminDashboard() {
   const dispatch = useDispatch();
   const eventosById = useSelector((state) => state.eventsById);
-  console.log(eventosById);
   const user = useSelector((state) => state.user);
   const [navigation, setNavigation] = useState([
     {
