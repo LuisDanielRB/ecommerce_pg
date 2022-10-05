@@ -1,4 +1,3 @@
-import { async } from "@firebase/util";
 import axios from "axios";
 
 export const checkStates = () => (dispatch) => {
@@ -110,19 +109,6 @@ export function userSignOut(datos) {
   };
 }
 
-export const changePassword = (userId, password) => async (dispatch) => {
-  console.log(userId, password);
-  try {
-    const change = await axios.put("/changePassword", { userId, password });
-    return dispatch({
-      type: "POST_PASSWORD",
-      payload: change,
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 export function addGoogleUser(currentUser) {
   return async function (dispatch) {
     try {
@@ -187,6 +173,32 @@ export function userGetFavorite(userId) {
     return dispatch({ type: "USER_GET_FAVORITES", payload: favorites.data });
   };
 }
+
+
+export const changePassword = (userId , password) => async (dispatch) => {
+  try {
+      const change = await axios.put("/changePassword", {userId , password});
+      return dispatch({
+        type: "POST_PASSWORD",
+        payload: change
+      })
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const editProfile = (id, payload) => async (dispatch) => {
+    try {
+      let edit = await axios.put(`/user/${id}/profile`, payload);
+      return dispatch({
+      type: "EDIT_PROFILE", 
+      payload: edit.data 
+    })
+    } catch (error) {
+      console.log(error);
+    } 
+}
+
 
 ///////////////////////////CART///////////////////////////////////
 
@@ -330,9 +342,10 @@ export function updatePassword(payload) {
 
 export const deleteEventById = (id) => async (dispatch) => {
   const deleteEvent = await axios.delete(`/events/${id}`);
+  
   return dispatch({
     type: "DELETE_EVENT_BY_ID",
-    payload: deleteEvent.data,
+    payload: id
   });
 };
 

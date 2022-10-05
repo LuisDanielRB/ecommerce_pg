@@ -4,7 +4,7 @@ import Stats from "./UI/Stats";
 import Footer from "./UI/Footer";
 import GridCards from "./UI/GridCards";
 import { useDispatch, useSelector } from "react-redux";
-import Carousel from "./UI/Carousel";
+import Carrousel from "./UI/Carrousel";
 import { useEffect } from "react";
 import { getAllEvents } from "../store/actions";
 
@@ -26,7 +26,7 @@ function Home() {
   return (
     <>
       <Navbar />
-      <Carousel />
+      <Carrousel />
       <div className="mx-auto max-w-2xl py-16 px-4 text-center sm:py-20 sm:px-6 lg:px-8">
         <h2 className="text-3xl font-bold tracking-tight text-black sm:text-4xl">
           <span className="block">{sp1}</span>

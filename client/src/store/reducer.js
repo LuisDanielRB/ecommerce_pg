@@ -38,7 +38,8 @@ const initialState = {
 
 function rootReducer(state = initialState, action) {
   switch (action.type) {
-    case "GET_COMMENTS": {
+
+    case 'GET_COMMENTS' : {
       return {
         ...state,
         comments: action.payload,
@@ -51,6 +52,8 @@ function rootReducer(state = initialState, action) {
         ...state,
         user: action.payload,
       };
+
+
 
     case "POST_REGISTRO":
       return {
@@ -114,19 +117,19 @@ function rootReducer(state = initialState, action) {
         allFavourites: action.payload,
       };
 
-    case "USER_ADD_FAVORITE": {
-      localStorage.setItem("favorites", JSON.stringify(action.payload));
+    case 'USER_ADD_FAVORITE': {
+      localStorage.setItem('favorites' , JSON.stringify(action.payload))
       return {
         ...state,
         allFavourites: action.payload,
       };
     }
 
-    case "DELETE_FAVORITE": {
-      let favoritos = JSON.parse(localStorage.getItem("favorites"));
-      let nuevoArray = favoritos.filter((e) => e !== action.payload);
-      localStorage.setItem("favorites", JSON.stringify(nuevoArray));
-      return {
+    case 'DELETE_FAVORITE': {
+      let favoritos = JSON.parse(localStorage.getItem("favorites"))
+      let nuevoArray = favoritos.filter(e => e !== action.payload)
+      localStorage.setItem('favorites' , JSON.stringify(nuevoArray))
+        return {
         ...state,
         allFavourites: nuevoArray,
       };
@@ -176,10 +179,7 @@ function rootReducer(state = initialState, action) {
       };
 
     case "ADD_CART":
-      let newPrice = action.payload.reduce(
-        (acc, item) => item.price + state.summary,
-        0
-      );
+      let newPrice = action.payload.reduce((acc, item) => item.price + state.summary,0);
       return {
         ...state,
         cart: action.payload,
@@ -282,39 +282,49 @@ function rootReducer(state = initialState, action) {
       };
 
     case "DELETE_EVENT_BY_ID":
+      console.log(action.payload);
+      let nuevosEventos = state.eventsById.filter(event => event.id !== action.payload)
+      console.log(nuevosEventos);
       return {
         ...state,
-        eventsById: state.eventsById.splice(""),
+        eventsById: nuevosEventos
       };
 
-    ////////// REVIEWS //////////
-    case "GET_REVIEW": {
-      return {
-        ...state,
-        eventsDetail: {
-          ...state.eventsDetail,
-          comments: action.payload,
-        },
-      };
-    }
+      ////////// REVIEWS //////////
+      case 'GET_REVIEW': {
+        return {
+          ...state,
+          eventsDetail: {
+            ...state.eventsDetail,
+            comments: action.payload
+          },
+        }
+      }
 
-    case "POST_REVIEW": {
-      return {
-        ...state,
-        eventsDetail: {
-          ...state.eventsDetail,
-          comments: [...state.eventsDetail.comments, action.payload],
-        },
-      };
-    }
+      case 'POST_REVIEW' : {
+        return {
+          ...state,
+          eventsDetail: {
+            ...state.eventsDetail,
+            comments: [...state.eventsDetail.comments , action.payload]
+          },
+        }
+      }
 
-    case "GET_PAST_ORDERS": {
-      persisLocalStorage("pastOrders", action.payload);
-      return {
-        ...state,
-        pastOrders: action.payload,
-      };
-    }
+      case 'GET_PAST_ORDERS': {
+        return {
+          ...state,
+          pastOrders: action.payload
+        }
+      }
+
+      case 'EDIT_PROFILE' :
+      localStorage.setItem('user', JSON.stringify(action.payload))
+      console.log(action.payload)
+       return {
+          ...state,
+          user: action.payload
+        }
 
     default:
       return state;

@@ -19,7 +19,6 @@ const transporter = createTransport({
 
 
 const sendMailWelcome = async (us, mail) => {
-    /* */
     const handlebarOptions = {
         viewEngine: {
             extName: '.handlebars',
@@ -41,7 +40,7 @@ const sendMailWelcome = async (us, mail) => {
         template: 'email',
         context: {
             user: us,
-            mail: mail
+            mail: mail,
         }
     }
     
