@@ -390,3 +390,11 @@ export const getComments = (id) => async (dispatch) => {
   }
 }
 
+
+
+export const gettinCartForMail = (payload) => {
+  const {cart, user} = payload
+  return async function () {
+    let invoice = await axios.put(`/sendinvoice/${user.id}`, payload)
+  }
+} 
