@@ -318,6 +318,14 @@ function rootReducer(state = initialState, action) {
         }
       }
 
+      case 'EDIT_PROFILE' :
+      localStorage.setItem('user', JSON.stringify(action.payload))
+      console.log(action.payload)
+       return {
+          ...state,
+          user: action.payload
+        }
+
     default:
       return state;
   }
