@@ -278,12 +278,7 @@ export function removeOneEventFromCart(eventId, userId) {
   return async function (dispatch) {
     let deleteEvent = await axios.put(
       `/deleteeventcart?eventId=${eventId}&userId=${userId}`
-    ); //double query
-    console.log("delete", deleteEvent); //quiero q me traiga libro a eliminar
-    return dispatch({
-      type: "REMOVE_EVENT_CART_DB",
-      payload: deleteEvent,
-    });
+    );
   };
 }
 

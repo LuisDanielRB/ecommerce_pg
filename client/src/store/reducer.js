@@ -179,9 +179,7 @@ function rootReducer(state = initialState, action) {
       };
 
     case "ADD_CART":
-
       let newPrice = action.payload.reduce((acc, item) => acc + item.price ,0);
-
       return {
         ...state,
         cart: action.payload,
@@ -253,12 +251,6 @@ function rootReducer(state = initialState, action) {
       return {
         ...state,
         purchasedCart: { Events: [], Total: 0, CartId: "" },
-      };
-    }
-
-    case "REMOVE_EVENT_CART_DB": {
-      return {
-        ...state,
       };
     }
 

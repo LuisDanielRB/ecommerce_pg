@@ -45,12 +45,10 @@ export default function PopOverCart() {
   
 
   function handleDelete(id) {
-    if(user) {
+
       dispatch(delCartUser(id)) 
       dispatch(removeOneEventFromCart(id, user.id))
-    } else {
-      dispatch(delCart(id))
-    }
+
 
   }
 
