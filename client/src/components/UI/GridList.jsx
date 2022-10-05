@@ -68,7 +68,7 @@ function GridList({ eventos }) {
               </div>
               <div className="-ml-px flex w-0 flex-1">
                 <a
-                  href={`/private/admindashboard/${event.id}`}
+                  href={`/admindashboard/${event.id}`}
                   className="bg-blue-200 relative inline-flex w-0 flex-1 items-center justify-center rounded-br-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500"
                 >
                   <DocumentTextIcon

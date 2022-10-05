@@ -13,8 +13,6 @@ import StatsDashboard from "./StatsDashboard";
 import PastOrders from "./PastOrders";
 import UserList from "./UserList";
 
-
-
 const userNavigation = [
   { name: "Your Profile", href: "#" },
   { name: "Settings", href: "#" },
@@ -28,7 +26,6 @@ function classNames(...classes) {
 function DashboardNav({ eventos, user, setActiveState, navigation }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [detailOpen, setDetailOpen] = useState(false);
-
 
   return (
     <>

@@ -38,21 +38,15 @@ function Navbar() {
     navigate("/");
   };
 
-
-
   const id = user ? user.id : false;
 
   const reset = () => {
     localStorage.clear();
   };
 
-
-
   const userNavigation = [
-
     { name: "Settings", href: `/private/user/${id}/profile`, current: true },
     { name: "Log out", href: "#", current: true },
-
     { name: "Dashboard", href: "/admindashboard" },
   ];
 
@@ -128,6 +122,12 @@ function Navbar() {
                   </Popover.Button>
                 </div>
                 <div className="hidden lg:flex lg:items-center lg:justify-end xl:col-span-4">
+                  <Link
+                    to={"/events"}
+                    className="items-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                  >
+                    Events
+                  </Link>
                   <a
                     onClick={handleCartClick}
                     href="#"
@@ -208,21 +208,20 @@ function Navbar() {
                           </Menu.Item>
                           {user.status === "Admin" ? (
                             <Menu.Item>
-                            {({ active }) => (
-                              <a
-                                onClick={() => null}
-                                href="/admindashboard"
-                                className={classNames(
-                                  active ? "bg-gray-100" : "",
-                                  "block py-2 px-4 text-sm text-gray-700"
-                                )}
-                              >
-                                Admin Dashboard
-                              </a>
-                            )}
-                          </Menu.Item>
+                              {({ active }) => (
+                                <a
+                                  onClick={() => null}
+                                  href="/admindashboard"
+                                  className={classNames(
+                                    active ? "bg-gray-100" : "",
+                                    "block py-2 px-4 text-sm text-gray-700"
+                                  )}
+                                >
+                                  Admin Dashboard
+                                </a>
+                              )}
+                            </Menu.Item>
                           ) : null}
-                          
                         </Menu.Items>
                       </Transition>
                     </Menu>
@@ -230,9 +229,7 @@ function Navbar() {
                     <div className="flex justify-center">
                       <div>
                         <Link
-
                           onClick={() => reset()}
-
                           to={"/login"}
                           className="ml-6 inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         >
@@ -241,9 +238,7 @@ function Navbar() {
                       </div>
                       <div>
                         <Link
-
                           onClick={() => reset()}
-
                           to={"/register"}
                           className="ml-6 inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         >
