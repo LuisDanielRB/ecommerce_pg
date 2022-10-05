@@ -1,9 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { Menu, Popover, Transition } from "@headlessui/react";
-import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import {
   Bars3Icon,
-  BellIcon,
   XMarkIcon,
   ShoppingCartIcon,
 } from "@heroicons/react/24/outline";
@@ -13,14 +11,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { UserAuth } from "../../firebase/context";
 import PopOverCart from "./PopOverCart";
 import SearchInput from "./SearchInput";
-import Logo from "../../logo/logo.png"
+import Logo from "../../logo/logo.png";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 function Navbar() {
-
   const dispatch = useDispatch();
   const { logOut } = UserAuth();
   const { user } = useSelector((state) => state);
@@ -36,8 +33,14 @@ function Navbar() {
     e.preventDefault();
     dispatch(userSignOut("user"));
     logOut();
-    navigate('/login')
+    navigate('/')
   };
+
+  const id = user? user.id : false
+  
+  const reset = () => {
+    localStorage.clear()
+  }
 
   const navigation = [
     { name: "Dashboard", href: "#", current: true },
@@ -47,9 +50,8 @@ function Navbar() {
   ];
 
   const userNavigation = [
-    { name: "Your Profile", href: "#" },
-    { name: "Settings", href: "#" },
-    { name: "Log out", href: "#" },
+    { name: "Settings", href: `/private/user/${id}/profile`, current: true },
+    { name: "Log out", href: "#", current: true },
     { name: "Dashboard", href: "/private/admindashboard" },
   ];
 
@@ -88,7 +90,7 @@ function Navbar() {
                     <a href="/">
                       <img
                         className="block h-16 w-auto"
-                        src= {Logo}
+                        src={Logo}
                         alt="Your Company"
                       />
                     </a>
@@ -108,13 +110,9 @@ function Navbar() {
                       >
                         Buscar...
                       </button>
-
                       {
                         search === true ? <SearchInput /> : null
                       }
-
-
-
                     </div>
                   </div>
                 </div>
@@ -169,16 +167,29 @@ function Navbar() {
                         <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                           <Menu.Item>
                             {({ active }) => (
-                              <button
+                              <a
                                 onClick={handleClick}
-                                href="#"
                                 className={classNames(
                                   active ? "bg-gray-100" : "",
                                   "block py-2 px-4 text-sm text-gray-700"
                                 )}
                               >
                                 Logout
-                              </button>
+                              </a>
+                            )}
+                          </Menu.Item>
+                          <Menu.Item>
+                            {({ active }) => (
+                              <a
+                                onClick={() => null}
+                                href={`/private/user/${id}/profile`}
+                                className={classNames(
+                                  active ? "bg-gray-100" : "",
+                                  "block py-2 px-4 text-sm text-gray-700"
+                                )}
+                              >
+                                Settings
+                              </a>
                             )}
                           </Menu.Item>
                           <Menu.Item>
@@ -216,6 +227,7 @@ function Navbar() {
                     <div className="flex justify-center">
                       <div>
                         <Link
+                        onClick={() => reset()}
                           to={"/login"}
                           className="ml-6 inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         >
@@ -224,6 +236,7 @@ function Navbar() {
                       </div>
                       <div>
                         <Link
+                        onClick={() => reset()}
                           to={"/register"}
                           className="ml-6 inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         >
@@ -237,29 +250,11 @@ function Navbar() {
             </div>
 
             <Popover.Panel as="nav" className="lg:hidden" aria-label="Global">
-              {/* <div className="mx-auto max-w-3xl space-y-1 px-2 pt-2 pb-3 sm:px-4">
-                {navigation.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    aria-current={item.current ? "page" : undefined}
-                    className={classNames(
-                      item.current
-                        ? "bg-gray-100 text-gray-900"
-                        : "hover:bg-gray-50",
-                      "block rounded-md py-2 px-3 text-base font-medium"
-                    )}
-                  >
-                    {item.name}
-                  </a>
-                ))}
-              </div> */}
               <div className="border-t border-gray-200 pt-4 pb-3">
                 <div className="mx-auto flex max-w-3xl items-center px-4 sm:px-6">
                   <div className="flex-shrink-0">
                     <img
                       className="h-10 w-10 rounded-full"
-                      // src={usuario.profile_picture}
                       alt=""
                     />
                   </div>

@@ -18,8 +18,7 @@ const transporter = createTransport({
 })
 
 
-const sendMailWelcome = async (us, id, mail) => {
-    /* */
+const sendMailWelcome = async (us, mail) => {
     const handlebarOptions = {
         viewEngine: {
             extName: '.handlebars',
@@ -52,8 +51,6 @@ const sendMailWelcome = async (us, id, mail) => {
         console.log(error)
     }
 }
-
-
 
 const emailReset = async (email, id) => {
   const handlebarOptions = {
@@ -90,11 +87,6 @@ try {
 
 }
 
-
-
-
-
-
 const passwordRecovery = async ( req, res, next ) => {
 	let { email } = req.body;
   console.log("Esto es lo que llega al back", email)
@@ -117,9 +109,6 @@ const passwordRecovery = async ( req, res, next ) => {
     res.status(500).send("El usuario no existe")
   }
 
-
-
-	
 
   };
 

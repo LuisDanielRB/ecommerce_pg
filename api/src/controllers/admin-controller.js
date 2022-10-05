@@ -2,6 +2,10 @@ const { Users , Cart , ReviewScore} = require("../db");
 const { Op } = require('sequelize');
 
 
+const adminDelete = async (req, res) => {
+
+}
+
 const adminPut = async (req, res) => {
     const { idUser, idAdmin } = req.query
     const {status} = req.body
@@ -35,7 +39,6 @@ const adminPut = async (req, res) => {
 
 const bannedUser = async (req, res)=>{
 	const {id} = req.params;
-
 	try {
 		if(!id)	res.status(404).json({message: 'id is require..'});
 		else{
@@ -44,6 +47,7 @@ const bannedUser = async (req, res)=>{
 			if(!userBanned) res.status(404).json({message: 'user not found..'});
 			else{
 				await Users.update({status: 'Banned'},{where: {id}});
+				await ReviewScore.destroy({where:{userId:id}})
 				res.status(200).json({message: 'successfully banned user..'});
 			}
 		}
@@ -51,7 +55,7 @@ const bannedUser = async (req, res)=>{
 		console.log(error);
 	}
 }
-// Update to joaco , hay que revisar  si anda bien
+
 const hideEvent = async (req, res, next) => {
 	let { eventId } = req.body;
 	try {
@@ -173,12 +177,5 @@ const deleteCommentToAdmin = async (req, res, next) => {
 
 module.exports = {
     adminPut,
-	bannedUser,
-	hideEvent,
-	showEvent,
-	getAllOrders,
-	unbanUser,
-	upgradeToAdmin,
-	deleteCommentToAdmin
-
+	bannedUser
 };

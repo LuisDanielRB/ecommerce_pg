@@ -3,14 +3,11 @@ const { where } = require("sequelize");
 const { ReviewScore } = require("../db");
 
 const getReviewScore = async (req, res) => {
-    const { eventId } = req.params
-    const { userId } = req.body
-
+    const { eventId } = req.query
     try {
-        const review = await ReviewScore.findOne({
+        const review = await ReviewScore.findAll({
             where: {
-                eventId: eventId,
-                userId: userId
+                eventId: eventId
             }
         })
         if (!review) res.json("Review not found")
@@ -32,7 +29,7 @@ const postReviewScore = async (req, res) => {
             }
         })
 
-        if (review) return res.json("You already left a review on this event")
+        // if (review) return res.json("You already left a review on this event")
         const newReview = await ReviewScore.create({
             description,
             score,
@@ -95,10 +92,22 @@ const deleteReviewScore = (req, res) => {
     }
 }
 
+const getComments = async (req, res) => {
+	try {
+		const { id } = req.params;
+		const data = await ReviewScore.findAll({
+			where: { userId: id },
+		});
+		res.send(data);
+	} catch (error) {
+		console.log(error);
+	}
+};
 
 module.exports = {
     getReviewScore,
     postReviewScore,
     putReviewScore,
-    deleteReviewScore
+    deleteReviewScore,
+    getComments
 }

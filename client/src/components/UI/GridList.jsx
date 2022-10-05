@@ -1,92 +1,53 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { EnvelopeIcon, PhoneIcon } from "@heroicons/react/20/solid";
+import {
+  DocumentTextIcon,
+  EnvelopeIcon,
+  PhoneIcon,
+} from "@heroicons/react/20/solid";
+import { XMarkIcon } from "@heroicons/react/24/outline";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteEventById } from "../../store/actions";
 
-const people = [
-  {
-    name: "Jane Cooper",
-    title: "Regional Paradigm Technician",
-    role: "Admin",
-    email: "janecooper@example.com",
-    telephone: "+1-202-555-0170",
-    imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
-  },
-  {
-    name: "Jane Cooper",
-    title: "Regional Paradigm Technician",
-    role: "Admin",
-    email: "janecooper@example.com",
-    telephone: "+1-202-555-0170",
-    imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
-  },
-  {
-    name: "Jane Cooper",
-    title: "Regional Paradigm Technician",
-    role: "Admin",
-    email: "janecooper@example.com",
-    telephone: "+1-202-555-0170",
-    imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
-  },
-  {
-    name: "Jane Cooper",
-    title: "Regional Paradigm Technician",
-    role: "Admin",
-    email: "janecooper@example.com",
-    telephone: "+1-202-555-0170",
-    imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
-  },
-  {
-    name: "Jane Cooper",
-    title: "Regional Paradigm Technician",
-    role: "Admin",
-    email: "janecooper@example.com",
-    telephone: "+1-202-555-0170",
-    imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
-  },
-  {
-    name: "Jane Cooper",
-    title: "Regional Paradigm Technician",
-    role: "Admin",
-    email: "janecooper@example.com",
-    telephone: "+1-202-555-0170",
-    imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
-  },
-  // More people...
-];
+function GridList({ eventos }) {
+  const dispatch = useDispatch();
 
-export default function Example() {
+  function handleDelete(id) {
+    dispatch(deleteEventById(id));
+  }
+
   return (
     <ul
       role="list"
       className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
     >
-      {people.map((person) => (
+      {eventos.map((event) => (
         <li
-          key={person.email}
+          key={event.id}
           className="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow"
         >
           <div className="flex w-full items-center justify-between space-x-6 p-6">
             <div className="flex-1 truncate">
               <div className="flex items-center space-x-3">
                 <h3 className="truncate text-sm font-medium text-gray-900">
-                  {person.name}
+                  {event.artist}
                 </h3>
                 <span className="inline-block flex-shrink-0 rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">
-                  {person.role}
+                  {event.stock}
                 </span>
               </div>
+              <span className="inline-block flex-shrink-0 rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">
+                {event.price}
+              </span>
               <p className="mt-1 truncate text-sm text-gray-500">
-                {person.title}
+                {event.description}
+              </p>
+              <p className="mt-1 truncate text-sm text-gray-500">
+                {event.category}
               </p>
             </div>
             <img
               className="h-10 w-10 flex-shrink-0 rounded-full bg-gray-300"
-              src={person.imageUrl}
+              src={event.image}
               alt=""
             />
           </div>
@@ -94,26 +55,27 @@ export default function Example() {
             <div className="-mt-px flex divide-x divide-gray-200">
               <div className="flex w-0 flex-1">
                 <a
-                  href={`mailto:${person.email}`}
-                  className="relative -mr-px inline-flex w-0 flex-1 items-center justify-center rounded-bl-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500"
+                  onClick={() => handleDelete(event.id)}
+                  href="#"
+                  className="bg-red-600 relative -mr-px inline-flex w-0 flex-1 items-center justify-center rounded-bl-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500"
                 >
-                  <EnvelopeIcon
-                    className="h-5 w-5 text-gray-400"
+                  <XMarkIcon
+                    className="h-5 w-5 text-white"
                     aria-hidden="true"
                   />
-                  <span className="ml-3">Email</span>
+                  <span className="ml-3 text-white">Delete</span>
                 </a>
               </div>
               <div className="-ml-px flex w-0 flex-1">
                 <a
-                  href={`tel:${person.telephone}`}
-                  className="relative inline-flex w-0 flex-1 items-center justify-center rounded-br-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500"
+                  href={`/private/admindashboard/${event.id}`}
+                  className="bg-blue-200 relative inline-flex w-0 flex-1 items-center justify-center rounded-br-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500"
                 >
-                  <PhoneIcon
-                    className="h-5 w-5 text-gray-400"
+                  <DocumentTextIcon
+                    className="h-5 w-5 text-white"
                     aria-hidden="true"
                   />
-                  <span className="ml-3">Call</span>
+                  <span className="ml-3 text-white">Edit</span>
                 </a>
               </div>
             </div>
@@ -122,6 +84,6 @@ export default function Example() {
       ))}
     </ul>
   );
-
 }
 
+export default GridList;

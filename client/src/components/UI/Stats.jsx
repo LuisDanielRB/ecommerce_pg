@@ -1,6 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllEvents } from "../../store/actions";
 
 function Stats() {
+  const dispatch = useDispatch();
+  const allEvents = useSelector((state) => state.events)
+  console.log(allEvents)
+  const [stock, setStock] = useState(0)
+
+  useEffect(() => {
+    dispatch(getAllEvents())
+  }, [dispatch])
+
+function sumaStock(e){
+
+}
+
   return (
     <div className="bg-gray-50 pt-12 sm:pt-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

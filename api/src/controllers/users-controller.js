@@ -1,25 +1,25 @@
-const { Users , Event , Cart} = require('../db')
+const { Users, Event, Cart } = require('../db')
 const jwt = require('jsonwebtoken')
-const {compare , encrypt} = require('../helpers/handleByCrypt')
+const { compare, encrypt } = require('../helpers/handleByCrypt')
 const authConfig = require('../config/auth')
-const {uploadImage, deleteImage} = require('../helpers/cloudinary');
+const { uploadImage, deleteImage } = require('../helpers/cloudinary');
 const fsExtra = require('fs-extra');
 //EMAIL CONFIRMATION
 const { sendMailWelcome } = require('./email-controller');
 
 // Ruta Login
-const login = async (req, res , next) => {
-    const { email, password } = req.body;
+const login = async (req, res, next) => {
+	const { email, password } = req.body;
 	try {
-            let userCheck = await Users.findOne({
-                where: {
-                    email
-                },
-            });
-            
-        if (!userCheck) return res.status(400).send('User not found');
+		let userCheck = await Users.findOne({
+			where: {
+				email
+			},
+		});
 
-        const checkPassword = await compare(password, userCheck.password)
+		if (!userCheck) return res.status(400).send('User not found');
+
+		const checkPassword = await compare(password, userCheck.password)
 
 		if (!checkPassword)
 			return res.status(400).send('Password does not match!');
@@ -57,53 +57,54 @@ const login = async (req, res , next) => {
 }
 
 const upDateUser = async (req, res) => {
-    const {id} = req.params;
-    const {username , email, password , status} = req.body;
-    var result;
+	const { id } = req.params;
+	const { username, email, password, status, profile_picture, profile_picture_id } = req.body;
+	var result;
+	console.log(req.body)
+	try {
+		if (!id) res.status(404).json({ message: 'id is require...' });
 
-    try {
-        if(!id) res.status(404).json({message: 'id is require...'});
+		let user = await Users.findOne({ where: { id: id } });
+		if (!user) res.status(404).json({ message: 'user not found...' });
 
-        let user = await Users.findOne({where:{id: id}});
-        if(!user) res.status(404).json({message: 'user not found...'});
-        
-		if(username) await Users.update({username},{where:{id: id}});
-		if(email) await Users.update({email},{where:{id: id}});
-		if(password) await Users.update({password},{where:{id: id}});
-		if(status) await Users.update({status},{where:{id: id}});
-
-
-        if(req.files?.image){
-            if(!user.imageId){
-				result = await uploadImage(req.files.image.tempFilePath);
-				await Users.update({profile_picture: result.secure_url,
-									profile_picture_id: result.public_id},
-									{where:{id: id}});
-				await fsExtra.unlink(req.files.image.tempFilePath);
-			}else{
-				await deleteImage(user.imageId);
-				result = await uploadImage(req.files.image.tempFilePath);
-				await Users.update({profile_picture: result.secure_url,
-									profile_picture_id: result.public_id},
-									{where:{id: id}});
-				await fsExtra.unlink(req.files.image.tempFilePath);
+		if (username) await Users.update({ username }, { where: { id: id } });
+		if (email) await Users.update({ email }, { where: { id: id } });
+		if (password) {
+			let newPassword = await encrypt(password)
+			await Users.update({ password: newPassword }, { where: { id: id } });
+		}
+		if (status) await Users.update({ status }, { where: { id: id } });
+		if (profile_picture) {
+			if (user.profile_picture_id) {
+				await deleteImage(user.profile_picture_id);
+				await Users.update({
+					profile_picture,
+					profile_picture_id
+				},
+					{ where: { id: id } });
+			} else {
+				await Users.update({
+					profile_picture,
+					profile_picture_id
+				},
+					{ where: { id: id } });
 			}
-        }
+		}
 
-        user = await Users.findOne({where:{id: id}});
-        res.status(200).json(user);
+		user = await Users.findOne({ where: { id: id } });
+		res.status(200).json(user);
 
-    } catch (error) {
-        console.log(error);
-    }
+	} catch (error) {
+		console.log(error);
+	}
 }
 // Ruta Register
-const register = async (req, res , next) => {
+const register = async (req, res, next) => {
 
-    const { username , email, password , status } = req.body
-    
-    try {
-        const alreadyExistsMail = await Users.findAll({
+	const { username, email, password, status } = req.body
+
+	try {
+		const alreadyExistsMail = await Users.findAll({
 			where: { email: email },
 		});
 
@@ -112,7 +113,7 @@ const register = async (req, res , next) => {
 			res.status(400).send('Email already registered');
 			return;
 		}
-		
+
 		const alreadyExistsUsername = await Users.findAll({
 			where: { username: username },
 		});
@@ -133,7 +134,7 @@ const register = async (req, res , next) => {
 			profile_picture:
 				'https://media.istockphoto.com/vectors/man-reading-book-and-question-marks-vector-id1146072534?k=20&m=1146072534&s=612x612&w=0&h=sMqSGvSjf4rg1IjZD-6iHEJxHDHOw3ior1ZRmc-E1YQ=',
 		});
-        sendMailWelcome(username, email)
+		sendMailWelcome(username, email)
 		let cartToAssociate = await Cart.create();
 		await cartToAssociate.setUser(newUser);
 		res.json({
@@ -145,12 +146,12 @@ const register = async (req, res , next) => {
 		next(err);
 	}
 
-    
+
 }
 
 const getUsers = async (req, res) => {
-    const allUsers = await Users.findAll()
-    res.json(allUsers)
+	const allUsers = await Users.findAll()
+	res.json(allUsers)
 }
 
 const googleSignIn = async (req, res, next) => {
@@ -209,7 +210,7 @@ const googleSignIn = async (req, res, next) => {
 				profile_picture: create.profile_picture,
 				favorites: create.favorites,
 			});
-			
+
 		}
 	} catch (e) {
 		console.log(e);
@@ -222,10 +223,10 @@ const googleSignIn = async (req, res, next) => {
 // LOGICA PARA FAVORITOS
 const addFavorite = async (req, res) => {
 	let { idUser, idEvent } = req.body;
-	console.log(req.body);
+
 	try {
 		let user = await Users.findByPk(idUser)
-		console.log(user);
+
 		if (user) {
 			let newArray = user.favorites;
 			if (!newArray.includes(idEvent)) {
@@ -244,7 +245,7 @@ const addFavorite = async (req, res) => {
 				favorites: newArray,
 			});
 
-			return res.send('Added id');
+			return res.json(user);
 		} else {
 			throw new Error('Invalid user');
 		}
@@ -258,7 +259,6 @@ const deleteFavorite = async (req, res) => {
 
 	try {
 		let user = await Users.findByPk(idUser);
-
 		if (user) {
 			let newArray = user.favorites;
 			if (newArray.includes(idEvent)) {
@@ -277,7 +277,7 @@ const deleteFavorite = async (req, res) => {
 				favorites: newArray,
 			});
 
-			res.send('Id removed');
+			res.send(user.favorites);
 		} else {
 			throw new Error('Invalid user');
 		}
@@ -291,10 +291,9 @@ const getFavorite = async (req, res) => {
 
 	try {
 		let user = await Users.findByPk(idUser);
-
 		if (user) {
 			let response = user.favorites;
-			res.send(response);
+			res.json(response);
 		} else {
 			throw new Error('Invalid user');
 		}
@@ -304,7 +303,41 @@ const getFavorite = async (req, res) => {
 };
 
 const resetPassword = async (req, res, next) => {
+
+	let { id } = req.params
+	let { password } = req.body
+
+	try {
+		let user = await Users.findOne({
+			where: {
+				id: id,
+			},
+		});
+
+		if (!user)
+			return res.status(400).send('User has not been found with that ID');
+		if (!password) return res.status(400).send('Password does not match!');
+		let newPassword = await encrypt(password)
+		console.log(newPassword);
+		await Users.update(
+			{
+				password: newPassword,
+			},
+			{
+				where: {
+					id: id,
+				},
+			}
+		);
+		res.send(`User ${user.username} has updated their password`);
+	} catch (err) {
+		next(err);
+	}
+};
+
+const changePassword = async (req, res, next) => {
 	let { userId, password } = req.body;
+	console.log(req.body)
 	try {
 		let user = await Users.findOne({
 			where: {
@@ -314,15 +347,12 @@ const resetPassword = async (req, res, next) => {
 
 		if (!user)
 			return res.status(400).send('User has not been found with that ID');
-
-
-			const checkPassword = await compare(password, user.password)
-
-		if (!checkPassword) return res.status(400).send('Password does not match!');
+		let newPassword = await encrypt(password)
+		console.log(newPassword);
 
 		await Users.update(
 			{
-				password: checkPassword,
+				password: newPassword,
 			},
 			{
 				where: {
@@ -335,18 +365,18 @@ const resetPassword = async (req, res, next) => {
 	} catch (err) {
 		next(err);
 	}
-};
-
+}
 
 
 module.exports = {
-    register,
-    login,
-    getUsers,
+	register,
+	login,
+	getUsers,
 	upDateUser,
 	googleSignIn,
 	addFavorite,
 	deleteFavorite,
 	getFavorite,
-	resetPassword
+	resetPassword,
+	changePassword
 }

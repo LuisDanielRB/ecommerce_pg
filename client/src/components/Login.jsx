@@ -5,11 +5,25 @@ import { useDispatch, useSelector } from "react-redux";
 import { GoogleButton } from 'react-google-button';
 import { UserAuth } from '../firebase/context';
 import { useEffect } from "react";
-import GithubButton from 'react-github-login-button';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import GithubButton from 'react-github-login-button'
 import Logo from "../logo/logo.png";
 
 function Login() {
-  const { googleSignIn, user, gitHubSignIn } = UserAuth();
+
+  const toastOptions = {
+		position: "bottom-center",
+		autoClose: 1000,
+		hideProgressBar: false,
+		closeOnClick: true,
+		pauseOnHover: true,
+		draggable: true,
+		progress: undefined,
+		theme: "dark"
+		};
+
+  const { googleSignIn , user , gitHubSignIn } = UserAuth();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const token = useSelector((state) => state.user)
@@ -60,7 +74,8 @@ function Login() {
       password: "",
     });
 
-    return navigate("/");
+    user ? navigate("/") : toast.error('password or email not valid' , toastOptions);
+
   }
 
   return (
@@ -133,7 +148,7 @@ function Login() {
 
               <div className="text-sm">
                 <a
-                  href="#"
+                  href="/passwordRecovery"
                   className="font-medium text-indigo-600 hover:text-indigo-500"
                 >
                   Forgot your password?
@@ -174,6 +189,7 @@ function Login() {
           </div>
         </div>
       </div>
+      <ToastContainer/>
     </>
   );
 }
