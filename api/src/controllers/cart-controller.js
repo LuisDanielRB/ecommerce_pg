@@ -93,6 +93,34 @@ const addEventToCart = async (req, res, next) => {
   }
 };
 
+const checkStock = async (req, res, next) => {
+  let { userId } = req.params;
+  try {
+    let oldCart = await Cart.findOne({
+      where: {
+        userId: userId,
+        status: "Active",
+      },
+      include: {
+        model: Event,
+      },
+    });
+    if (oldCart.events.length === 0)
+      return res.status(400).send("Cart is empty");
+
+    //RESTAMOS EL STOCK / CHECKEAMOS SI HAY STOCK
+    let newStock = oldCart.events.map((e) => e.stock - e.Cart_Events.amount);
+
+    //SIN STOCK?
+    if (!newStock.every((stock) => stock > -1)) {
+      return res.status(400).send("A event in the cart does not have enough stock")
+    }
+    return res.status(200).send("El producto tiene stock");
+  } catch (err) {
+    next(err);
+  }
+}
+
 const removeOneEventFromCart = async (req, res, next) => {
   let { userId, eventId } = req.query;
   try {
@@ -239,4 +267,5 @@ module.exports = {
   removeOneEventFromCart,
   clearCart,
   checkoutCart,
+  checkStock
 };

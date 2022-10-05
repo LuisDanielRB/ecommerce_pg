@@ -179,7 +179,9 @@ function rootReducer(state = initialState, action) {
       };
 
     case "ADD_CART":
-      let newPrice = action.payload.reduce((acc, item) => item.price + state.summary, 0);
+
+      let newPrice = action.payload.reduce((acc, item) => acc + item.price ,0);
+
       return {
         ...state,
         cart: action.payload,

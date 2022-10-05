@@ -304,6 +304,7 @@ export const getCartUser = (cart) => (dispatch) => {
 };
 
 export function checkoutCart(userId, token) {
+  console.log(userId, token);
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -450,4 +451,60 @@ export const getUsers = () => async (dispatch) => {
   } catch (error) {
     console.log(error)
   }
+}
+
+export const upgradeToAdmin = (userId) => async (dispatch) => {
+
+  try {
+    const result = await axios.put('/upgradeToUser' , {userId})
+    console.log(result)
+    return dispatch({
+      type: 'UPDATE_USER_TO_ADMIN',
+      payload: result.data
+    })
+  } catch (error) {
+    console.log(error)
+  }
+
+}
+
+export const upgradeToUser = (userId) => async (dispatch) => {
+
+  try {
+    const result = await axios.put('/upgradeToAdmin' , {userId: userId})
+    console.log(result)
+    return dispatch({
+      type: 'UPDATE_USER_TO_ADMIN',
+      payload: result.data
+    })
+  } catch (error) {
+    console.log(error)
+  }
+
+}
+
+export const bannedToUser = (userId) => async (dispatch) => {
+  try {
+    const result = await axios.put(`/user/${userId}/banned` )
+    return dispatch({
+      type: 'BANNED_USER',
+      payload: result.data
+    })
+  } catch (error) {
+    console.log(error)
+  }
+
+}
+
+export const unBanned = (userId) => async (dispatch) => {
+  try {
+    const result = await axios.put('/unbanUser' , {userId})
+    return dispatch({
+      type: 'BANNED_USER',
+      payload: result.data
+    })
+  } catch (error) {
+    console.log(error)
+  }
+
 }

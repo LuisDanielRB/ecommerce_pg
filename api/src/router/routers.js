@@ -31,6 +31,7 @@ const {
   removeOneEventFromCart,
   clearCart,
   checkoutCart,
+  checkStock
 } = require("../controllers/cart-controller");
 const { passwordRecovery, sendInvoice, } = require("../controllers/email-controller");
 const { fileUpload } = require("../helpers/fileUpload");
@@ -51,6 +52,7 @@ const {
   deleteCommentToAdmin,
   getAllOrders,
   upgradeToAdmin,
+  upgradeToUser
 } = require("../controllers/admin-controller");
 
 // USUARIO
@@ -94,9 +96,11 @@ router.put("/showEvent", showEvent);
 router.get("/showOrders", getAllOrders);
 router.put("/unbanUser", unbanUser);
 router.put("/upgradeToAdmin", upgradeToAdmin);
+router.put('/upgradeToUser', upgradeToUser);
 router.delete("/deleteComents", deleteCommentToAdmin);
 
 //CART
+router.get('/checkStock/:userId' , checkStock)
 router.get("/cart", getCart);
 router.get("/allcart/:userId", getAllCarts);
 router.post("/addcart", addEventToCart);

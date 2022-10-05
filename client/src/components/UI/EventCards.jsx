@@ -21,7 +21,7 @@ const EventCards = ({ eventos }) => {
 
   useEffect(() => {
     user ? dispatch(userGetFavorite(user.id)) : null;
-    dispatch(getCart(user.id))
+    user ? dispatch(getCart(user.id)) : null
   }, [dispatch, user]);
 
   const toastOptions = {

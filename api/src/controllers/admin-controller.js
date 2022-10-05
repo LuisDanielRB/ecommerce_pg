@@ -1,4 +1,4 @@
-const { Users , Cart , ReviewScore} = require("../db");
+const { Users , Cart , Event , ReviewScore} = require("../db");
 const { Op } = require('sequelize');
 
 
@@ -41,11 +41,20 @@ const bannedUser = async (req, res)=>{
 	try {
 		if(!id)	res.status(404).json({message: 'id is require..'});
 		else{
-			let userBanned = await Users.findOne({where: {id}});
+			let userBanned = await Users.findOne({
+				where: {
+					id
+				},
+				include: {
+					model: Event,
+				  }
+				});
 			
 			if(!userBanned) res.status(404).json({message: 'user not found..'});
 			else{
 				await Users.update({status: 'Banned'},{where: {id}});
+				await Event.update({isActive: false},{ where: {userId: id}})
+			
 				await ReviewScore.destroy({where:{userId:id}})
 				res.status(200).json({message: 'successfully banned user..'});
 			}
@@ -127,6 +136,7 @@ const unbanUser = async (req, res, next) => {
 			await userToUnban.update({
 				status: 'User',
 			});
+			await Event.update({isActive: true},{ where: {userId: userId}})
 			let unbanned = await Users.findByPk(userId);
 			res.status(200).send(unbanned);
 		} else {
@@ -139,6 +149,7 @@ const unbanUser = async (req, res, next) => {
 
 const upgradeToAdmin = async (req, res, next) => {
 	let { userId } = req.body;
+
 	try {
 		let userToAdmin = await Users.findOne({
 			where: {
@@ -149,9 +160,29 @@ const upgradeToAdmin = async (req, res, next) => {
 			await userToAdmin.update({
 				status: 'Admin',
 			});
-			res.status(200).send(
-				`User ${userToAdmin.username} has been upgraded to admin!`
-			);
+			res.status(200).json(userToAdmin);
+		} else {
+			res.status(400).send('No user was found with that id');
+		}
+	} catch (e) {
+		next(e);
+	}
+};
+
+const upgradeToUser = async (req, res, next) => {
+	let { userId } = req.body;
+
+	try {
+		let userToUser = await Users.findOne({
+			where: {
+				id: userId,
+			},
+		});
+		if (userToUser) {
+			await userToUser.update({
+				status: 'User',
+			});
+			res.status(200).json(userToUser);
 		} else {
 			res.status(400).send('No user was found with that id');
 		}
@@ -182,5 +213,6 @@ module.exports = {
 	unbanUser,
 	getAllOrders,
 	showEvent,
-	hideEvent
+	hideEvent,
+	upgradeToUser
 };

@@ -54,22 +54,24 @@ export default function PopOverCart() {
 
   }
 
-  const sendCart  = async (summary) => {
+
+  const checkStock = async (summary) => {
     try {
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${user.token}`,
-        },
-      };
-      let res = await axios.put('/payment' , {summary}, config)
-      let params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,
-      width=0,height=0,left=-1000,top=-1000`;
-      window.open(res.data , 'HENRYECCOMERCE' , params)
-      console.log(res);
+      const status = await axios.get(`/checkStock/${user.id}`)
+      if(status.status === 200) {
+        const config = {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${user.token}`,
+          },
+        };
+        let res = await axios.put('/payment' , {summary}, config)
+        let params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,
+        width=0,height=0,left=-1000,top=-1000`;
+        window.open(res.data , 'HENRYECCOMERCE' , params)
+      } 
     } catch (error) {
-      // navigate('/login')
-      toast.warning("Tenes que logearte" , toastOptions);
+      toast.warning("NO HAY STOCK" , toastOptions);
     }
   }
 
@@ -178,12 +180,12 @@ export default function PopOverCart() {
                         <div className="mt-6">
                           {summary === 0 || summary < 0 ? (<button
                            disabled={true}
-                            onClick={() => sendCart(summary)}
+                            onClick={() => checkStock(summary)}
                             className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                           >
                             Checkout
                           </button>) : (<button
-                            onClick={() => sendCart(summary)}
+                            onClick={() => checkStock(summary)}
                             className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                           >
                             Checkout
