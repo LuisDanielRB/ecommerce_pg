@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PlusCircleIcon } from "@heroicons/react/20/solid";
+import { XCircleIcon } from '@heroicons/react/20/solid'
 import { createEvent } from "../store/actions";
 import { useDispatch, useSelector } from "react-redux";
 import Logo from "../logo/logo.png";
@@ -36,20 +37,26 @@ function CreateEvent() {
     if (!Date.parse(input.date)) {
       errors.date = "Date of release is required";
     }
-    if (!input.artist) {
-      errors.artist = "artist is required";
+    if (!input.artist.length) {
+      errors.artist = "Artist is required";
     }
     if (!input.price) {
-      errors.price = "price is required";
+      errors.price = "Price is required";
     }
     if (!input.stock) {
-      errors.stock = "stock is required";
+      errors.stock = "Stock is required";
     }
     if (!input.place) {
-      errors.place = "place is required";
+      errors.place = "Place is required";
     }
     if (!input.category.length) {
       errors.category = "Select at least a one or five genres ";
+    }
+    if (!/^[0-9]+$/.test(input.price)) {
+      errors.price = "Only numbers accepted";
+    }
+    if (!/^[0-9]+$/.test(input.stock)) {
+      errors.stock = "Only numbers accepted";
     }
     return errors;
   }
@@ -192,6 +199,28 @@ function CreateEvent() {
     );
   }
 
+  const [disabledButton, setDisabledButton] = useState(true);
+
+  useEffect(() => {
+    if (
+      input.artist.length === 0 ||
+      !input.place ||
+      !input.date ||
+      !input.image ||
+      input.description.length < 20 ||
+      input.description.length > 255 ||
+      input.description.length === 0 ||
+      input.category.length === 0 ||
+      !/^[0-9]+$/.test(input.stock) ||
+      !/^[0-9]+$/.test(input.price)
+    ) {
+      return (setDisabledButton(true));
+    } else {
+      return (setDisabledButton(false));
+    }
+  }, [error, input, setDisabledButton])
+
+
   return (
     <>
       <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -224,7 +253,22 @@ function CreateEvent() {
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   />
                 </div>
-                {error.description && <p> ❌{error.description}</p>}
+                {error.description ?
+                  <div className=" mt-3 rounded-md bg-red-50 p-4">
+                    <div className="flex">
+                      <div className="flex-shrink-0">
+                        <XCircleIcon className="h-5 w-5 text-red-400" aria-hidden="true" />
+                      </div>
+                      <div className="ml-3">
+                        <div className="mt-2 text-center text-red-700">
+                          <ul role="list" className="list-disc space-y-1 pl-5">
+                            {error.description && <p> {error.description}</p>}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  : null}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -238,7 +282,6 @@ function CreateEvent() {
                     type="text"
                     placeholder="Artist..."
                     autoComplete="current-Artist"
-                    required
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   />
                   <button
@@ -248,7 +291,22 @@ function CreateEvent() {
                     <PlusCircleIcon className="h-5 w-5 text-green-800 text-right" />
                   </button>
                 </div>
-                {error.artist && <p> ❌{error.artist}</p>}
+                {error.artist ?
+                  <div className=" mt-3 rounded-md bg-red-50 p-4">
+                    <div className="flex">
+                      <div className="flex-shrink-0">
+                        <XCircleIcon className="h-5 w-5 text-red-400" aria-hidden="true" />
+                      </div>
+                      <div className="ml-3">
+                        <div className="mt-2 text-center text-red-700">
+                          <ul role="list" className="list-disc space-y-1 pl-5">
+                            {error.artist && <p> {error.artist}</p>}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  : null}
                 {input.artist &&
                   input.artist.map((artist, idx) => {
                     return (
@@ -276,7 +334,22 @@ function CreateEvent() {
                     })}
                   </select>
                 </div>
-                {error.place && <p> ❌{error.place}</p>}
+                {error.place ?
+                  <div className=" mt-3 rounded-md bg-red-50 p-4">
+                    <div className="flex">
+                      <div className="flex-shrink-0">
+                        <XCircleIcon className="h-5 w-5 text-red-400" aria-hidden="true" />
+                      </div>
+                      <div className="ml-3">
+                        <div className="mt-2 text-center text-red-700">
+                          <ul role="list" className="list-disc space-y-1 pl-5">
+                            {error.place && <p> {error.place}</p>}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  : null}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -294,7 +367,22 @@ function CreateEvent() {
                     <option value="Convenciones">Convenciones</option>
                   </select>
                 </div>
-                {error.category && <p> ❌{error.category}</p>}
+                {error.category ?
+                  <div className=" mt-3 rounded-md bg-red-50 p-4">
+                    <div className="flex">
+                      <div className="flex-shrink-0">
+                        <XCircleIcon className="h-5 w-5 text-red-400" aria-hidden="true" />
+                      </div>
+                      <div className="ml-3">
+                        <div className="mt-2 text-center text-red-700">
+                          <ul role="list" className="list-disc space-y-1 pl-5">
+                            {error.category && <p> {error.category}</p>}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  : null}
               </div>
               <div>
                 <label
@@ -310,11 +398,25 @@ function CreateEvent() {
                     name="price"
                     type="text"
                     placeholder="$..."
-                    required
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   />
                 </div>
-                {error.price && <p> ❌{error.price}</p>}
+                {error.price ?
+                  <div className=" mt-3 rounded-md bg-red-50 p-4">
+                    <div className="flex">
+                      <div className="flex-shrink-0">
+                        <XCircleIcon className="h-5 w-5 text-red-400" aria-hidden="true" />
+                      </div>
+                      <div className="ml-3">
+                        <div className="mt-2 text-center text-red-700">
+                          <ul role="list" className="list-disc space-y-1 pl-5">
+                            {error.price && <p> {error.price}</p>}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  : null}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -328,11 +430,25 @@ function CreateEvent() {
                     type="text"
                     placeholder="Stock..."
                     autoComplete="current-Stock"
-                    required
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   />
                 </div>
-                {error.stock && <p> ❌{error.stock}</p>}
+                {error.stock ?
+                  <div className=" mt-3 rounded-md bg-red-50 p-4">
+                    <div className="flex">
+                      <div className="flex-shrink-0">
+                        <XCircleIcon className="h-5 w-5 text-red-400" aria-hidden="true" />
+                      </div>
+                      <div className="ml-3">
+                        <div className="mt-2 text-center text-red-700">
+                          <ul role="list" className="list-disc space-y-1 pl-5">
+                            {error.stock && <p> {error.stock}</p>}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  : null}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -345,11 +461,25 @@ function CreateEvent() {
                     type="date"
                     name="date"
                     autoComplete="current-Date"
-                    required
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   />
                 </div>
-                {error.date && <p> ❌{error.date}</p>}
+                {error.date ?
+                  <div className=" mt-3 rounded-md bg-red-50 p-4">
+                    <div className="flex">
+                      <div className="flex-shrink-0">
+                        <XCircleIcon className="h-5 w-5 text-red-400" aria-hidden="true" />
+                      </div>
+                      <div className="ml-3">
+                        <div className="mt-2 text-center text-red-700">
+                          <ul role="list" className="list-disc space-y-1 pl-5">
+                            {error.date && <p> {error.date}</p>}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  : null}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -362,13 +492,13 @@ function CreateEvent() {
                     placeholder="The url of your image"
                     name="image"
                     autoComplete="off"
-                    required
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   />
                   <img src={input.image} />
                 </div>
               </div>
               <button
+                disabled={disabledButton}
                 type="submit"
                 className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm bg-indigo-400"
               >
