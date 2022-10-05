@@ -2,9 +2,7 @@ const { Users , Cart , ReviewScore} = require("../db");
 const { Op } = require('sequelize');
 
 
-const adminDelete = async (req, res) => {
 
-}
 
 const adminPut = async (req, res) => {
     const { idUser, idAdmin } = req.query
@@ -39,6 +37,7 @@ const adminPut = async (req, res) => {
 
 const bannedUser = async (req, res)=>{
 	const {id} = req.params;
+
 	try {
 		if(!id)	res.status(404).json({message: 'id is require..'});
 		else{
@@ -97,7 +96,7 @@ const showEvent = async (req, res, next) => {
 		next(err);
 	}
 };
-
+// Update to joaco , hay que revisar  si anda bien
 const getAllOrders = async (req, res, next) => {
 	try {
 		let allOrders = await Cart.findAll({
@@ -177,5 +176,11 @@ const deleteCommentToAdmin = async (req, res, next) => {
 
 module.exports = {
     adminPut,
-	bannedUser
+	bannedUser,
+	deleteCommentToAdmin,
+	upgradeToAdmin,
+	unbanUser,
+	getAllOrders,
+	showEvent,
+	hideEvent
 };

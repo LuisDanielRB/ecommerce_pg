@@ -51,11 +51,7 @@ function rootReducer(state = initialState, action) {
         user: action.payload,
       };
 
-    case "EDIT_PROFILE":
-      return {
-        ...state,
-        user: action.payload,
-      }
+
 
     case "POST_REGISTRO":
       return {
@@ -307,6 +303,15 @@ function rootReducer(state = initialState, action) {
           ...state.eventsDetail,
           comments: [...state.eventsDetail.comments, action.payload]
         },
+      }
+    }
+
+    case 'EDIT_PROFILE': {
+      console.log(action.payload);
+      localStorage.setItem("user", JSON.stringify(action.payload))
+      return {
+        ...state,
+        user: action.payload,
       }
     }
 

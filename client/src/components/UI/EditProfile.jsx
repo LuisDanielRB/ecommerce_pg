@@ -89,7 +89,7 @@ export default function EditProfile() {
         dispatch(editProfile(user.id, datos));
     }
 
-    console.log(datos)
+
     return (
         <>
             <div>

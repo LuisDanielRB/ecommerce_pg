@@ -35,9 +35,23 @@ const {
 const { passwordRecovery } = require("../controllers/email-controller");
 const { fileUpload } = require("../helpers/fileUpload");
 const passport = require("passport");
-const {getReviewScore, postReviewScore, putReviewScore, deleteReviewScore} = require('../controllers/reviewScore-controller')
-const {adminDelete, adminPut , bannedUser} = require('../controllers/admin-controller')
-
+const {
+  getReviewScore,
+  postReviewScore,
+  putReviewScore,
+  deleteReviewScore,
+  getComments,
+} = require("../controllers/reviewScore-controller");
+const {
+  adminPut,
+  bannedUser,
+  hideEvent,
+  showEvent,
+  unbanUser,
+  deleteCommentToAdmin,
+  getAllOrders,
+  upgradeToAdmin,
+} = require("../controllers/admin-controller");
 
 // USUARIO
 router.post("/user/google", googleSignIn);
@@ -70,9 +84,14 @@ router.delete("/reviewScore/:eventId", deleteReviewScore);
 router.get("/comments/:id", getComments);
 
 // ADMIN
-router.put('/admin', adminPut);
-router.put('/admin', adminDelete)
+router.put("/admin", adminPut);
 router.put("/user/:id/banned", bannedUser);
+router.put("/hideEvent", hideEvent);
+router.put("/showEvent", showEvent);
+router.get("/showOrders", getAllOrders);
+router.put("/unbanUser", unbanUser);
+router.put("/upgradeToAdmin", upgradeToAdmin);
+router.delete("/deleteComents", deleteCommentToAdmin);
 
 //CART
 router.get("/cart", getCart);
@@ -84,7 +103,6 @@ router.put("/payment", mercadopagoPayment);
 router.put("/checkout", checkoutCart);
 
 module.exports = router;
-
 
 
 

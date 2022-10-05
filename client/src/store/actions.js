@@ -187,11 +187,17 @@ export const changePassword = (userId , password) => async (dispatch) => {
   }
 }
 
-export function editProfile(id, payload) {
-  return async function (dispatch) {
-    let edit = await axios.put(`/user/${id}/profile`, payload);
-    return dispatch({ type: "EDIT_PROFILE", payload: edit.data })
-  }
+export const editProfile = (id, payload) => async (dispatch) => {
+    try {
+      let edit = await axios.put(`/user/${id}/profile`, payload);
+    console.log(edit);
+      return dispatch({
+      type: "EDIT_PROFILE", 
+      payload: edit.data 
+    })
+    } catch (error) {
+      console.log(error);
+    } 
 }
 
 ///////////////////////////CART///////////////////////////////////
