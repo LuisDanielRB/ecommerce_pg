@@ -31,17 +31,19 @@ const initialState = {
   allFavourites: localStorage.getItem("favorites")
     ? JSON.parse(localStorage.getItem("favorites"))
     : [],
-  comments: []
+  comments: [],
+  // past orders
+  pastOrders: [],
 };
 
 function rootReducer(state = initialState, action) {
   switch (action.type) {
 
-    case 'GET_COMMENTS': {
+    case 'GET_COMMENTS' : {
       return {
         ...state,
-        comments: action.payload
-      }
+        comments: action.payload,
+      };
     }
 
     case "POST_LOGIN":
@@ -109,28 +111,28 @@ function rootReducer(state = initialState, action) {
       };
 
     case "USER_GET_FAVORITES":
-      localStorage.setItem('favorites', JSON.stringify(action.payload));
+      localStorage.setItem("favorites", JSON.stringify(action.payload));
       return {
         ...state,
         allFavourites: action.payload,
       };
 
     case 'USER_ADD_FAVORITE': {
-      localStorage.setItem('favorites', JSON.stringify(action.payload))
+      localStorage.setItem('favorites' , JSON.stringify(action.payload))
       return {
         ...state,
-        allFavourites: action.payload
-      }
+        allFavourites: action.payload,
+      };
     }
 
     case 'DELETE_FAVORITE': {
       let favoritos = JSON.parse(localStorage.getItem("favorites"))
       let nuevoArray = favoritos.filter(e => e !== action.payload)
-      localStorage.setItem('favorites', JSON.stringify(nuevoArray))
-      return {
+      localStorage.setItem('favorites' , JSON.stringify(nuevoArray))
+        return {
         ...state,
-        allFavourites: nuevoArray
-      }
+        allFavourites: nuevoArray,
+      };
     }
 
     ////////////CART///////////////////////
@@ -177,7 +179,7 @@ function rootReducer(state = initialState, action) {
       };
 
     case "ADD_CART":
-      let newPrice = action.payload.reduce((acc, item) => item.price + state.summary, 0);
+      let newPrice = action.payload.reduce((acc, item) => item.price + state.summary,0);
       return {
         ...state,
         cart: action.payload,
@@ -285,35 +287,26 @@ function rootReducer(state = initialState, action) {
         eventsById: state.eventsById.splice(""),
       };
 
-    ////////// REVIEWS //////////
-    case 'GET_REVIEW': {
-      return {
-        ...state,
-        eventsDetail: {
-          ...state.eventsDetail,
-          comments: action.payload
-        },
+      ////////// REVIEWS //////////
+      case 'GET_REVIEW': {
+        return {
+          ...state,
+          eventsDetail: {
+            ...state.eventsDetail,
+            comments: action.payload
+          },
+        }
       }
-    }
 
-    case 'POST_REVIEW': {
-      return {
-        ...state,
-        eventsDetail: {
-          ...state.eventsDetail,
-          comments: [...state.eventsDetail.comments, action.payload]
-        },
+      case 'POST_REVIEW' : {
+        return {
+          ...state,
+          eventsDetail: {
+            ...state.eventsDetail,
+            comments: [...state.eventsDetail.comments , action.payload]
+          },
+        }
       }
-    }
-
-    case 'EDIT_PROFILE': {
-      console.log(action.payload);
-      localStorage.setItem("user", JSON.stringify(action.payload))
-      return {
-        ...state,
-        user: action.payload,
-      }
-    }
 
     default:
       return state;

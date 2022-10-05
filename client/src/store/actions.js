@@ -146,7 +146,7 @@ export function userAddFavorite(userId, idEvent) {
     });
     return dispatch({
       type: "USER_ADD_FAVORITE",
-      payload: res.data.favorites
+      payload: res.data.favorites,
     });
   };
 }
@@ -161,9 +161,9 @@ export function userDeleteFavorite(userId, idEvent) {
     });
     console.log(res.data);
     return dispatch({
-      type: 'DELETE_FAVORITE',
-      payload: idEvent
-    })
+      type: "DELETE_FAVORITE",
+      payload: idEvent,
+    });
   };
 }
 
@@ -174,8 +174,8 @@ export function userGetFavorite(userId) {
   };
 }
 
+
 export const changePassword = (userId , password) => async (dispatch) => {
-  console.log(userId , password)
   try {
       const change = await axios.put("/changePassword", {userId , password});
       return dispatch({
@@ -190,7 +190,6 @@ export const changePassword = (userId , password) => async (dispatch) => {
 export const editProfile = (id, payload) => async (dispatch) => {
     try {
       let edit = await axios.put(`/user/${id}/profile`, payload);
-    console.log(edit);
       return dispatch({
       type: "EDIT_PROFILE", 
       payload: edit.data 
@@ -199,6 +198,7 @@ export const editProfile = (id, payload) => async (dispatch) => {
       console.log(error);
     } 
 }
+
 
 ///////////////////////////CART///////////////////////////////////
 
@@ -340,7 +340,6 @@ export function updatePassword(payload) {
   };
 }
 
-
 export const deleteEventById = (id) => async (dispatch) => {
   const deleteEvent = await axios.delete(`/events/${id}`);
   return dispatch({
@@ -359,43 +358,58 @@ export const getEventsById = (id) => async (dispatch) => {
   } catch (error) {
     console.log(error.message);
   }
-
 };
 
-export const postReviewScore = (eventId , userId , description , score) => async (dispatch) => {
-
-  try {
-    const result = await axios.post(`reviewScore/${eventId}` , {userId , description , score})
-    return dispatch({
-      type: "POST_REVIEW",
-      payload: result.data
-    })
-  } catch (error) {
-    console.log(error)
-  }
-}
+export const postReviewScore =
+  (eventId, userId, description, score, username) => async (dispatch) => {
+    try {
+      const result = await axios.post(`reviewScore/${eventId}`, {
+        userId,
+        description,
+        score,
+        username,
+      });
+      return dispatch({
+        type: "POST_REVIEW",
+        payload: result.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
 export const getReviews = (eventId) => async (dispatch) => {
   try {
-    const result = await axios.get(`/reviewScor?eventId=${eventId}`)
-    return dispatch({ 
-      type: "GET_REVIEW", 
-      payload: result.data
-    })
+    const result = await axios.get(`/reviewScor?eventId=${eventId}`);
+    return dispatch({
+      type: "GET_REVIEW",
+      payload: result.data,
+    });
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
 export const getComments = (id) => async (dispatch) => {
   try {
-    const comments = await axios.get(`/comments/${id}`)
+    const comments = await axios.get(`/comments/${id}`);
     return dispatch({
       type: "GET_COMMENTS",
-      payload: comments.data
-    })
+      payload: comments.data,
+    });
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
+export const getPastOrders = (userId) => async (dispatch) => {
+  try {
+    const pastOrders = await axios.get(`/allcart/${userId}`);
+    return dispatch({
+      type: "GET_PAST_ORDERS",
+      payload: pastOrders.data,
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};

@@ -9,7 +9,7 @@ import data from "../utils/place.json";
 function CreateEvent() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const artistInput = useRef(null);
+  const { user } = useSelector((state) => state);
   const [error, setError] = useState({});
   const [artistas, setArtistas] = useState({});
   const [input, setInput] = useState({
@@ -22,9 +22,8 @@ function CreateEvent() {
     category: [],
     image: "",
     imageId: "",
-    userId: null,
+    userId: user.id,
   });
-  console.log(input)
 
   function validation(input) {
     let errors = {};
@@ -62,55 +61,51 @@ function CreateEvent() {
     data.append("file", image);
     data.append("upload_preset", "pkokipva");
     fetch("https://api.cloudinary.com/v1_1/dzjonhhps/image/upload", {
-      method: 'POST',
-      body: data
-    }).then(res => res.json()).then(res => {
-      setInput({
-        ...input,
-        image: res.secure_url,
-        imageId: res.public_id
-      })
+      method: "POST",
+      body: data,
     })
+      .then((res) => res.json())
+      .then((res) => {
+        setInput({
+          ...input,
+          image: res.secure_url,
+          imageId: res.public_id,
+        });
+      });
   }
 
   const handleInputArtist = (e) => {
     const { value } = e.target;
-    setArtistas(value)
+    setArtistas(value);
   };
 
-  function handleArtist(e) {
-    e.preventDefault();
-    setArtists([...artists, artistInput.current.value]);
-    setInput({ ...input, artist: [...input.artist] });
-  }
-
-  function handleInputArtist(e) {
-    setInput({
-      ...input,
-      artist: [...artists, e.target.value]
-    });
-    setError(
-      validation({
+  const handleArtist = (e) => {
+    let nombre = e;
+    if (Object.values(input.artist).includes(nombre)) {
+      alert("Artist already exists");
+    } else {
+      setInput({
         ...input,
-        artist: artists
-      })
-    );
+        artist: [...input.artist, nombre],
+      });
+      setError(
+        validation({
+          ...input,
+          artist: [...input.artist, nombre],
+        })
+      );
+      setArtistas("");
+    }
   };
 
   const handleDeleteArtist = (e) => {
-    let newEvent = input.artist
-    const a = newEvent.filter(artist => artist !== e)
+    let newEvent = input.artist;
+    const a = newEvent.filter((artist) => artist !== e);
     setInput({
       ...input,
-      [e.target.name]: e.target.value,
+      artist: a,
     });
-    setError(
-      validation({
-        ...input,
-        [e.target.name]: e.target.value,
-      })
-    );
-  }
+  };
 
   function handleInputPrice(e) {
     setInput({
@@ -179,9 +174,22 @@ function CreateEvent() {
       category: [],
       image: "",
       imageId: "",
-      userId: null,
+      userId: "",
     });
     navigate("/events");
+  }
+
+  function handleInputChange(e) {
+    setInput({
+      ...input,
+      [e.target.name]: e.target.value,
+    });
+    setError(
+      validation({
+        ...input,
+        [e.target.name]: e.target.value,
+      })
+    );
   }
 
   return (
@@ -191,6 +199,7 @@ function CreateEvent() {
           <a href="/">
             <img
               className="mx-auto h-24 w-auto"
+              src={Logo}
               alt="Your Company"
             />
           </a>
@@ -222,7 +231,6 @@ function CreateEvent() {
                   Artist
                 </label>
                 <div className="mt-1 flex">
-
                   <input
                     onChange={(e) => handleInputArtist(e)}
                     id="artist"
@@ -233,27 +241,25 @@ function CreateEvent() {
                     required
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   />
-                  <button onClick={() => handleArtist(artistas)} className="m-2">
+                  <button
+                    onClick={() => handleArtist(artistas)}
+                    className="m-2"
+                  >
                     <PlusCircleIcon className="h-5 w-5 text-green-800 text-right" />
                   </button>
                 </div>
                 {error.artist && <p> ❌{error.artist}</p>}
-                {input.artist ? input.artist.map((artist, id) => {
-                  return (
-                    <div key={id}>
-                      <p>
-                        {artist}
-                        <button
-                          type="button"
-                          value={artist}
-                          onClick={(e) => handleArtistDelete(e, artist)}
-                        >
+                {input.artist &&
+                  input.artist.map((artist, idx) => {
+                    return (
+                      <p key={idx}>
+                        {artist}{" "}
+                        <button onClick={() => handleDeleteArtist(artist)}>
                           X
                         </button>
                       </p>
-                    </div>
-                  );
-                }): input.artist}
+                    );
+                  })}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -264,18 +270,14 @@ function CreateEvent() {
                     onChange={(e) => handleSelectPlace(e)}
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   >
-                    <option hidden>
-                      Please select a place
-                    </option>
-                    {
-                      data?.map((place, id) => {
-                        return <option key={id}>{place.name_es}</option>
-                      })
-                    }
-                  </select >
-                </div >
+                    <option hidden>Please select a place</option>
+                    {data?.map((place, id) => {
+                      return <option key={id}>{place.name_es}</option>;
+                    })}
+                  </select>
+                </div>
                 {error.place && <p> ❌{error.place}</p>}
-              </div >
+              </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">
                   Category
@@ -285,9 +287,7 @@ function CreateEvent() {
                     onChange={(e) => handleSelectCategory(e)}
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   >
-                    <option hidden>
-                      Please select a category
-                    </option>
+                    <option hidden>Please select a category</option>
                     <option value="Musica">Musica</option>
                     <option value="Desfile">Desfile</option>
                     <option value="Espectaculo">Espectaculo</option>
@@ -364,7 +364,8 @@ function CreateEvent() {
                     autoComplete="off"
                     required
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                  /><img src={input.image} />
+                  />
+                  <img src={input.image} />
                 </div>
               </div>
               <button
@@ -373,7 +374,7 @@ function CreateEvent() {
               >
                 Create
               </button>
-            </form >
+            </form>
             <div className="mt-4">
               <a
                 href="/"
@@ -382,10 +383,11 @@ function CreateEvent() {
                 <input type="button" value="Go Back" />
               </a>
             </div>
-          </div >
-        </div >
-      </div >
+          </div>
+        </div>
+      </div>
     </>
   );
 }
+
 export default CreateEvent;
