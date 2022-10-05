@@ -31,7 +31,9 @@ const initialState = {
   allFavourites: localStorage.getItem("favorites")
     ? JSON.parse(localStorage.getItem("favorites"))
     : [],
-  comments: []
+  comments: [],
+  // past orders
+  pastOrders: [],
 };
 
 function rootReducer(state = initialState, action) {
@@ -40,8 +42,8 @@ function rootReducer(state = initialState, action) {
     case 'GET_COMMENTS' : {
       return {
         ...state,
-        comments: action.payload
-      }
+        comments: action.payload,
+      };
     }
 
     case "POST_LOGIN":
@@ -50,6 +52,8 @@ function rootReducer(state = initialState, action) {
         ...state,
         user: action.payload,
       };
+
+
 
     case "POST_REGISTRO":
       return {
@@ -107,7 +111,7 @@ function rootReducer(state = initialState, action) {
       };
 
     case "USER_GET_FAVORITES":
-      localStorage.setItem('favorites', JSON.stringify(action.payload));
+      localStorage.setItem("favorites", JSON.stringify(action.payload));
       return {
         ...state,
         allFavourites: action.payload,
@@ -117,8 +121,8 @@ function rootReducer(state = initialState, action) {
       localStorage.setItem('favorites' , JSON.stringify(action.payload))
       return {
         ...state,
-        allFavourites: action.payload
-      }
+        allFavourites: action.payload,
+      };
     }
 
     case 'DELETE_FAVORITE': {
@@ -127,8 +131,8 @@ function rootReducer(state = initialState, action) {
       localStorage.setItem('favorites' , JSON.stringify(nuevoArray))
         return {
         ...state,
-        allFavourites: nuevoArray
-      }
+        allFavourites: nuevoArray,
+      };
     }
 
     ////////////CART///////////////////////
@@ -278,9 +282,12 @@ function rootReducer(state = initialState, action) {
       };
 
     case "DELETE_EVENT_BY_ID":
+      console.log(action.payload);
+      let nuevosEventos = state.eventsById.filter(event => event.id !== action.payload)
+      console.log(nuevosEventos);
       return {
         ...state,
-        eventsById: state.eventsById.splice(""),
+        eventsById: nuevosEventos
       };
 
       ////////// REVIEWS //////////
@@ -289,14 +296,7 @@ function rootReducer(state = initialState, action) {
           ...state,
           eventsDetail: {
             ...state.eventsDetail,
-            comments: [
-              {
-                text: action.payload.description,
-                score: action.payload.score,
-                EventId: action.payload.eventId,
-                UserId: action.payload.userId,
-              },
-            ],
+            comments: action.payload
           },
         }
       }
@@ -306,17 +306,25 @@ function rootReducer(state = initialState, action) {
           ...state,
           eventsDetail: {
             ...state.eventsDetail,
-            comments: [
-              {
-                text: action.payload.description,
-                score: action.payload.score,
-                EventId: action.payload.eventId,
-                UserId: action.payload.userId,
-              },
-            ],
+            comments: [...state.eventsDetail.comments , action.payload]
           },
         }
       }
+
+      case 'GET_PAST_ORDERS': {
+        return {
+          ...state,
+          pastOrders: action.payload
+        }
+      }
+
+      case 'EDIT_PROFILE' :
+      localStorage.setItem('user', JSON.stringify(action.payload))
+      console.log(action.payload)
+       return {
+          ...state,
+          user: action.payload
+        }
 
     default:
       return state;

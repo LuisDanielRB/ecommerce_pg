@@ -1,9 +1,39 @@
 import React from "react";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getEventDetail } from "../../store/actions";
 
-function EventEdit() {
+function EventEdit({ id }) {
+  const dispatch = useDispatch();
+  // const eventDetail = useSelector((state) => state.eventDetail);
+  // console.log(eventDetail);
+
+  const event = dispatch(getEventDetail(Number(id)));
+  console.log(event);
+  // useEffect(() => {
+  // }, [dispatch, id]);
+
   return (
     <form className="space-y-8 divide-y divide-gray-200">
-      <div className="space-y-8 divide-y divide-gray-200">
+      <div className="pt-5">
+        <div className="flex justify-end">
+          <a
+            href="/private/admindashboard"
+            type="button"
+            className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          >
+            Cancel
+          </a>
+          <a
+            type="submit"
+            className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          >
+            Save
+          </a>
+        </div>
+      </div>
+
+      <div className="space-y-8 divide-y divide-gray-200 pt-5">
         <div>
           <div>
             <h3 className="text-lg font-medium leading-6 text-gray-900">

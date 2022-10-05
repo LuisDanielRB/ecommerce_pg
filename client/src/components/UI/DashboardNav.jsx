@@ -10,7 +10,7 @@ import {
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import GridList from "./GridList";
 import StatsDashboard from "./StatsDashboard";
-import EventEdit from "./EventEdit";
+import PastOrders from "./PastOrders";
 
 const userNavigation = [
   { name: "Your Profile", href: "#" },
@@ -81,7 +81,7 @@ function DashboardNav({ eventos, user, setActiveState, navigation }) {
                       </button>
                     </div>
                   </Transition.Child>
-                  <div className="flex flex-shrink-0 items-center px-4">
+                  <div href="/" className="flex flex-shrink-0 items-center px-4">
                     <img
                       className="h-8 w-auto"
                       src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
@@ -267,6 +267,7 @@ function DashboardNav({ eventos, user, setActiveState, navigation }) {
                 ) : null}
                 <br />
                 {navigation[1].current ? <GridList eventos={eventos} /> : null}
+                {navigation[2].current ? <PastOrders user={user} /> : null}
               </div>
             </div>
           </main>

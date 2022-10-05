@@ -40,7 +40,11 @@ function Navbar() {
 
   const id = user? user.id : false
 
-  // console.log(user.id)
+  
+  const reset = () => {
+    localStorage.clear()
+  }
+
 
   const navigation = [
     { name: "Dashboard", href: "#", current: true },
@@ -50,9 +54,10 @@ function Navbar() {
   ];
 
   const userNavigation = [
-    { name: "Your Profile", href: "#" },
-    { name: "Settings", href: `/private/user/${id}/profile` },
-    { name: "Log out", href: "#" },
+
+    { name: "Settings", href: `/private/user/${id}/profile`, current: true },
+    { name: "Log out", href: "#", current: true },
+
     { name: "Dashboard", href: "/private/admindashboard" },
   ];
 

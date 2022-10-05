@@ -15,40 +15,41 @@ const transporter = createTransport({
   },
 });
 
+
 const sendMailWelcome = async (us, mail) => {
-  /* */
-  const handlebarOptions = {
-    viewEngine: {
-      extName: ".handlebars",
-      partialsDir: path.resolve("./views"),
-      defaultLayout: false,
-    },
-    viewPath: path.join(__dirname, "../views"),
-    extName: ".handlebars",
-  };
+    const handlebarOptions = {
+        viewEngine: {
+            extName: '.handlebars',
+            partialsDir: path.resolve('./views'),
+            defaultLayout: false,
+        },
+        viewPath: path.join(__dirname, '../views'),
+        extName: '.handlebars'
+    }
+    
+    transporter.use('compile', hbs(handlebarOptions))
 
-  transporter.use("compile", hbs(handlebarOptions));
+    /* */
 
-  /* */
+    const mailOptions = {
+        from: 'Prueba desde el servidor de NodeJS',
+        to: mail,
+        subject: 'Creando una prueba',
+        template: 'email',
+        context: {
+            user: us,
+            mail: mail,
+        }
+    }
+    
+    try {
+        const info = await transporter.sendMail(mailOptions)
+        console.log("Correo enviado satisfactoriamente")
+    } catch (error) {
+        console.log(error)
+    }
+}
 
-  const mailOptions = {
-    from: "Prueba desde el servidor de NodeJS",
-    to: mail,
-    subject: "Creando una prueba",
-    template: "email",
-    context: {
-      user: us,
-      mail: mail,
-    },
-  };
-
-  try {
-    const info = await transporter.sendMail(mailOptions);
-    console.log("Correo enviado satisfactoriamente");
-  } catch (error) {
-    console.log(error);
-  }
-};
 
 const emailReset = async (email, id) => {
   const handlebarOptions = {
