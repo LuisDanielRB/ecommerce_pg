@@ -51,8 +51,8 @@ function EventEdit({ id }) {
             Cancel
           </a>
           <a
-            href="/private/admindashboard"
-            onSubmit={(e) => handleSubmit(e)}
+            // href="/private/admindashboard"
+            onClick={(e) => handleSubmit(e)}
             type="submit"
             className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
@@ -258,7 +258,7 @@ function EventEdit({ id }) {
             Cancel
           </button>
           <button
-            onSubmit={(e) => handleSubmit(e)}
+            onClick={(e) => handleSubmit(e)}
             type="submit"
             className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
