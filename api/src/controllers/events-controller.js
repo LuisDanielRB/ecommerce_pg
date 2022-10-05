@@ -49,6 +49,7 @@ const updateEvent = async (req, res) => {
     image,
     imageId,
   } = req.body;
+  console.log(req.body);
   const { id } = req.params;
   try {
     if (!id) res.status(404).json({ message: "id is require..." });
@@ -133,6 +134,7 @@ const getEvents = async (req, res) => {
 
 const getEventDetail = async (req, res, next) => {
   const { id } = req.params;
+  console.log(id);
   let detail;
 
   if (id.includes("-")) {
@@ -142,6 +144,7 @@ const getEventDetail = async (req, res, next) => {
           id: id,
         },
       });
+      console.log(detail);
     } catch (error) {
       console.log(error);
     }

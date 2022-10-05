@@ -23,7 +23,7 @@ function Navbar() {
   const { user } = useSelector((state) => state);
   const { cartState } = useSelector((state) => state);
   const [search, setSearch] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(checkStates());
@@ -33,33 +33,19 @@ function Navbar() {
     e.preventDefault();
     dispatch(userSignOut("user"));
     logOut();
-    navigate('/')
+    navigate("/");
   };
 
+  const id = user ? user.id : false;
 
-
-  const id = user? user.id : false
-
-  
   const reset = () => {
-    localStorage.clear()
-  }
-
-
-
-  const navigation = [
-    { name: "Dashboard", href: "#", current: true },
-    { name: "Calendar", href: "#", current: false },
-    { name: "Teams", href: "#", current: false },
-    { name: "Directory", href: "#", current: false },
-  ];
+    localStorage.clear();
+  };
 
   const userNavigation = [
     { name: "Your Profile", href: "#" },
-
     { name: "Settings", href: `/private/user/${id}/profile`, current: true },
     { name: "Log out", href: "#", current: true },
-
     { name: "Dashboard", href: "/private/admindashboard" },
   ];
 
@@ -73,7 +59,7 @@ function Navbar() {
 
   function handleSearchClick(e) {
     e.preventDefault();
-    search === false ? setSearch(true) : setSearch(false)
+    search === false ? setSearch(true) : setSearch(false);
   }
 
   return (
@@ -118,9 +104,7 @@ function Navbar() {
                       >
                         Buscar...
                       </button>
-                      {
-                        search === true ? <SearchInput /> : null
-                      }
+                      {search === true ? <SearchInput /> : null}
                     </div>
                   </div>
                 </div>
@@ -235,7 +219,7 @@ function Navbar() {
                     <div className="flex justify-center">
                       <div>
                         <Link
-                        onClick={() => reset()}
+                          onClick={() => reset()}
                           to={"/login"}
                           className="ml-6 inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         >
@@ -244,7 +228,7 @@ function Navbar() {
                       </div>
                       <div>
                         <Link
-                        onClick={() => reset()}
+                          onClick={() => reset()}
                           to={"/register"}
                           className="ml-6 inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         >
@@ -261,10 +245,7 @@ function Navbar() {
               <div className="border-t border-gray-200 pt-4 pb-3">
                 <div className="mx-auto flex max-w-3xl items-center px-4 sm:px-6">
                   <div className="flex-shrink-0">
-                    <img
-                      className="h-10 w-10 rounded-full"
-                      alt=""
-                    />
+                    <img className="h-10 w-10 rounded-full" alt="" />
                   </div>
                   <div className="ml-3">
                     <div className="text-base font-medium text-gray-800">

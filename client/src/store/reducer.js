@@ -316,6 +316,12 @@ function rootReducer(state = initialState, action) {
       };
     }
 
+    case "UPDATE_EVENT": {
+      return {
+        ...state,
+      };
+    }
+
     default:
       return state;
   }
