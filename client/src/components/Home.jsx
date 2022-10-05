@@ -4,7 +4,7 @@ import Stats from "./UI/Stats";
 import Footer from "./UI/Footer";
 import GridCards from "./UI/GridCards";
 import { useDispatch, useSelector } from "react-redux";
-import Carousel from "./UI/Carousel";
+import Carrousel from "./UI/Carrousel";
 import { useEffect } from "react";
 import { getAllEvents } from "../store/actions";
 import CallToAction from "./UI/CallToAction";
@@ -20,7 +20,7 @@ function Home() {
   return (
     <>
       <Navbar />
-      <Carousel />
+      <Carrousel />
       <CallToAction />
       <Stats />
       <GridCards eventos={eventos} />

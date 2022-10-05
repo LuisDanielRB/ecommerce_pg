@@ -9,7 +9,7 @@ const EventDetail = lazy(() => import("../UI/CardDetail"));
 const Events = lazy(() => import("../Events"));
 const AdminDashboard = lazy(() => import("./Dashboard/AdminDashboard"));
 const AdminDashboardEdit = lazy(() => import("./Dashboard/AdminDashboardEdit"));
-const Checkout = lazy(() => import("../UI/Checkout"));
+const Checkout = lazy(() => import('../UI/Checkout'));
 const EditProfile = lazy(() => import("../UI/EditProfile"));
 
 function Private() {

@@ -17,7 +17,7 @@ function PastOrders({ user }) {
   ];
   const dispatch = useDispatch();
   const pastOrders = useSelector((state) => state.pastOrders);
-  console.log(pastOrders);
+    
 
   useEffect(() => {
     dispatch(getPastOrders(user.id));
@@ -75,44 +75,41 @@ function PastOrders({ user }) {
                 <tbody className="divide-y divide-gray-200 bg-white">
                   {pastOrders.map((order) => (
                     <tr key={order.id}>
-                      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
-                        <div className="flex items-center">
-                          <div className="h-10 w-10 flex-shrink-0">
-                            <img
-                              className="h-10 w-10 rounded-full"
-                              src={order.image || null}
-                              alt=""
-                            />
-                          </div>
-                          <div className="ml-4">
-                            <div className="font-medium text-gray-900">
-                              {order.name}
-                            </div>
-                            {/* <div className="text-gray-500">{order.email}</div> */}
-                          </div>
-                        </div>
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        <div className="text-gray-900">{order.totalPrice}</div>
-                        <div className="text-gray-500">{order.totalPrice}</div>
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        <span className="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">
-                          Active
-                        </span>
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {order.role}
-                      </td>
-                      <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                        <a
-                          href="#"
-                          className="text-indigo-600 hover:text-indigo-900"
-                        >
-                          Edit<span className="sr-only">, {order.name}</span>
-                        </a>
-                      </td>
-                    </tr>
+                    <th>CARRITO CON EL ID: {order.id}</th>
+                    <th className="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">
+                         STATUS: {order.status}
+                      </th>
+                      {order.events.map((event) => (
+                        <tr key={event.id}>
+                           <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
+                           <div className="flex items-center">
+                             <div className="h-10 w-10 flex-shrink-0">
+                               <img
+                                 className="h-10 w-10 rounded-full"
+                                 src={event.image || null}
+                                 alt=""
+                               />
+                             </div>
+                             <div className="ml-4">
+                               <div className="font-medium text-gray-900">
+                                 PRECIO DEL PRODUCTO: ${event.price}
+                               </div>
+                               {/* <div className="text-gray-500">{order.email}</div> */}
+                             </div>
+                           </div>
+                         </td>
+                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                         Cantidad: {event.Cart_Events.amount}
+                         </td>
+                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                           DETALLE DEL EVENTO: {event.description}
+                         </td>
+                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                           ARTISTAS: {event.artist.map(artist => artist)}
+                         </td>
+                          </tr>
+                      ))}
+                      </tr>
                   ))}
                 </tbody>
               </table>

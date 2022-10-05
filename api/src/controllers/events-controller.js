@@ -282,5 +282,5 @@ module.exports = {
   updateEvent,
   getEventsById,
   getEventHome,
-  ticketsSoldAndAvailableAndAvailableEvents,
+  ticketsSoldAndAvailableAndAvailableEvents
 };

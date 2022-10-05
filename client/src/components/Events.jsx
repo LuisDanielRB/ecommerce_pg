@@ -28,7 +28,7 @@ const Events = () => {
 
   //PAGINANDO
   const [currentPage, setCurrentPage] = useState(1);
-  const [EventsXPage, setEventsXPage] = useState(30);
+  const [EventsXPage, setEventsXPage] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
   const lastEvent = currentPage * EventsXPage;
   const firstEvent = lastEvent - EventsXPage;

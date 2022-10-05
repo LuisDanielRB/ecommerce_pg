@@ -81,7 +81,7 @@ function DashboardNav({ eventos, user, setActiveState, navigation }) {
                       </button>
                     </div>
                   </Transition.Child>
-                  <div className="flex flex-shrink-0 items-center px-4">
+                  <div href="/" className="flex flex-shrink-0 items-center px-4">
                     <img
                       className="h-8 w-auto"
                       src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"

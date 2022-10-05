@@ -36,14 +36,15 @@ function Navbar() {
     navigate("/");
   };
 
+
   const id = user ? user.id : false;
 
   const reset = () => {
     localStorage.clear();
   };
 
+
   const userNavigation = [
-    { name: "Your Profile", href: "#" },
     { name: "Settings", href: `/private/user/${id}/profile`, current: true },
     { name: "Log out", href: "#", current: true },
     { name: "Dashboard", href: "/private/admindashboard" },
