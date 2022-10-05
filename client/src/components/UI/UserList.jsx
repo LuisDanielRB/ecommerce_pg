@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { Switch } from "@headlessui/react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {getUsers} from '../../store/actions'
+import {getUsers , upgradeToAdmin , upgradeToUser , bannedToUser , unBanned} from '../../store/actions'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -23,12 +22,31 @@ const people = [
 
 function UserList() {
   const dispatch = useDispatch()
+
+  const {currentUsers} = useSelector((state) => state)
+
   useEffect(() => {
     dispatch(getUsers())
   },[dispatch])
-  const {currentUsers} = useSelector((state) => state)
 
-  const [enabled, setEnabled] = useState(false);
+
+
+  const upgradeAdmin = (id) => {
+    dispatch(upgradeToAdmin(id))
+  }
+
+  const upgradeUser = (id) => {
+    dispatch(upgradeToUser(id))
+  }
+
+  const bannedUser = (id) => {
+    dispatch(bannedToUser(id))
+  }
+
+  const unban = (id) => {
+    dispatch(unBanned(id))
+  }
+
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
@@ -89,14 +107,29 @@ function UserList() {
                           </div>
                         </div>
                       </td>
-                      {/* <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        <div className="text-gray-900">{person.title}</div>
-                        <div className="text-gray-500">{person.department}</div>
-                      </td> */}
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                         <span className="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">
                           {person.status}
                         </span>
+                      </td>
+                      <td>
+                        { person.status === 'User' ? 
+                        (<button className="mx-2 bg-black p-2 rounded-5 text-white" onClick={() => upgradeUser(person.id)}>
+                          Admin
+                        </button>) : 
+                        (<button className="mx-2 bg-black p-2 rounded-5 text-white" onClick={()=> upgradeAdmin(person.id)}>
+                          User
+                        </button>)
+                        }
+                        {person.status === 'Banned' ? (
+                          <button className="mx-2 bg-black p-2 rounded-5 text-white" onClick={() => unban(person.id)}>
+                            Desban
+                          </button>
+                        ): (
+                          <button className="mx-2 bg-black p-2 rounded-5 text-red-800" onClick={() => bannedUser(person.id)}>
+                            Ban
+                          </button>
+                        )}
                       </td>
                       {/* <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                         <Switch key={person.id}

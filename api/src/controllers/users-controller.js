@@ -18,6 +18,7 @@ const login = async (req, res, next) => {
 		});
 
 		if (!userCheck) return res.status(400).send('User not found');
+		if	(userCheck.status === 'Banned') return res.status(400).send('User banned');
 
 		const checkPassword = await compare(password, userCheck.password)
 
@@ -171,6 +172,8 @@ const googleSignIn = async (req, res, next) => {
 	const { username, email, profile_picture, password } = req.body;
 	try {
 		const alreadyExists = await Users.findOne({ where: { email: email } });
+
+
 		if (alreadyExists) {
 			const jwtToken = jwt.sign(
 				{

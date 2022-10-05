@@ -8,6 +8,7 @@ import {
   postReviewScore,
   getReviews,
   getComments,
+  getCart,
 } from "../../store/actions";
 import { Link, useParams } from "react-router-dom";
 import { useEffect } from "react";
@@ -25,6 +26,7 @@ const CardDetail = () => {
     dispatch(getEventDetail(id));
     dispatch(getReviews(id));
     dispatch(getComments(user.id));
+    dispatch(getCart(user.id))
   }, [dispatch, id]);
 
   const handleCart = (id) => {
