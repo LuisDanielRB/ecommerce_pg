@@ -10,6 +10,7 @@ import {
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import GridList from "./GridList";
 import StatsDashboard from "./StatsDashboard";
+import PastOrders from "./PastOrders";
 
 const userNavigation = [
   { name: "Your Profile", href: "#" },
@@ -266,7 +267,7 @@ function DashboardNav({ eventos, user, setActiveState, navigation }) {
                 ) : null}
                 <br />
                 {navigation[1].current ? <GridList eventos={eventos} /> : null}
-                {navigation[2].current ? <h1>Hola</h1> : null}
+                {navigation[2].current ? <PastOrders user={user} /> : null}
               </div>
             </div>
           </main>

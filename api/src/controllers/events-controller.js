@@ -1,8 +1,7 @@
-const { EventsCreated, Event, Users , ReviewScore} = require("../db");
+const { Event } = require("../db");
 const fs = require("fs");
 const uploadImage = require("../helpers/cloudinary");
 const fsExtra = require("fs-extra");
-
 
 const createEvent = async (req, res) => {
   const {
@@ -19,12 +18,13 @@ const createEvent = async (req, res) => {
   } = req.body;
 
   try {
-    const newEvent = await EventsCreated.create({
+    const newEvent = await Event.create({
       description,
       price,
       date,
       artist,
       place,
+      currentStock: stock,
       stock,
       category,
       image,
@@ -52,22 +52,21 @@ const updateEvent = async (req, res) => {
   const { id } = req.params;
   try {
     if (!id) res.status(404).json({ message: "id is require..." });
-    let eventUpdate = await EventsCreated.findOne({ where: { id } });
+    let eventUpdate = await Event.findOne({ where: { id } });
     if (!eventUpdate) res.status(404).json({ message: "event not found..." });
 
-    if (description)
-      await EventsCreated.update({ description }, { where: { id } });
-    if (price) await EventsCreated.update({ price }, { where: { id } });
-    if (date) await EventsCreated.update({ date }, { where: { id } });
-    if (artist) await EventsCreated.update({ artist }, { where: { id } });
-    if (place) await EventsCreated.update({ place }, { where: { id } });
-    if (stock) await EventsCreated.update({ stock }, { where: { id } });
-    if (category) await EventsCreated.update({ category }, { where: { id } });
+    if (description) await Event.update({ description }, { where: { id } });
+    if (price) await Event.update({ price }, { where: { id } });
+    if (date) await Event.update({ date }, { where: { id } });
+    if (artist) await Event.update({ artist }, { where: { id } });
+    if (place) await Event.update({ place }, { where: { id } });
+    if (stock) await Event.update({ stock }, { where: { id } });
+    if (category) await Event.update({ category }, { where: { id } });
     if (image) {
       await deleteImage(eventUpdate.imageId);
-      await EventsCreated.update({ image, imageId }, { where: { id } });
+      await Event.update({ image, imageId }, { where: { id } });
     }
-    eventUpdate = await EventsCreated.findOne({ where: { id } });
+    eventUpdate = await Event.findOne({ where: { id } });
     res.status(200).json(eventUpdate);
   } catch (error) {
     console.log(error);
@@ -99,7 +98,7 @@ const deleteEvents = async (req, res) => {
     }
   } else {
     try {
-      let response = await EventsCreated.update(
+      let response = await Event.update(
         { isActive: false },
         {
           where: {
@@ -120,21 +119,13 @@ const deleteEvents = async (req, res) => {
 };
 
 const getEvents = async (req, res) => {
-  const eventsDB = await Event.findAll();
-  const eventsCreated = await EventsCreated.findAll({
+  const eventsCreated = await Event.findAll({
     where: {
       isActive: true,
     },
   });
-
-  const data = JSON.parse(fs.readFileSync("dataBase.json", "utf8"));
   try {
-    if (eventsDB.length === 0) {
-      const events = await Event.bulkCreate(data);
-      res.json(events.concat(eventsCreated));
-    } else {
-      res.json(eventsDB.concat(eventsCreated));
-    }
+    res.json(eventsCreated);
   } catch (error) {
     console.log(error);
   }
@@ -156,7 +147,7 @@ const getEventDetail = async (req, res, next) => {
     }
   } else {
     try {
-      const response = await EventsCreated.findOne({
+      const response = await Event.findOne({
         where: {
           id: id,
         },
@@ -200,11 +191,10 @@ const getEventsDetailDb = async (req, res) => {
     }
   } else {
     try {
-      const response = await EventsCreated.findOne({
+      const response = await Event.findOne({
         where: {
           id: id,
         },
-       
       });
       const elem = response.dataValues;
       detail = {
@@ -231,7 +221,7 @@ const getEventsDetailDb = async (req, res) => {
 const getEventsById = async (req, res) => {
   const { id } = req.params;
   try {
-    const eventsById = await EventsCreated.findAll({
+    const eventsById = await Event.findAll({
       where: { userId: id, isActive: true },
     });
     // console.log(eventsById);
@@ -246,40 +236,39 @@ const getEventHome = async (req, res) => {
     let eventos;
     const evento1 = await Event.findOne({
       where: {
-        stock: stock<=200
-      }
-    })
-    res.status(200).json(evento1)
-    console.log(evento1)
+        stock: stock <= 200,
+      },
+    });
+    res.status(200).json(evento1);
+    console.log(evento1);
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
-
-const ticketsSoldAndAvailableAndAvailableEvents = async (req, res)=>{
+const ticketsSoldAndAvailableAndAvailableEvents = async (req, res) => {
   let availableEvents;
   let availableTickets;
   let totalTickets;
   let soldTickets;
 
   try {
-    const {count, rows} = await Event.findAndCountAll();
-    
+    const { count, rows } = await Event.findAndCountAll();
+
     availableEvents = count;
-    
-    rows.map(el => {
+
+    rows.map((el) => {
       availableTickets = availableTickets + el.currentStock;
       totalTickets = totalTickets + el.originalStock;
     });
 
     soldTickets = totalTickets - availableTickets;
 
-    res.status(200).json({availableEvents, soldTickets, availableTickets});
+    res.status(200).json({ availableEvents, soldTickets, availableTickets });
   } catch (error) {
-    res.send('error...',error);
+    res.send("error...", error);
   }
-}
+};
 
 module.exports = {
   createEvent,
@@ -290,6 +279,5 @@ module.exports = {
   updateEvent,
   getEventsById,
   getEventHome,
-  ticketsSoldAndAvailableAndAvailableEvents
-
+  ticketsSoldAndAvailableAndAvailableEvents,
 };

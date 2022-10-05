@@ -22,8 +22,8 @@ function CreateEvent() {
     category: [],
     image: "",
     imageId: "",
-    userId: null,
-  })
+    userId: user.id,
+  });
 
   function validation(input) {
     let errors = {};
@@ -61,48 +61,50 @@ function CreateEvent() {
     data.append("file", image);
     data.append("upload_preset", "pkokipva");
     fetch("https://api.cloudinary.com/v1_1/dzjonhhps/image/upload", {
-      method: 'POST',
-      body: data
-    }).then(res => res.json()).then(res => {
-      setInput({
-        ...input,
-        image: res.secure_url,
-        imageId: res.public_id
-      })
+      method: "POST",
+      body: data,
     })
+      .then((res) => res.json())
+      .then((res) => {
+        setInput({
+          ...input,
+          image: res.secure_url,
+          imageId: res.public_id,
+        });
+      });
   }
 
   const handleInputArtist = (e) => {
     const { value } = e.target;
-    setArtistas(value)
+    setArtistas(value);
   };
 
   const handleArtist = (e) => {
-    let nombre = e
+    let nombre = e;
     if (Object.values(input.artist).includes(nombre)) {
-      alert('Artist already exists')
+      alert("Artist already exists");
     } else {
       setInput({
         ...input,
-        artist: [...input.artist, nombre]
-      })
+        artist: [...input.artist, nombre],
+      });
       setError(
         validation({
           ...input,
           artist: [...input.artist, nombre],
         })
       );
-      setArtistas("")
+      setArtistas("");
     }
   };
 
   const handleDeleteArtist = (e) => {
-    let newEvent = input.artist
-    const a = newEvent.filter(artist => artist !== e)
+    let newEvent = input.artist;
+    const a = newEvent.filter((artist) => artist !== e);
     setInput({
       ...input,
-      artist: a
-    })
+      artist: a,
+    });
   };
 
   function handleInputPrice(e) {
@@ -172,9 +174,22 @@ function CreateEvent() {
       category: [],
       image: "",
       imageId: "",
-      userId: null,
+      userId: "",
     });
     navigate("/events");
+  }
+
+  function handleInputChange(e) {
+    setInput({
+      ...input,
+      [e.target.name]: e.target.value,
+    });
+    setError(
+      validation({
+        ...input,
+        [e.target.name]: e.target.value,
+      })
+    );
   }
 
   return (
@@ -226,17 +241,26 @@ function CreateEvent() {
                     required
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   />
-                  <button onClick={() => handleArtist(artistas)} className="m-2">
+                  <button
+                    onClick={() => handleArtist(artistas)}
+                    className="m-2"
+                  >
                     <PlusCircleIcon className="h-5 w-5 text-green-800 text-right" />
                   </button>
-                </div>{error.artist && <p> ❌{error.artist}</p>}
-                {input.artist && input.artist.map((artist, idx) => {
-                  return (<p key={idx}>
-                    {artist} <button onClick={() => handleDeleteArtist(artist)}>X</button>
-                  </p>
-                  )
-                })}
-              </div >
+                </div>
+                {error.artist && <p> ❌{error.artist}</p>}
+                {input.artist &&
+                  input.artist.map((artist, idx) => {
+                    return (
+                      <p key={idx}>
+                        {artist}{" "}
+                        <button onClick={() => handleDeleteArtist(artist)}>
+                          X
+                        </button>
+                      </p>
+                    );
+                  })}
+              </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">
                   Place
@@ -246,18 +270,14 @@ function CreateEvent() {
                     onChange={(e) => handleSelectPlace(e)}
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   >
-                    <option hidden>
-                      Please select a place
-                    </option>
-                    {
-                      data?.map((place, id) => {
-                        return <option key={id}>{place.name_es}</option>
-                      })
-                    }
-                  </select >
-                </div >
+                    <option hidden>Please select a place</option>
+                    {data?.map((place, id) => {
+                      return <option key={id}>{place.name_es}</option>;
+                    })}
+                  </select>
+                </div>
                 {error.place && <p> ❌{error.place}</p>}
-              </div >
+              </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">
                   Category
@@ -267,9 +287,7 @@ function CreateEvent() {
                     onChange={(e) => handleSelectCategory(e)}
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   >
-                    <option hidden>
-                      Please select a category
-                    </option>
+                    <option hidden>Please select a category</option>
                     <option value="Musica">Musica</option>
                     <option value="Desfile">Desfile</option>
                     <option value="Espectaculo">Espectaculo</option>
@@ -346,7 +364,8 @@ function CreateEvent() {
                     autoComplete="off"
                     required
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                  /><img src={input.image} />
+                  />
+                  <img src={input.image} />
                 </div>
               </div>
               <button
@@ -355,7 +374,7 @@ function CreateEvent() {
               >
                 Create
               </button>
-            </form >
+            </form>
             <div className="mt-4">
               <a
                 href="/"
@@ -364,9 +383,9 @@ function CreateEvent() {
                 <input type="button" value="Go Back" />
               </a>
             </div>
-          </div >
-        </div >
-      </div >
+          </div>
+        </div>
+      </div>
     </>
   );
 }
