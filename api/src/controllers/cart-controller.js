@@ -25,11 +25,11 @@ const getCart = async (req, res, next) => {
 
 const getAllCarts = async (req, res, next) => {
   let { userId } = req.params;
+
   try {
     let allCartsUser = await Cart.findAll({
       where: {
-        userId,
-        status: "Disabled",
+        userId: userId,
       },
       include: {
         model: Event,
@@ -37,6 +37,7 @@ const getAllCarts = async (req, res, next) => {
         through: { attributes: ["amount"] },
       },
     });
+    console.log(allCartsUser);
     if (allCartsUser) res.status(200).json(allCartsUser);
 
     else res.status(400).send("No user was found with that ID");
