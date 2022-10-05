@@ -11,6 +11,8 @@ import {
 import Logo from "../../logo/logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllEvents, userGetFavorite, changePassword, editProfile } from "../../store/actions";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/20/solid";
+import InsertPhoto from "../../assets/yourimage.png"
 
 const navigation = [
     { name: 'Settings', icon: Cog6ToothIcon, current: false },
@@ -37,17 +39,18 @@ export default function EditProfile() {
     const favoritos = usuario.favorites;
     const eventos = useSelector((state) => state.events);
     const [datos, setDatos] = useState({ profile_picture: "", profile_picture_id: "", username: "", });
+    const [showPwd, setShowPwd] = useState(false)
 
     const changePasswordInput = (e) => {
         setPassword(e.target.value)
     };
 
     const sendPassword = () => {
-        if(password.length <= 0) {
+        if (password.length <= 0) {
             alert("Please enter a password")
         } else {
             dispatch(changePassword(user.id, password))
-            }
+        }
     };
 
     useEffect(() => {
@@ -92,7 +95,6 @@ export default function EditProfile() {
         e.preventDefault();
         dispatch(editProfile(user.id, datos));
     }
-
 
     return (
         <>
@@ -343,7 +345,7 @@ export default function EditProfile() {
                                                                     <img
                                                                         className="h-20 w-20 rounded-full"
                                                                         alt=""
-                                                                        src={datos.profile_picture}
+                                                                        src={!datos.profile_picture ? {InsertPhoto} : datos.profile_picture}
                                                                     />
                                                                 </span>
                                                                 <span className="ml-4 flex flex-shrink-0 items-center space-x-4">
@@ -365,36 +367,42 @@ export default function EditProfile() {
                                                             }
                                                         </div >
                                                         <form >
-                                                        <div className="flex items-center" >
-                                                            <h1 className="text-sm font-medium text-gray-500">Reset password:</h1>
+                                                            <div className="flex items-center" >
+                                                                <h1 className="text-sm mr-2 font-medium text-gray-500">Reset password:</h1>
                                                                 <input
                                                                     onChange={(e) => changePasswordInput(e)}
-                                                                    type="password"
-                                                                    className="mt-8 appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                                                    type={showPwd ? "text" : "password"}
+                                                                    className="mt-2 appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                                                 />
+                                                                <div onClick={() => setShowPwd(!showPwd)}>
+                                                                    {showPwd ?
+                                                                        <EyeIcon type="button" className="h-6 w-6 ml-2" />
+                                                                        : <EyeSlashIcon type="button" className="h-6 w-6 ml-2" />}
+                                                                </div>
                                                                 <button
                                                                     onClick={(e) => sendPassword(e)}
                                                                     type="button"
-                                                                    className=" ml-8 appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                                                    className=" ml-5 appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                                                 >
                                                                     Change Password
                                                                 </button>
-                                                        </div>
+                                                            </div>
                                                         </form>
                                                     </dl >
                                                     <button
-                                                        type="button"
-                                                        className=" mt-8 appearance-none bg-red-400 rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-red-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                                                    >
-                                                        Delete Account
-                                                    </button>
-                                                    <button
                                                         onClick={(e) => handleUpdate(e)}
                                                         type="button"
-                                                        className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                                        className="mt-5 mr-5 appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                                     >
                                                         Update
                                                     </button>
+                                                    <button
+                                                        type="button"
+                                                        className=" mt-8 text-white appearance-none bg-red-800 rounded-md border border-white px-3 py-2 placeholder-white shadow-sm focus:border-red-500 focus:outline-none focus:ring-indigo-500 sm:text-sm hover:bg-red-400 hover:text-gray-500"
+                                                    >
+                                                        Delete Account
+                                                    </button>
+
                                                 </div >
                                             </div>
                                         </div>
