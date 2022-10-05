@@ -32,7 +32,7 @@ const {
   clearCart,
   checkoutCart,
 } = require("../controllers/cart-controller");
-const { passwordRecovery } = require("../controllers/email-controller");
+const { passwordRecovery, sendInvoice, } = require("../controllers/email-controller");
 const { fileUpload } = require("../helpers/fileUpload");
 const passport = require("passport");
 const {
@@ -104,6 +104,7 @@ router.put("/deleteeventcart", removeOneEventFromCart);
 router.put("/clearcart", clearCart);
 router.put("/payment", mercadopagoPayment);
 router.put("/checkout", checkoutCart);
+router.put("/sendinvoice/:id", sendInvoice)
 
 module.exports = router;
 

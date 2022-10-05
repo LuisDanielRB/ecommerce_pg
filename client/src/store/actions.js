@@ -403,6 +403,16 @@ export const getComments = (id) => async (dispatch) => {
   }
 };
 
+
+
+
+export const gettinCartForMail = (payload) => {
+  const {cart, user} = payload
+  return async function () {
+    let invoice = await axios.put(`/sendinvoice/${user.id}`, payload)
+  }
+} 
+
 export const getPastOrders = (userId) => async (dispatch) => {
   try {
     const pastOrders = await axios.get(`/allcart/${userId}`);
@@ -414,6 +424,7 @@ export const getPastOrders = (userId) => async (dispatch) => {
     console.log(error.message);
   }
 };
+
 
 export const updateEvent = (data, id) => async (dispatch) => {
   try {
@@ -427,3 +438,4 @@ export const updateEvent = (data, id) => async (dispatch) => {
     console.log(error.message);
   }
 };
+

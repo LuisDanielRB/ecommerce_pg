@@ -1,7 +1,9 @@
 import { Fragment, useEffect, useState } from "react";
 import { Menu, Popover, Transition } from "@headlessui/react";
+import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import {
   Bars3Icon,
+  BellIcon,
   XMarkIcon,
   ShoppingCartIcon,
 } from "@heroicons/react/24/outline";
@@ -37,6 +39,7 @@ function Navbar() {
   };
 
 
+
   const id = user ? user.id : false;
 
   const reset = () => {
@@ -44,9 +47,12 @@ function Navbar() {
   };
 
 
+
   const userNavigation = [
+
     { name: "Settings", href: `/private/user/${id}/profile`, current: true },
     { name: "Log out", href: "#", current: true },
+
     { name: "Dashboard", href: "/private/admindashboard" },
   ];
 
@@ -160,20 +166,21 @@ function Navbar() {
                         <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                           <Menu.Item>
                             {({ active }) => (
-                              <a
+                              <button
                                 onClick={handleClick}
+                                href="#"
                                 className={classNames(
                                   active ? "bg-gray-100" : "",
                                   "block py-2 px-4 text-sm text-gray-700"
                                 )}
                               >
                                 Logout
-                              </a>
+                              </button>
                             )}
                           </Menu.Item>
                           <Menu.Item>
                             {({ active }) => (
-                              <a
+                              <button
                                 onClick={() => null}
                                 href={`/private/user/${id}/profile`}
                                 className={classNames(
@@ -182,7 +189,7 @@ function Navbar() {
                                 )}
                               >
                                 Settings
-                              </a>
+                              </button>
                             )}
                           </Menu.Item>
                           <Menu.Item>
@@ -220,7 +227,9 @@ function Navbar() {
                     <div className="flex justify-center">
                       <div>
                         <Link
+
                           onClick={() => reset()}
+
                           to={"/login"}
                           className="ml-6 inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         >
@@ -229,7 +238,9 @@ function Navbar() {
                       </div>
                       <div>
                         <Link
+
                           onClick={() => reset()}
+
                           to={"/register"}
                           className="ml-6 inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         >
