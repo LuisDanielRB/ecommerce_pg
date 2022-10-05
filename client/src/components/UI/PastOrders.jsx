@@ -27,19 +27,10 @@ function PastOrders({ user }) {
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
-          <h1 className="text-xl font-semibold text-gray-900">Users</h1>
+          <h1 className="text-xl font-semibold text-gray-900">Past Orders</h1>
           <p className="mt-2 text-sm text-gray-700">
-            A list of all the users in your account including their name, title,
-            email and role.
+            A list of all the past orders in your account.
           </p>
-        </div>
-        <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-          <button
-            type="button"
-            className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
-          >
-            Add user
-          </button>
         </div>
       </div>
       <div className="mt-8 flex flex-col">
@@ -53,19 +44,19 @@ function PastOrders({ user }) {
                       scope="col"
                       className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
                     >
-                      Name
+                      Event Name
                     </th>
                     <th
                       scope="col"
                       className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                     >
-                      Title
+                      Tickets
                     </th>
                     <th
                       scope="col"
                       className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                     >
-                      Status
+                      Total
                     </th>
                     <th
                       scope="col"

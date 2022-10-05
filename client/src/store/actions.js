@@ -414,3 +414,16 @@ export const getPastOrders = (userId) => async (dispatch) => {
     console.log(error.message);
   }
 };
+
+export const updateEvent = (data, id) => async (dispatch) => {
+  try {
+    const updatedEvent = await axios.post(`/event/${id}/update`, data);
+    console.log(data, id);
+    return dispatch({
+      type: "UPDATE_EVENT",
+      payload: data,
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};

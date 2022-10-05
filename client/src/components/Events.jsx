@@ -3,11 +3,11 @@ import EventCards from "./UI/EventCards";
 import Footer from "./UI/Footer";
 import Navbar from "./UI/Navbar";
 import { useState } from "react";
-import './css/input.css'
+import "./css/input.css";
 import { useSelector, useDispatch } from "react-redux";
-import { getAllEvents , userGetFavorite } from "../store/actions";
+import { getAllEvents, userGetFavorite } from "../store/actions";
 import { useNavigate } from "react-router-dom";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 
 const Events = () => {
   const searchLive = useSelector((state) => state.searchLive);
@@ -17,7 +17,7 @@ const Events = () => {
   const categories = useSelector((state) => state.categories);
   const artists = useSelector((state) => state.artists);
   const place = useSelector((state) => state.places);
-  const {user} = useSelector((state) => state)
+  const { user } = useSelector((state) => state);
   const [filtered, setFiltered] = useState();
   const [filters, setFilters] = useState({
     category: "-",
@@ -39,17 +39,17 @@ const Events = () => {
   };
   useEffect(() => {
     if (eventos) {
-      const calcTotalPages = Math.ceil(eventos.length / EventsXPage)
+      const calcTotalPages = Math.ceil(eventos.length / EventsXPage);
       setTotalPages(calcTotalPages);
       if (currentPage > calcTotalPages) setCurrentPage(1);
     }
-  }, [eventos, EventsXPage, currentPage])
+  }, [eventos, EventsXPage, currentPage]);
 
   useEffect(() => {
     dispatch(getAllEvents());
     getFiltered();
     pages(currentPage);
-  }, [dispatch, filters , user , currentPage ]);
+  }, [dispatch, filters, user, currentPage]);
 
   function filterArr(array, value) {
     for (let i = 0; i < array.length; i++) {
@@ -132,7 +132,7 @@ const Events = () => {
   return (
     <>
       <Navbar />
-      
+
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl">
           <div className=" pt-10 pl-1 pr-1 pb-10 ">
@@ -167,9 +167,17 @@ const Events = () => {
               })}
             </select>
           </div>
-          <div >
+          <div>
             <span id="rangeValue">Eventos: {EventsXPage}</span>
-            <input className="range" type="range"  value={EventsXPage} min="0" max={eventos.length} onChange={(e) => setEventsXPage(e.target.value)} onMouseMove={(e) => setEventsXPage(e.target.value)}></input>
+            <input
+              className="range"
+              type="range"
+              value={EventsXPage}
+              min="0"
+              max={eventos.length}
+              onChange={(e) => setEventsXPage(e.target.value)}
+              onMouseMove={(e) => setEventsXPage(e.target.value)}
+            ></input>
           </div>
           <div>
             <label
@@ -231,7 +239,6 @@ const Events = () => {
         </div>
       )}
       <Footer />
-      
     </>
   );
 };

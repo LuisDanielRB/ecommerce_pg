@@ -326,6 +326,12 @@ function rootReducer(state = initialState, action) {
           user: action.payload
         }
 
+    case "UPDATE_EVENT": {
+      return {
+        ...state,
+      };
+    }
+
     default:
       return state;
   }

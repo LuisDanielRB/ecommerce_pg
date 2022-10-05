@@ -1,15 +1,15 @@
-import React from 'react';
-import { Carousel } from 'react-bootstrap';
-import Img1 from "../../assets/carousel/Img1.jpg"
-import Img2 from "../../assets/carousel/Img2.jpg"
-import Img3 from "../../assets/carousel/Img3.jpg"
+import React from "react";
+import { Carousel } from "react-bootstrap";
+import Img1 from "../../assets/carousel/Img1.jpg";
+import Img2 from "../../assets/carousel/Img2.jpg";
+import Img3 from "../../assets/carousel/Img3.jpg";
 
 export default function Carrousel() {
   return (
     <Carousel>
-      <Carousel.Item className='h-[50vh]'>
+      <Carousel.Item className="h-[70vh]">
         <img
-          className="h-full w-full"
+          className="h-full w-full object-fill"
           src={Img1}
           alt="First slide"
         />
@@ -18,21 +18,25 @@ export default function Carrousel() {
           <p className="text-xl">a los mejores precios!</p>
         </Carousel.Caption>
       </Carousel.Item>
-      <Carousel.Item className='h-[50vh]'>
+      <Carousel.Item className="h-[70vh]">
         <img
-          className="relative h-full w-full"
+          className="relative h-full w-full object-fill"
           src={Img2}
           alt="Second slide"
         />
 
         <Carousel.Caption>
-          <h3 className="text-xl ">Compra tus entradas para los mejores conciertos</h3>
-          <p className="text-xl">, eventos deportivos, obras de teatros, festivales y mucho más.</p>
+          <h3 className="text-xl ">
+            Compra tus entradas para los mejores conciertos
+          </h3>
+          <p className="text-xl">
+            , eventos deportivos, obras de teatros, festivales y mucho más.
+          </p>
         </Carousel.Caption>
       </Carousel.Item>
-      <Carousel.Item className='h-[50vh]'>
+      <Carousel.Item className="h-[70vh]">
         <img
-          className="relative h-full w-full"
+          className="relative h-full w-full object-fill"
           src={Img3}
           alt="Third slide"
         />
