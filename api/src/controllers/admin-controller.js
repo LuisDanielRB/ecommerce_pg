@@ -37,7 +37,6 @@ const adminPut = async (req, res) => {
 
 const bannedUser = async (req, res)=>{
 	const {id} = req.params;
-
 	try {
 		if(!id)	res.status(404).json({message: 'id is require..'});
 		else{
@@ -53,7 +52,7 @@ const bannedUser = async (req, res)=>{
 	} catch (error) {
 		console.log(error);
 	}
-}
+};
 
 const hideEvent = async (req, res, next) => {
 	let { eventId } = req.body;

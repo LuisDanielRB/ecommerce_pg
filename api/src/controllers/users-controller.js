@@ -60,7 +60,7 @@ const upDateUser = async (req, res) => {
 	const { id } = req.params;
 	const { username, email, password, status, profile_picture, profile_picture_id } = req.body;
 	var result;
-
+	console.log(req.body)
 	try {
 		if (!id) res.status(404).json({ message: 'id is require...' });
 
@@ -78,14 +78,14 @@ const upDateUser = async (req, res) => {
 			if (user.profile_picture_id) {
 				await deleteImage(user.profile_picture_id);
 				await Users.update({
-					profile_picture: result.secure_url,
-					profile_picture_id: result.public_id
+					profile_picture,
+					profile_picture_id
 				},
 					{ where: { id: id } });
 			} else {
 				await Users.update({
-					profile_picture: result.secure_url,
-					profile_picture_id: result.public_id
+					profile_picture,
+					profile_picture_id
 				},
 					{ where: { id: id } });
 			}
@@ -245,7 +245,7 @@ const addFavorite = async (req, res) => {
 				favorites: newArray,
 			});
 
-			return res.send('Added id');
+			return res.json(user);
 		} else {
 			throw new Error('Invalid user');
 		}
@@ -259,7 +259,6 @@ const deleteFavorite = async (req, res) => {
 
 	try {
 		let user = await Users.findByPk(idUser);
-
 		if (user) {
 			let newArray = user.favorites;
 			if (newArray.includes(idEvent)) {
@@ -278,7 +277,7 @@ const deleteFavorite = async (req, res) => {
 				favorites: newArray,
 			});
 
-			res.send('Id removed');
+			res.send(user.favorites);
 		} else {
 			throw new Error('Invalid user');
 		}
@@ -292,7 +291,6 @@ const getFavorite = async (req, res) => {
 
 	try {
 		let user = await Users.findByPk(idUser);
-
 		if (user) {
 			let response = user.favorites;
 			res.json(response);
@@ -363,12 +361,11 @@ const changePassword = async (req, res, next) => {
 			}
 		);
 
-		res.send(`User ${ user.username } has updated their password`);
+		res.send(`User ${user.username} has updated their password`);
 	} catch (err) {
 		next(err);
 	}
 }
-
 
 
 module.exports = {
@@ -380,5 +377,6 @@ module.exports = {
 	addFavorite,
 	deleteFavorite,
 	getFavorite,
-	resetPassword
+	resetPassword,
+	changePassword
 }

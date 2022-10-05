@@ -1,4 +1,3 @@
-import { async } from "@firebase/util";
 import axios from "axios";
 
 export const checkStates = () => (dispatch) => {
@@ -140,22 +139,31 @@ export function cleanDetail() {
 }
 
 export function userAddFavorite(userId, idEvent) {
-  return async function () {
-    return await axios.put("/favorites", {
+  return async function (dispatch) {
+    const res = await axios.put("/favorites", {
       idUser: userId,
       idEvent: idEvent,
+    });
+    return dispatch({
+      type: "USER_ADD_FAVORITE",
+      payload: res.data.favorites
     });
   };
 }
 
 export function userDeleteFavorite(userId, idEvent) {
-  return async function () {
-    return await axios.delete("/favorites", {
+  return async function (dispatch) {
+    const res = await axios.delete("/favorites", {
       data: {
         idUser: userId,
         idEvent: idEvent,
       },
     });
+    console.log(res.data);
+    return dispatch({
+      type: 'DELETE_FAVORITE',
+      payload: idEvent
+    })
   };
 }
 
@@ -176,6 +184,13 @@ export const changePassword = (userId , password) => async (dispatch) => {
       })
   } catch (error) {
     console.log(error);
+  }
+}
+
+export function editProfile(id, payload) {
+  return async function (dispatch) {
+    let edit = await axios.put(`/user/${id}/profile`, payload);
+    return dispatch({ type: "EDIT_PROFILE", payload: edit.data })
   }
 }
 
@@ -338,5 +353,43 @@ export const getEventsById = (id) => async (dispatch) => {
   } catch (error) {
     console.log(error.message);
   }
+
 };
+
+export const postReviewScore = (eventId , userId , description , score) => async (dispatch) => {
+
+  try {
+    const result = await axios.post(`reviewScore/${eventId}` , {userId , description , score})
+    return dispatch({
+      type: "POST_REVIEW",
+      payload: result.data
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const getReviews = (eventId) => async (dispatch) => {
+  try {
+    const result = await axios.get(`/reviewScor?eventId=${eventId}`)
+    return dispatch({ 
+      type: "GET_REVIEW", 
+      payload: result.data
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const getComments = (id) => async (dispatch) => {
+  try {
+    const comments = await axios.get(`/comments/${id}`)
+    return dispatch({
+      type: "GET_COMMENTS",
+      payload: comments.data
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
 

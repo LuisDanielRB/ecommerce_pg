@@ -1,11 +1,15 @@
 import React, { lazy } from "react";
-import { Route, Navigate, BrowserRouter } from "react-router-dom";
+import { Route, BrowserRouter } from "react-router-dom";
 import { PrivateRoute, PublicRoute } from "./router/index";
 import { AuthGuard, RoleGuard } from "../src/auth/index";
-import { RoutesWithNotFound , Rol} from "./utils/index";
+import { RoutesWithNotFound, Rol } from "./utils/index";
 import PasswordRecovery from "./components/PasswordRecovery";
-import {AdminDashboard} from './components/Private'
+import { AdminDashboard } from "./components/Private";
+import AdminDashboardEdit from "./components/Private/Dashboard/AdminDashboardEdit";
 import UpdatePassword from "./components/UpdatePassword";
+import { useEffect } from "react";
+import { useDispatch , useSelector } from "react-redux";
+import { getCart } from "./store/actions";
 const Login = lazy(() => import("./components/Login"));
 const Register = lazy(() => import("./components/Register"));
 const Private = lazy(() => import("./components/Private/Private"));
@@ -14,7 +18,6 @@ const Events = lazy(() => import("./components/Events"));
 const LoginSuccess = lazy(() => import("./components/UI/LoginSuccess"));
 
 function App() {
-
   return (
     <div className="App">
       <BrowserRouter>
@@ -28,11 +31,24 @@ function App() {
           <Route element={<AuthGuard privateValidation={true} />}>
             <Route path={`${PrivateRoute.PRIVATE}/*`} element={<Private />} />
           </Route>
-          <Route element={<RoleGuard rol={Rol.admin}/>}>
-                <Route path={PrivateRoute.ADMIN_DASHBOARD} element={<AdminDashboard />} />
+          <Route element={<RoleGuard rol={Rol.admin} />}>
+            <Route
+              path={PrivateRoute.ADMIN_DASHBOARD}
+              element={<AdminDashboard />}
+            />
+            <Route
+              path={PrivateRoute.ADMIN_DASHBOARD_EDIT}
+              element={<AdminDashboardEdit />}
+            />
           </Route>
-          <Route path={PublicRoute.PASSWORDRECOVERY} element={<PasswordRecovery />} />
-          <Route path={PublicRoute.RESETPASSWORD} element={<UpdatePassword />} />
+          <Route
+            path={PublicRoute.PASSWORDRECOVERY}
+            element={<PasswordRecovery />}
+          />
+          <Route
+            path={PublicRoute.RESETPASSWORD}
+            element={<UpdatePassword />}
+          />
         </RoutesWithNotFound>
       </BrowserRouter>
     </div>

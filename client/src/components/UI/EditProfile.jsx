@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import {
@@ -10,6 +10,7 @@ import {
 } from '@heroicons/react/24/outline';
 import Logo from "../../logo/logo.png";
 import { useDispatch, useSelector } from "react-redux";
+import { getAllEvents, userGetFavorite, changePassword, editProfile } from "../../store/actions";
 
 const navigation = [
     { name: 'Settings', icon: Cog6ToothIcon, current: false },
@@ -31,15 +32,64 @@ export default function EditProfile() {
     const { user } = useSelector((state) => state)
     const [sidebarOpen, setSidebarOpen] = useState(false)
     const [password, setPassword] = useState("")
+    const [active, setActive] = useState(0);
+    const usuario = JSON.parse(localStorage.user);
+    const favoritos = usuario.favorites;
+    const eventos = useSelector((state) => state.events);
+    const [datos, setDatos] = useState({ profile_picture: "", profile_picture_id: "", username: "", });
 
     const changePasswordInput = (e) => {
         setPassword(e.target.value)
-    }
+    };
 
     const sendPassword = () => {
         dispatch(changePassword(user.id, password))
+    };
+
+    useEffect(() => {
+        dispatch(getAllEvents());
+        user ? dispatch(userGetFavorite(user.id)) : null
+    }, [dispatch, user]);
+
+    async function handleFile(e) {
+        e.preventDefault();
+        let profile_picture = e.target.files[0];
+        let data = new FormData();
+        data.append("file", profile_picture);
+        data.append("upload_preset", "pkokipva");
+        fetch("https://api.cloudinary.com/v1_1/dzjonhhps/image/upload", {
+            method: 'POST',
+            body: data
+        }).then(res => res.json()).then(res => {
+            setDatos({
+                ...datos,
+                profile_picture: res.secure_url,
+                profile_picture_id: res.public_id,
+            })
+        })
     }
 
+    function recArr(el, arr) {
+        for (let i = 0; i < arr.length; i++) {
+            if (el === arr[i]) return true
+        }
+    };
+
+    const eventsFavourites = eventos.filter((el) => recArr(el.id, favoritos))
+
+    function handleChange(e) {
+        setDatos({
+            ...datos,
+            username: e.target.value
+        })
+    }
+
+    function handleUpdate(e) {
+        e.preventDefault();
+        dispatch(editProfile(user.id, datos));
+    }
+
+    console.log(datos)
     return (
         <>
             <div>
@@ -263,90 +313,82 @@ export default function EditProfile() {
                                             {/* Description list with inline editing */}
                                             <div className="mt-10 divide-y divide-gray-200">
                                                 <div className="space-y-1">
-                                                    <h3 className="text-lg font-medium leading-6 text-gray-900">Profile</h3>
+                                                    <h3 className="text-lg font-medium leading-6 text-gray-900">Perfil</h3>
                                                     <p className="max-w-2xl text-sm text-gray-500">
-                                                        This information will be displayed publicly so be careful what you share.
+                                                        Configuracion de datos del perfil.
                                                     </p>
                                                 </div>
                                                 <div className="mt-6">
                                                     <dl className="divide-y divide-gray-200">
                                                         <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5">
-                                                            <dt className="text-sm font-medium text-gray-500">Name</dt>
+                                                            <dt className="text-sm font-medium text-gray-500">Name:</dt>
                                                             <dd className="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                                                                 <input
+                                                                    onChange={(e) => handleChange(e)}
                                                                     type="text"
                                                                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                                                 />
                                                                 <span className="ml-4 flex-shrink-0">
-                                                                    <button
-                                                                        type="button"
-                                                                        className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                                                                    >
-                                                                        Update
-                                                                    </button>
                                                                 </span>
                                                             </dd>
                                                         </div>
                                                         <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:pt-5">
-                                                            <dt className="text-sm font-medium text-gray-500">Photo</dt>
+                                                            <dt className="text-sm font-medium text-gray-500">Photo:</dt>
                                                             <dd className="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                                                                 <span className="flex-grow">
                                                                     <img
-                                                                        className="h-8 w-8 rounded-full"
+                                                                        className="h-20 w-20 rounded-full"
                                                                         alt=""
+                                                                        src={datos.profile_picture}
                                                                     />
                                                                 </span>
-                                                                <span className="ml-4 flex flex-shrink-0 items-start space-x-4">
+                                                                <span className="ml-4 flex flex-shrink-0 items-center space-x-4">
                                                                     <input
+                                                                        onChange={handleFile}
                                                                         type="file"
                                                                         accept="image/*"
                                                                         className="rounded-md bg-white font-medium text-purple-600 hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                                                                     />
-                                                                    <span className="text-gray-300" aria-hidden="true">
-                                                                        |
+                                                                    <span className="ml-4 flex-shrink-0">
                                                                     </span>
-                                                                    <button
-                                                                        type="button"
-                                                                        className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                                                                    >
-                                                                        Remove
-                                                                    </button>
                                                                 </span>
                                                             </dd>
                                                         </div>
                                                         <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:pt-5">
-                                                            <dt className="text-sm font-medium text-gray-500">Email</dt>
-                                                            <dd className="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                                                <input
-                                                                    type="text"
-                                                                    className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                                                                />
-                                                                <span className="ml-4 flex-shrink-0">
-                                                                    <button
-                                                                        type="button"
-                                                                        className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                                                                    >
-                                                                        Update
-                                                                    </button>
-                                                                </span>
-                                                            </dd>
-                                                        </div>
+                                                            <h1 className="text-sm font-medium text-gray-500">Favoritos</h1>
+                                                            {
+                                                                eventsFavourites ? eventsFavourites.map((el) => el.description) : null
+                                                            }
+                                                        </div >
                                                         <form>
                                                             <input
                                                                 onChange={(e) => changePasswordInput(e)}
-                                                                type="text"
-                                                                className="appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                                                type="password"
+                                                                className="mt-8 appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                                             />
                                                             <button
                                                                 onClick={(e) => sendPassword(e)}
                                                                 type="button"
-                                                               className=" ml-8 appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                                                className=" ml-8 appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                                             >
                                                                 Change Password
                                                             </button>
                                                         </form>
-                                                    </dl>
-                                                </div>
+                                                    </dl >
+                                                    <button
+                                                        type="button"
+                                                        className=" mt-8 appearance-none bg-red-400 rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-red-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                                    >
+                                                        Delete Account
+                                                    </button>
+                                                    <button
+                                                        onClick={(e) => handleUpdate(e)}
+                                                        type="button"
+                                                        className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                                    >
+                                                        Update
+                                                    </button>
+                                                </div >
                                             </div>
                                         </div>
                                     </div>
@@ -354,8 +396,8 @@ export default function EditProfile() {
                             </div>
                         </main>
                     </div>
-                </div>
-            </div>
+                </div >
+            </div >
         </>
     )
 }

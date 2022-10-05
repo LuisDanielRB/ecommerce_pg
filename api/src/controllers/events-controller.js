@@ -1,10 +1,22 @@
-const { EventsCreated, Event, Users } = require("../db");
+const { EventsCreated, Event, Users , ReviewScore} = require("../db");
 const fs = require("fs");
 const uploadImage = require("../helpers/cloudinary");
 const fsExtra = require("fs-extra");
 
+
 const createEvent = async (req, res) => {
-  const { description, price, date, artist, place, stock, category, image, imageId, userId } = req.body;
+  const {
+    description,
+    price,
+    date,
+    artist,
+    place,
+    stock,
+    category,
+    image,
+    imageId,
+    userId,
+  } = req.body;
 
   try {
     const newEvent = await EventsCreated.create({
@@ -104,7 +116,6 @@ const deleteEvents = async (req, res) => {
       console.log(error);
       res.status(404).send("Event not found");
     }
-    
   }
 };
 
@@ -112,8 +123,8 @@ const getEvents = async (req, res) => {
   const eventsDB = await Event.findAll();
   const eventsCreated = await EventsCreated.findAll({
     where: {
-      isActive: true
-    }
+      isActive: true,
+    },
   });
 
   const data = JSON.parse(fs.readFileSync("dataBase.json", "utf8"));
@@ -189,10 +200,11 @@ const getEventsDetailDb = async (req, res) => {
     }
   } else {
     try {
-      const response = await Event.findOne({
+      const response = await EventsCreated.findOne({
         where: {
           id: id,
         },
+       
       });
       const elem = response.dataValues;
       detail = {
@@ -229,6 +241,46 @@ const getEventsById = async (req, res) => {
   }
 };
 
+const getEventHome = async (req, res) => {
+  try {
+    let eventos;
+    const evento1 = await Event.findOne({
+      where: {
+        stock: stock<=200
+      }
+    })
+    res.status(200).json(evento1)
+    console.log(evento1)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
+const ticketsSoldAndAvailableAndAvailableEvents = async (req, res)=>{
+  let availableEvents;
+  let availableTickets;
+  let totalTickets;
+  let soldTickets;
+
+  try {
+    const {count, rows} = await Event.findAndCountAll();
+    
+    availableEvents = count;
+    
+    rows.map(el => {
+      availableTickets = availableTickets + el.currentStock;
+      totalTickets = totalTickets + el.originalStock;
+    });
+
+    soldTickets = totalTickets - availableTickets;
+
+    res.status(200).json({availableEvents, soldTickets, availableTickets});
+  } catch (error) {
+    res.send('error...',error);
+  }
+}
+
 module.exports = {
   createEvent,
   getEvents,
@@ -237,4 +289,6 @@ module.exports = {
   deleteEvents,
   updateEvent,
   getEventsById,
+  getEventHome,
+  ticketsSoldAndAvailableAndAvailableEvents
 };

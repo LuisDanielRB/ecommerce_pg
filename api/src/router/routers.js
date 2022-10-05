@@ -11,7 +11,7 @@ const {
   googleSignIn,
   deleteFavorite,
   getFavorite,
-  changePassword
+  changePassword,
 } = require("../controllers/users-controller");
 const {
   createEvent,
@@ -21,6 +21,8 @@ const {
   deleteEvents,
   updateEvent,
   getEventsById,
+  getEventHome,
+  ticketsSoldAndAvailableAndAvailableEvents
 } = require("../controllers/events-controller");
 const {
   getCart,
@@ -38,21 +40,28 @@ const {
   postReviewScore,
   putReviewScore,
   deleteReviewScore,
-  getComments
+  getComments,
 } = require("../controllers/reviewScore-controller");
-const { adminPut , bannedUser , hideEvent , showEvent , unbanUser , deleteCommentToAdmin , getAllOrders , upgradeToAdmin} = require('../controllers/admin-controller')
-
-
+const {
+  adminPut,
+  bannedUser,
+  hideEvent,
+  showEvent,
+  unbanUser,
+  deleteCommentToAdmin,
+  getAllOrders,
+  upgradeToAdmin,
+} = require("../controllers/admin-controller");
 
 // USUARIO
 router.post("/user/google", googleSignIn);
 router.post("/login", login);
 router.post("/register", register);
 router.put("/password", passwordRecovery);
-router.put('/resetpassword/:id', resetPassword ) 
+router.put("/resetpassword/:id", resetPassword);
 router.put("/user/:id/profile", fileUpload, upDateUser);
 router.get("/users", getUsers);
-router.put('/changePassword', changePassword)
+router.put("/changePassword", changePassword);
 
 //EVENTOS
 router.post("/createEvent", fileUpload, createEvent);
@@ -62,6 +71,7 @@ router.get("/eventsCreate/:id", getEventDetail);
 router.delete("/events/:id", deleteEvents);
 router.get("/eventsDB/:id", getEventsDetailDb);
 router.get("/dashboard/events/:id", getEventsById);
+router.get("/ticketsSoldAndAvailableAndAvailableEvents", ticketsSoldAndAvailableAndAvailableEvents);
 
 //FAVORITOS / REVIEWS / COMMENTS
 router.put("/favorites", addFavorite);
@@ -71,17 +81,17 @@ router.get("/reviewScor", getReviewScore);
 router.post("/reviewScore/:eventId", postReviewScore);
 router.put("/reviewScore/:eventId", putReviewScore);
 router.delete("/reviewScore/:eventId", deleteReviewScore);
-router.get('/comments/:id', getComments);
+router.get("/comments/:id", getComments);
 
 // ADMIN
 router.put("/admin", adminPut);
 router.put("/user/:id/banned", bannedUser);
-router.put('/hideEvent' ,hideEvent)
-router.put('/showEvent' , showEvent)
-router.get('/showOrders' , getAllOrders)
-router.put('/unbanUser' , unbanUser)
-router.put('/upgradeToAdmin' , upgradeToAdmin)
-router.delete('/deleteComents' , deleteCommentToAdmin)
+router.put("/hideEvent", hideEvent);
+router.put("/showEvent", showEvent);
+router.get("/showOrders", getAllOrders);
+router.put("/unbanUser", unbanUser);
+router.put("/upgradeToAdmin", upgradeToAdmin);
+router.delete("/deleteComents", deleteCommentToAdmin);
 
 //CART
 router.get("/cart", getCart);
@@ -91,6 +101,5 @@ router.put("/deleteeventcart", removeOneEventFromCart);
 router.put("/clearcart", clearCart);
 router.put("/payment", mercadopagoPayment);
 router.put("/checkout", checkoutCart);
-
 
 module.exports = router;

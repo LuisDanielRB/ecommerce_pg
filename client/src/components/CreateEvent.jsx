@@ -86,6 +86,12 @@ function CreateEvent() {
         ...input,
         artist: [...input.artist, nombre]
       })
+      setError(
+        validation({
+          ...input,
+          artist: [...input.artist, nombre],
+        })
+      );
       setArtistas("")
     }
   };
@@ -364,5 +370,4 @@ function CreateEvent() {
     </>
   );
 }
-
 export default CreateEvent;
