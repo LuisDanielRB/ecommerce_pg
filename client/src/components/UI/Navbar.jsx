@@ -192,6 +192,7 @@ function Navbar() {
                               </a>
                             )}
                           </Menu.Item>
+                          {user.status === "Admin" ? (
                           <Menu.Item>
                             {({ active }) => (
                               <a
@@ -205,7 +206,7 @@ function Navbar() {
                                 New Event
                               </a>
                             )}
-                          </Menu.Item>
+                          </Menu.Item>) : null }
                           {user.status === "Admin" ? (
                             <Menu.Item>
                               {({ active }) => (
