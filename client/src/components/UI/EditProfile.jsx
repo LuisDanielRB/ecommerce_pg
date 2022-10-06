@@ -5,7 +5,6 @@ import {
   ArrowLeftOnRectangleIcon,
   Bars3BottomLeftIcon,
   Cog6ToothIcon,
-  QuestionMarkCircleIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import Logo from "../../logo/logo.png";
@@ -21,11 +20,9 @@ import {
 import { UserAuth } from "../../firebase/context";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/20/solid";
 import InsertPhoto from "../../assets/yourimage.png";
-import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 import { useNavigate } from "react-router-dom";
 const navigation = [{ name: "Settings", icon: Cog6ToothIcon, current: false }];
 const secondaryNavigation = [
-  { name: "Help", href: "#", icon: QuestionMarkCircleIcon },
   { name: "Logout", href: "/", icon: ArrowLeftOnRectangleIcon },
 ];
 const tabs = [{ name: "General", href: "#", current: true }];
@@ -107,6 +104,8 @@ export default function EditProfile() {
   function handleUpdate(e) {
     e.preventDefault();
     dispatch(editProfile(user.id, datos));
+    alert("Your profile change success!");
+    navigate("/")
   }
 
   const deleteAcc = (e) => {
