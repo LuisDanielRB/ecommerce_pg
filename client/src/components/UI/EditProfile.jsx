@@ -18,7 +18,7 @@ import {
 } from "../../store/actions";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/20/solid";
 import InsertPhoto from "../../assets/yourimage.png";
-
+import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 const navigation = [{ name: "Settings", icon: Cog6ToothIcon, current: false }];
 const secondaryNavigation = [
   { name: "Help", href: "#", icon: QuestionMarkCircleIcon },
@@ -90,7 +90,7 @@ export default function EditProfile() {
   }
 
   const eventsFavourites = eventos.filter((el) => recArr(el.id, favoritos));
-
+  console.log(eventsFavourites)
   function handleChange(e) {
     setDatos({
       ...datos,
@@ -391,13 +391,44 @@ export default function EditProfile() {
                                 </span>
                               </dd>
                             </div>
-                            <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:pt-5">
-                              <h1 className="text-sm font-medium text-gray-500">
-                                Favoritos
-                              </h1>
-                              {eventsFavourites
-                                ? eventsFavourites.map((el) => el.description)
-                                : null}
+                            <div>
+                              <h2 className="text-sm font-medium text-gray-500">
+                                Favoritos:
+                              </h2>
+                              <ul
+                                role="list"
+                                className="mt-3 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4 "
+                              >
+                                {eventsFavourites.map((project) => (
+                                  <li
+                                    key={project.description}
+                                    className="col-span-2 flex rounded-md shadow-sm "
+                                  >
+                                    <div
+                                      className={classNames(                                 
+                                        "flex-shrink-0 flex items-center justify-center w-16 text-white text-sm font-medium rounded-l-md pl-1"
+                                      )}
+                                    >
+                                      <img 
+                                        src={project.image}
+                                      />
+                                    </div>
+                                    <div className="flex flex-1 items-center justify-between truncate rounded-r-md border-t border-r border-b border-gray-200 bg-white">
+                                      <div className="flex-1 truncate px-4 py-2 text-sm ">
+                                        <a
+                                          href={`/private/events/${project.id}`}
+                                          className="font-medium text-gray-900 hover:text-gray-600"
+                                        >
+                                          {project.description}
+                                        </a>
+                                        <p className="text-gray-500 ">
+                                          {project.place}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </li>
+                                ))}
+                              </ul>
                             </div>
                             <form>
                               <div className="flex items-center">
