@@ -250,24 +250,18 @@ const getEventHome = async (req, res) => {
 };
 
 const ticketsSoldAndAvailableAndAvailableEvents = async (req, res) => {
-  let availableEvents;
-  let availableTickets;
-  let totalTickets;
-  let soldTickets;
+ 
 
   try {
     const { count, rows } = await Event.findAndCountAll();
+    console.log(count);
 
-    availableEvents = count;
+    const currentStock = rows.map((el) => el.currentStock).reduce((acc, row) => acc + row, 0);
+    const stock = rows.map((el) => el.stock).reduce((acc, row) => acc + row, 0);
+    const soldTickets = currentStock - stock
+    const allStock = rows.map((el) => el.stock).reduce((acc, row) => acc + row, 0);
 
-    rows.map((el) => {
-      availableTickets = availableTickets + el.currentStock;
-      totalTickets = totalTickets + el.originalStock;
-    });
-
-    soldTickets = totalTickets - availableTickets;
-
-    res.status(200).json({ availableEvents, soldTickets, availableTickets });
+    res.status(200).json({ soldTickets , activeEvent: count , allStock });
   } catch (error) {
     res.send("error...", error);
   }
