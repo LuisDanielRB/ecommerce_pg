@@ -26,7 +26,7 @@ const CardDetail = () => {
     dispatch(getEventDetail(id));
     dispatch(getReviews(id));
     dispatch(getComments(user.id));
-    dispatch(getCart(user.id))
+    dispatch(getCart(user.id));
   }, [dispatch, id]);
 
   const handleCart = (id) => {
@@ -40,7 +40,7 @@ const CardDetail = () => {
   return (
     <>
       <Navbar />
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
         {/* We've used 3xl here, but feel free to try other max-widths based on your needs */}
         <div className="mx-auto max-w-3xl">
           <div className="relative flex w-full items-center overflow-hidden bg-white px-4 pt-14 pb-8 shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8">
@@ -86,22 +86,25 @@ const CardDetail = () => {
                 </section>
               </div>
 
-              <div className="flex items-center">
+              <div className="col-span-6 sm:col-span-full lg:col-span-6">
                 <Reviews id={id} />
-
-                {eventDetail.comments &&
-                  eventDetail.comments.map((comment) => {
-                    return (
-                      <div key={comment.id}>
-                        <ul>
-                          <li>Usuario: {comment.username}</li>
-                          <li>Review: {comment.description}</li>
-                          <li>Score: {comment.score}</li>
-                        </ul>
-                      </div>
-                    );
-                  })}
               </div>
+
+              {eventDetail.comments &&
+                eventDetail.comments.map((comment) => {
+                  return (
+                    <div
+                      key={comment.id}
+                      className="col-span-6 sm:col-span-full lg:col-span-6 bg-gray-100 px-4 py-4 rounded-md shadow-md"
+                    >
+                      <ul className=" flex-row">
+                        <li className="my-2">Usuario: {comment.username}</li>
+                        <li className="my-2">Review: {comment.description}</li>
+                        <li className="my-2">Score: {comment.score}</li>
+                      </ul>
+                    </div>
+                  );
+                })}
             </div>
           </div>
         </div>

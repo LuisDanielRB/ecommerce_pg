@@ -51,8 +51,7 @@ function EventEdit({ id }) {
     e.preventDefault();
     console.log(input);
     dispatch(updateEvent(input, id));
-    // navigate("/private/admindashboard");
-    console.log("hola?");
+    navigate("/admindashboard");
   }
 
   useEffect(() => {
@@ -71,7 +70,7 @@ function EventEdit({ id }) {
             Cancel
           </a>
           <a
-            // href="/private/admindashboard"
+            href="/admindashboard"
             onClick={(e) => handleSubmit(e)}
             type="submit"
             className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"

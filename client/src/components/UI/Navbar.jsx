@@ -27,10 +27,6 @@ function Navbar() {
   const [search, setSearch] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    dispatch(checkStates());
-  }, [dispatch, user, cartState]);
-
   const handleClick = (e) => {
     e.preventDefault();
     dispatch(userSignOut("user"));
@@ -62,6 +58,10 @@ function Navbar() {
     e.preventDefault();
     search === false ? setSearch(true) : setSearch(false);
   }
+
+  useEffect(() => {
+    dispatch(checkStates());
+  }, [dispatch, user, cartState]);
 
   return (
     <>
