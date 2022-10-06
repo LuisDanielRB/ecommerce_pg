@@ -12,13 +12,17 @@ import Logo from "../../logo/logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAllEvents,
+  userSignOut,
   userGetFavorite,
   changePassword,
   editProfile,
+  removeUsuario
 } from "../../store/actions";
+import { UserAuth } from "../../firebase/context";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/20/solid";
 import InsertPhoto from "../../assets/yourimage.png";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
+import { useNavigate } from "react-router-dom";
 const navigation = [{ name: "Settings", icon: Cog6ToothIcon, current: false }];
 const secondaryNavigation = [
   { name: "Help", href: "#", icon: QuestionMarkCircleIcon },
@@ -32,6 +36,8 @@ function classNames(...classes) {
 
 export default function EditProfile() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { logOut } = UserAuth();
   const { user } = useSelector((state) => state);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [password, setPassword] = useState("");
@@ -90,7 +96,7 @@ export default function EditProfile() {
   }
 
   const eventsFavourites = eventos.filter((el) => recArr(el.id, favoritos));
-  console.log(eventsFavourites)
+  
   function handleChange(e) {
     setDatos({
       ...datos,
@@ -102,6 +108,14 @@ export default function EditProfile() {
     e.preventDefault();
     dispatch(editProfile(user.id, datos));
   }
+
+  const deleteAcc = (e) => {
+    e.preventDefault()
+    dispatch(removeUsuario(user.id , {status: 'Banned'}));
+    dispatch(userSignOut('user'))
+    logOut()
+
+    }
 
   return (
     <>
@@ -471,7 +485,7 @@ export default function EditProfile() {
                             Update
                           </button>
                           <button
-                            type="button"
+                            onClick={(e) => deleteAcc(e)}
                             className=" mt-8 text-white appearance-none bg-red-800 rounded-md border border-white px-3 py-2 placeholder-white shadow-sm focus:border-red-500 focus:outline-none focus:ring-indigo-500 sm:text-sm hover:bg-red-400 hover:text-gray-500"
                           >
                             Delete Account

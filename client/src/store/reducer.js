@@ -319,14 +319,6 @@ function rootReducer(state = initialState, action) {
         user: action.payload
       }
 
-      case 'EDIT_PROFILE' :
-      localStorage.setItem('user', JSON.stringify(action.payload))
-      console.log(action.payload)
-       return {
-          ...state,
-          user: action.payload
-        }
-
     case "UPDATE_EVENT": {
       return {
         ...state,
@@ -334,6 +326,20 @@ function rootReducer(state = initialState, action) {
     }
 
     case 'GET_USERS': {
+      
+      return {
+        ...state,
+        currentUsers: action.payload
+      }
+    }
+
+    case 'UPDATE_USER_TO_ADMIN': 
+    return {
+      ...state,
+      currentUsers: action.payload
+    }
+
+    case 'BANNED_USER': {
       
       return {
         ...state,

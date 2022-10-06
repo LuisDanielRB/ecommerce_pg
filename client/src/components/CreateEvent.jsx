@@ -12,6 +12,7 @@ function CreateEvent() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state);
   const [error, setError] = useState({});
+  const [valor , setValor] = useState(true)
   const [artistas, setArtistas] = useState({});
   const [input, setInput] = useState({
     description: "",
@@ -49,6 +50,7 @@ function CreateEvent() {
     if (!input.place) {
       errors.place = "Place is required";
     }
+
     if (!input.category.length) {
       errors.category = "Select at least a one or five genres ";
     }
@@ -86,8 +88,9 @@ function CreateEvent() {
     setArtistas(value);
   };
 
-  const handleArtist = (e) => {
-    let nombre = e;
+  const handleArtist = (e, artist) => {
+    e.preventDefault()
+    let nombre = artist;
     if (Object.values(input.artist).includes(nombre)) {
       alert("Artist already exists");
     } else {
@@ -105,7 +108,8 @@ function CreateEvent() {
     }
   };
 
-  const handleDeleteArtist = (e) => {
+  const handleDeleteArtist = (b , e) => {
+    b.preventDefault()
     let newEvent = input.artist;
     const a = newEvent.filter((artist) => artist !== e);
     setInput({
@@ -187,6 +191,7 @@ function CreateEvent() {
   }
 
   function handleInputChange(e) {
+   
     setInput({
       ...input,
       [e.target.name]: e.target.value,
@@ -201,7 +206,10 @@ function CreateEvent() {
 
   const [disabledButton, setDisabledButton] = useState(true);
 
+  
+
   useEffect(() => {
+   
     if (
       input.artist.length === 0 ||
       !input.place ||
@@ -218,7 +226,7 @@ function CreateEvent() {
     } else {
       return (setDisabledButton(false));
     }
-  }, [error, input, setDisabledButton])
+  }, [error, input, setDisabledButton, valor])
 
 
   return (
@@ -285,7 +293,8 @@ function CreateEvent() {
                     className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   />
                   <button
-                    onClick={() => handleArtist(artistas)}
+                    onClick={(e) => handleArtist(e, artistas)}
+                    // disabled={valor}
                     className="m-2"
                   >
                     <PlusCircleIcon className="h-5 w-5 text-green-800 text-right" />
@@ -312,7 +321,7 @@ function CreateEvent() {
                     return (
                       <p key={idx}>
                         {artist}{" "}
-                        <button onClick={() => handleDeleteArtist(artist)}>
+                        <button onClick={(e) => handleDeleteArtist(e , artist)}>
                           X
                         </button>
                       </p>
