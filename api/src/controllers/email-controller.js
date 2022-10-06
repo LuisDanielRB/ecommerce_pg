@@ -32,9 +32,9 @@ const sendMailWelcome = async (us, mail) => {
     /* */
 
     const mailOptions = {
-        from: 'Prueba desde el servidor de NodeJS',
+        from: 'TicketShop',
         to: mail,
-        subject: 'Creando una prueba',
+        subject: 'Correo de Bienvenida',
         template: 'email',
         context: {
             user: us,
@@ -65,7 +65,7 @@ const emailReset = async (email, id) => {
   transporter.use("compile", hbs(handlebarOptions));
 
   const mailOptions = {
-    from: "Prueba desde el servidor de NodeJS",
+    from: "TicketShop",
     to: email,
     subject: "Reestablecimiento de contraseña",
     template: "ressetPass",
