@@ -55,8 +55,7 @@ const login = async (req, res, next) => {
 const upDateUser = async (req, res) => {
 	const { id } = req.params;
 	const { username, email, password, status, profile_picture, profile_picture_id } = req.body;
-
-	console.log(req.body)
+	console.log(req.body);
 	try {
 		if (!id) res.status(404).json({ message: 'id is require...' });
 

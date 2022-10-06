@@ -56,7 +56,8 @@ const bannedUser = async (req, res)=>{
 				await Event.update({isActive: false},{ where: {userId: id}})
 			
 				await ReviewScore.destroy({where:{userId:id}})
-				res.status(200).json({message: 'successfully banned user..'});
+				const nuevo = await Users.findAll()
+				res.status(200).json(nuevo);
 			}
 		}
 	} catch (error) {
@@ -137,8 +138,8 @@ const unbanUser = async (req, res, next) => {
 				status: 'User',
 			});
 			await Event.update({isActive: true},{ where: {userId: userId}})
-			let unbanned = await Users.findByPk(userId);
-			res.status(200).send(unbanned);
+			const nuevo = await Users.findAll()
+				res.status(200).json(nuevo);
 		} else {
 			res.status(400).send('No user was found with that id');
 		}
@@ -160,7 +161,8 @@ const upgradeToAdmin = async (req, res, next) => {
 			await userToAdmin.update({
 				status: 'Admin',
 			});
-			res.status(200).json(userToAdmin);
+			const nuevo = await Users.findAll()
+				res.status(200).json(nuevo);;
 		} else {
 			res.status(400).send('No user was found with that id');
 		}
@@ -182,7 +184,8 @@ const upgradeToUser = async (req, res, next) => {
 			await userToUser.update({
 				status: 'User',
 			});
-			res.status(200).json(userToUser);
+			const nuevo = await Users.findAll()
+				res.status(200).json(nuevo);
 		} else {
 			res.status(400).send('No user was found with that id');
 		}
