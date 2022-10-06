@@ -308,7 +308,7 @@ function rootReducer(state = initialState, action) {
     case 'GET_PAST_ORDERS': {
       return {
         ...state,
-        pastOrders: action.payload
+        pastOrders: [...state.pastOrders , action.payload]
       }
     }
 
