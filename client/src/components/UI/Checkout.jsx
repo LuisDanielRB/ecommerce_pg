@@ -9,7 +9,6 @@ export default function Checkout() {
   const check = () => {
     dispatch(checkoutCart(user.id, user.token));
     dispatch(gettinCartForMail({ cart: cart, user: user }));
-    // window.close();
   };
 
   return (

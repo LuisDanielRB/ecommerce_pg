@@ -7,25 +7,36 @@ import {
   UsersIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import GridList from "./GridList";
 import StatsDashboard from "./StatsDashboard";
 import PastOrders from "./PastOrders";
 import UserList from "./UserList";
-
-const userNavigation = [
-  { name: "Your Profile", href: "#" },
-  { name: "Settings", href: "#" },
-  { name: "Sign out", href: "#" },
-];
+import { useDispatch } from "react-redux";
+import { userSignOut } from "../../store/actions";
+import { UserAuth } from "../../firebase/context";
+import logo from "../../logo/logo.png";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 function DashboardNav({ eventos, user, setActiveState, navigation }) {
+  const dispatch = useDispatch();
+  const { logOut } = UserAuth();
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [detailOpen, setDetailOpen] = useState(false);
+
+  const userNavigation = [
+    { name: "Settings", href: `/private/user/${user.id}/profile` },
+  ];
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    dispatch(userSignOut("user"));
+    logOut();
+    navigate("/");
+  };
 
   return (
     <>
@@ -86,11 +97,7 @@ function DashboardNav({ eventos, user, setActiveState, navigation }) {
                     href="/"
                     className="flex flex-shrink-0 items-center px-4"
                   >
-                    <img
-                      className="h-8 w-auto"
-                      src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                      alt="Your Company"
-                    />
+                    <img className="h-8 w-auto" src={logo} alt="Your Company" />
                   </div>
                   <div className="mt-5 h-0 flex-1 overflow-y-auto">
                     <nav className="space-y-1 px-2">
@@ -133,13 +140,9 @@ function DashboardNav({ eventos, user, setActiveState, navigation }) {
         <div className="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex min-h-0 flex-1 flex-col bg-gray-800">
-            <div className="flex h-16 flex-shrink-0 items-center bg-gray-900 px-4">
+            <div className="flex justify-center h-16 flex-shrink-0 items-center bg-blue-200 px-4">
               <a href="/">
-                <img
-                  className="h-8 w-auto"
-                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                  alt="Your Company"
-                />
+                <img className="h-16 w-auto" src={logo} alt="Your Company" />
               </a>
             </div>
             <div className="flex flex-1 flex-col overflow-y-auto">
@@ -183,35 +186,13 @@ function DashboardNav({ eventos, user, setActiveState, navigation }) {
               <Bars3BottomLeftIcon className="h-6 w-6" aria-hidden="true" />
             </button>
             <div className="flex flex-1 justify-between px-4">
-              <div className="flex flex-1">
-                <form className="flex w-full md:ml-0" action="#" method="GET">
-                  <label htmlFor="search-field" className="sr-only">
-                    Search
-                  </label>
-                  <div className="relative w-full text-gray-400 focus-within:text-gray-600">
-                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center">
-                      <MagnifyingGlassIcon
-                        className="h-5 w-5"
-                        aria-hidden="true"
-                      />
-                    </div>
-                    <input
-                      id="search-field"
-                      className="block h-full w-full border-transparent py-2 pl-8 pr-3 text-gray-900 placeholder-gray-500 focus:border-transparent focus:placeholder-gray-400 focus:outline-none focus:ring-0 sm:text-sm"
-                      placeholder="Search"
-                      type="search"
-                      name="search"
-                    />
-                  </div>
-                </form>
-              </div>
+              <div className="flex flex-1"></div>
               <div className="ml-4 flex items-center md:ml-6">
                 <button
                   type="button"
                   className="rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 >
                   <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-6 w-6" aria-hidden="true" />
                 </button>
 
                 {/* Profile dropdown */}
@@ -221,7 +202,7 @@ function DashboardNav({ eventos, user, setActiveState, navigation }) {
                       <span className="sr-only">Open user menu</span>
                       <img
                         className="h-8 w-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                        src={user.profile_picture}
                         alt=""
                       />
                     </Menu.Button>
@@ -251,6 +232,20 @@ function DashboardNav({ eventos, user, setActiveState, navigation }) {
                           )}
                         </Menu.Item>
                       ))}
+                      <Menu.Item key="logout">
+                        {({ active }) => (
+                          <button
+                            onClick={handleClick}
+                            href="#"
+                            className={classNames(
+                              active ? "bg-gray-100" : "",
+                              "block py-2 px-4 text-sm text-gray-700"
+                            )}
+                          >
+                            Logout
+                          </button>
+                        )}
+                      </Menu.Item>
                     </Menu.Items>
                   </Transition>
                 </Menu>
