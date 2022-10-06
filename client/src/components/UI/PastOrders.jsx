@@ -16,7 +16,7 @@ function PastOrders({ user }) {
     // More people...
   ];
   const dispatch = useDispatch();
-  const pastOrders = useSelector((state) => state.pastOrders);
+  const {pastOrders} = useSelector((state) => state);
     
 
   useEffect(() => {
@@ -73,7 +73,7 @@ function PastOrders({ user }) {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  {!pastOrders ? null : pastOrders.map((order) => (
+                  {pastOrders?.map((order) => (
                     <tr key={order.id}>
                     <th>CARRITO CON EL ID: {order.id}</th>
                     <th className="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">
@@ -105,7 +105,7 @@ function PastOrders({ user }) {
                            DETALLE DEL EVENTO: {event.description}
                          </td>
                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                           ARTISTAS: {event.artist.map(artist => artist)}
+                           ARTISTAS: {event.artist ? event.artist.map(artist => artist) : null}
                          </td>
                           </tr>
                       ))}
@@ -122,4 +122,3 @@ function PastOrders({ user }) {
 }
 
 export default PastOrders;
-
