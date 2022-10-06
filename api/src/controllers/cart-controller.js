@@ -27,7 +27,7 @@ const getAllCarts = async (req, res, next) => {
   let { userId } = req.params;
 
   try {
-    let allCartsUser = await Cart.findAll({
+    let allCartsUser = await Cart.findOne({
       where: {
         userId: userId,
       },
@@ -68,10 +68,14 @@ const addEventToCart = async (req, res, next) => {
       return res.status(400).send("No cart was found with that user ID");
     // SE ENVIA UN EVENTO QUE YA ESTA EN EL CARRITO?
     var newPrice = 0;
+
     let repeatedEventCheck = cart.events.filter((e) => e.id === eventId);
     if (repeatedEventCheck.length > 0) {
       const cartevent = await Cart_Events.findOne({
-        where: { eventId: eventId },
+        where: { 
+          eventId: eventId,
+          CartId: cart.id
+        },
       });
       await cartevent.update({ amount: cartevent.amount + 1 });
       let total = cartevent.amount * eventToAdd.price;
@@ -83,7 +87,10 @@ const addEventToCart = async (req, res, next) => {
 
     var newPrice = cart.totalPrice + eventToAdd.price;
     await cart.addEvent(eventToAdd);
-    const carteven = await Cart_Events.findOne({ where: { eventId: eventId } });
+    const carteven = await Cart_Events.findOne({ where: { 
+      eventId: eventId,
+      CartId: cart.id
+     } });
     await carteven.update({ subtotal: eventToAdd.price });
     await cart.update({
       totalPrice: newPrice,
@@ -145,7 +152,9 @@ const removeOneEventFromCart = async (req, res, next) => {
     });
 
     const cartevent = await Cart_Events.findOne({
-      where: { eventId: eventId },
+      where: { 
+        eventId: eventId,
+        CartId: cart.id },
     });
     let total = cartevent.amount * cartevent.subtotal;
     let newPrice = cart.totalPrice - total;
