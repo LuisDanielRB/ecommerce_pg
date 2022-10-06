@@ -188,6 +188,7 @@ export const changePassword = (userId , password) => async (dispatch) => {
 }
 
 export const editProfile = (id, payload) => async (dispatch) => {
+
     try {
       let edit = await axios.put(`/user/${id}/profile`, payload);
       return dispatch({
@@ -197,6 +198,15 @@ export const editProfile = (id, payload) => async (dispatch) => {
     } catch (error) {
       console.log(error);
     } 
+}
+
+export const removeUsuario = (id, payload) => async (dispatch) => {
+
+  try {
+    let edit = await axios.put(`/user/${id}/profile`, payload);
+  } catch (error) {
+    console.log(error);
+  } 
 }
 
 
@@ -467,7 +477,7 @@ export const upgradeToUser = (userId) => async (dispatch) => {
 
   try {
     const result = await axios.put('/upgradeToAdmin' , {userId: userId})
-    console.log(result)
+
     return dispatch({
       type: 'UPDATE_USER_TO_ADMIN',
       payload: result.data
@@ -481,6 +491,7 @@ export const upgradeToUser = (userId) => async (dispatch) => {
 export const bannedToUser = (userId) => async (dispatch) => {
   try {
     const result = await axios.put(`/user/${userId}/banned` )
+  
     return dispatch({
       type: 'BANNED_USER',
       payload: result.data

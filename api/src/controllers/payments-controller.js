@@ -2,8 +2,7 @@ const { mercadopago } = require('../helpers/mercadopago')
 
 const mercadopagoPayment = async (req, res) => {
     const { summary } = req.body
-    console.log(req.body)
-    console.log(summary)
+
     try {
         let preference = {
             items: [
@@ -18,7 +17,7 @@ const mercadopagoPayment = async (req, res) => {
             back_urls: {
                 failure: "/failure",
                 pending: "/pending",
-                success: "http://localhost:5173/private/payment/success",
+                success: "https://ecommerce-pg-nine.vercel.app/private/payment/success",
             },
             auto_return: "approved",
         };
